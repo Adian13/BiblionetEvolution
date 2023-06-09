@@ -6,6 +6,7 @@ import it.unisa.c07.biblionet.model.entity.utente.Biblioteca;
 import it.unisa.c07.biblionet.model.entity.utente.Esperto;
 import it.unisa.c07.biblionet.model.entity.utente.Lettore;
 import it.unisa.c07.biblionet.model.entity.utente.UtenteRegistrato;
+import it.unisa.c07.biblionet.utils.BiblionetResponse;
 import it.unisa.c07.biblionet.utils.Utils;
 import it.unisa.c07.biblionet.utils.validazione.RispettoVincoli;
 import lombok.RequiredArgsConstructor;
@@ -103,7 +104,7 @@ public class AreaUtenteController {
     @PostMapping(value = "/conferma-modifica-biblioteca")
     @ResponseBody
     @CrossOrigin
-    public ResponseEntity<String> modificaDatiBiblioteca(
+    public BiblionetResponse modificaDatiBiblioteca(
             final @RequestHeader (name="Authorization") String token,
             final @Valid @RequestParam("Biblioteca") Biblioteca biblioteca,
             BindingResult bindingResult,
@@ -113,17 +114,17 @@ public class AreaUtenteController {
 
         Claims claims = Utils.getClaimsFromTokenWithoutKey(token);
         if(! claims.getSubject().equalsIgnoreCase(biblioteca.getEmail()))
-            return new ResponseEntity<>("Non sei autorizzato", HttpStatus.FORBIDDEN);
+            return new BiblionetResponse("Non sei autorizzato", false);
 
         biblioteca.setPassword(qualePassword(vecchia, nuova, conferma));
         String s = controlliPreliminari(bindingResult, vecchia, biblioteca);
-        if(!s.isEmpty()) return new ResponseEntity<>(s, HttpStatus.FORBIDDEN);
+        if(!s.isEmpty()) return new BiblionetResponse("Non sei autorizzato", false);
 
 
 
         autenticazioneService.aggiornaBiblioteca(biblioteca);
 
-        return new ResponseEntity<>("Dati aggiornati", HttpStatus.OK);
+        return new BiblionetResponse("Dati aggiornati", true);
     }
 
 
@@ -143,7 +144,7 @@ public class AreaUtenteController {
     @PostMapping(value = "/conferma-modifica-esperto")
     @ResponseBody
     @CrossOrigin
-    public ResponseEntity<String> modificaDatiEsperto(
+    public BiblionetResponse modificaDatiEsperto(
             final @RequestHeader (name="Authorization") String token,
             final @Valid @RequestParam("Esperto") Esperto esperto,
             BindingResult bindingResult,
@@ -157,11 +158,11 @@ public class AreaUtenteController {
         Esperto toUpdate = autenticazioneService.findEspertoByEmail(esperto.getEmail());
         Claims claims = Utils.getClaimsFromTokenWithoutKey(token);
         if(! claims.getSubject().equalsIgnoreCase(esperto.getEmail()))
-            return new ResponseEntity<>("Non sei autorizzato", HttpStatus.FORBIDDEN);
+            return new BiblionetResponse("Non sei autorizzato", false);
 
         esperto.setPassword(qualePassword(vecchia, nuova, conferma));
         String s = controlliPreliminari(bindingResult, vecchia, esperto);
-        if(!s.isEmpty()) return new ResponseEntity<>(s, HttpStatus.FORBIDDEN);
+        if(!s.isEmpty()) new BiblionetResponse(s, false);
 
 
         Biblioteca b = autenticazioneService.findBibliotecaByEmail(emailBiblioteca);
@@ -173,7 +174,7 @@ public class AreaUtenteController {
 
         autenticazioneService.aggiornaEsperto(esperto);
 
-        return new ResponseEntity<>("Dati aggiornati", HttpStatus.OK);
+        return new BiblionetResponse("Dati aggiornati", true);
     }
 
     /**
@@ -189,7 +190,7 @@ public class AreaUtenteController {
      */
     @RequestMapping(value = "/conferma-modifica-lettore",
             method = RequestMethod.POST)
-    public ResponseEntity<String> confermaModificaLettore(final @RequestHeader (name="Authorization") String token,
+    public BiblionetResponse confermaModificaLettore(final @RequestHeader (name="Authorization") String token,
                      final @Valid @ModelAttribute Lettore lettore,
                      BindingResult bindingResult,
                      final @RequestParam("vecchia_password")String vecchia,
@@ -203,12 +204,12 @@ public class AreaUtenteController {
 
         lettore.setPassword(qualePassword(vecchia, nuova, conferma));
         String s = controlliPreliminari(bindingResult, vecchia, lettore);
-        if(!s.isEmpty()) return new ResponseEntity<>(s, HttpStatus.FORBIDDEN);
+        if(!s.isEmpty()) return new BiblionetResponse(s, false);
 
 
         autenticazioneService.aggiornaLettore(lettore);
 
-        return new ResponseEntity<>("Dati aggiornati", HttpStatus.OK);
+        return new BiblionetResponse("Dati aggiornati", true);
     }
 
     /**
