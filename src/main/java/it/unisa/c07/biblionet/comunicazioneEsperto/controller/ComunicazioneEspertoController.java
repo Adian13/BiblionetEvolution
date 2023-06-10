@@ -33,7 +33,7 @@ public class ComunicazioneEspertoController {
      * ai generi preferiti del lettore.
      * @param model utilizzato per gestire la sessione
      * @return la view contenente la lista
-     */
+
     @RequestMapping(value = "/visualizza-esperti-genere",
                     method = RequestMethod.GET)
     public final String visualizzaEspertiGeneri(final Model model) {
@@ -44,7 +44,7 @@ public class ComunicazioneEspertoController {
         model.addAttribute("esperti", listaEsperti);
         return "comunicazione-esperto/lista-esperti";
     }
-
+*/
     /**
      * Implementa la funzionalità di visualizzare tutti gli Esperti
      * presenti sulla piattaforma.

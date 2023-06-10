@@ -5,10 +5,9 @@ import it.unisa.c07.biblionet.model.entity.Libro;
 import it.unisa.c07.biblionet.model.entity.utente.Biblioteca;
 import it.unisa.c07.biblionet.model.form.LibroForm;
 import it.unisa.c07.biblionet.prenotazioneLibri.service.PrenotazioneLibriService;
+import it.unisa.c07.biblionet.utils.BiblionetResponse;
 import it.unisa.c07.biblionet.utils.Utils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
@@ -61,18 +60,18 @@ public class BibliotecaController {
     @PostMapping(value = "/inserimento-isbn")
     @ResponseBody
     @CrossOrigin
-    public ResponseEntity<String> inserisciPerIsbn(@RequestParam final String isbn,
-                                                   @RequestHeader (name="Authorization") final String token,
-                                                   @RequestParam final String[] generi,
-                                                   @RequestParam final int numCopie) {
+    public BiblionetResponse inserisciPerIsbn(@RequestParam final String isbn,
+                                              @RequestHeader (name="Authorization") final String token,
+                                              @RequestParam final String[] generi,
+                                              @RequestParam final int numCopie) {
 
         if (!Utils.isUtenteBiblioteca(token)) {
-            return new ResponseEntity<>("Non sei autorizzato", HttpStatus.FORBIDDEN);
+            return new BiblionetResponse("Non sei autorizzato", false);
         }
         //todo controllare scadenza token
 
         if (isbn == null) {
-            return new ResponseEntity<>("ISBN inesistente", HttpStatus.BAD_REQUEST);
+            return new BiblionetResponse("ISBN inesistente", false);
         }
         Biblioteca b = (Biblioteca) bibliotecaDAO.getOne(Utils.getSubjectFromToken(token));
 
@@ -80,9 +79,9 @@ public class BibliotecaController {
         Libro l = prenotazioneService.inserimentoPerIsbn(
                 isbn, b.getEmail(), numCopie, glist);
         if (l == null) {
-            return new ResponseEntity<>("Libro non crato", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new BiblionetResponse("Libro non crato", false);
         }
-        return new ResponseEntity<>("Libro creato con successo", HttpStatus.OK);
+        return new BiblionetResponse("Libro creato con successo", true);
 
     }
 
@@ -97,17 +96,17 @@ public class BibliotecaController {
     @PostMapping(value = "/inserimento-archivio")
     @ResponseBody
     @CrossOrigin
-    public ResponseEntity<String> inserisciDaDatabase(@RequestParam final int idLibro,
+    public BiblionetResponse inserisciDaDatabase(@RequestParam final int idLibro,
                                       @RequestHeader (name="Authorization") final String token,
                                    @RequestParam final int numCopie) {
 
         if (!Utils.isUtenteBiblioteca(token)) {
-            return new ResponseEntity<>("Non sei autorizzato", HttpStatus.FORBIDDEN);
+            return new BiblionetResponse("Non sei autorizzato", false);
         }
         Biblioteca b = (Biblioteca) bibliotecaDAO.getOne(Utils.getSubjectFromToken(token));
         Libro l = prenotazioneService.inserimentoDalDatabase(
                 idLibro, b.getEmail(), numCopie);
-        return new ResponseEntity<>("Libro inserito con successo", HttpStatus.OK);
+        return new BiblionetResponse("Libro inserito con successo", true);
 
     }
 
@@ -122,14 +121,14 @@ public class BibliotecaController {
     @PostMapping(value = "/inserimento-manuale")
     @ResponseBody
     @CrossOrigin
-    public ResponseEntity<String> inserisciManualmente(
+    public BiblionetResponse inserisciManualmente(
             @RequestHeader (name="Authorization") final String token,
             @RequestParam final LibroForm libro,
             @RequestParam final int numCopie,
             @RequestParam final String annoPubblicazione) {
 
         if (!Utils.isUtenteBiblioteca(token)) {
-            return new ResponseEntity<>("Non sei autorizzato", HttpStatus.FORBIDDEN);
+            return new BiblionetResponse("Non sei autorizzato", false);
         }
         Biblioteca b = (Biblioteca) bibliotecaDAO.getOne(Utils.getSubjectFromToken(token));
         Libro l = new Libro();
@@ -157,7 +156,7 @@ public class BibliotecaController {
         l.setAnnoDiPubblicazione(anno);
         Libro newLibro = prenotazioneService.inserimentoManuale(
                 l, b.getEmail(), numCopie, libro.getGeneri());
-        return new ResponseEntity<>("Libro inserito con successo", HttpStatus.OK);
+        return new BiblionetResponse("Libro inserito con successo", true);
 
     }
 

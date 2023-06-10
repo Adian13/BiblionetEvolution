@@ -8,10 +8,11 @@ import it.unisa.c07.biblionet.model.entity.TicketPrestito;
 import it.unisa.c07.biblionet.model.entity.utente.Biblioteca;
 import it.unisa.c07.biblionet.model.entity.utente.Lettore;
 import it.unisa.c07.biblionet.prenotazioneLibri.service.PrenotazioneLibriService;
+import it.unisa.c07.biblionet.utils.BiblionetResponse;
 import it.unisa.c07.biblionet.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import it.unisa.c07.biblionet.utils.Utils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -110,17 +111,17 @@ public class PrenotazioneLibriController {
     @PostMapping(value = "/conferma-prenotazione")
     @ResponseBody
     @CrossOrigin
-    public ResponseEntity<String> confermaPrenotazione(@RequestParam final String idBiblioteca,
-                                       @RequestParam final String idLibro,
-                                       @RequestHeader (name="Authorization") final String token) {
+    public BiblionetResponse confermaPrenotazione(@RequestParam final String idBiblioteca,
+                                                  @RequestParam final String idLibro,
+                                                  @RequestHeader (name="Authorization") final String token) {
 
         if (!Utils.isUtenteLettore(token)) {
-            return new ResponseEntity<>("Non sei autorizzato", HttpStatus.FORBIDDEN);
+            return new BiblionetResponse("Non sei autorizzato", false);
         }
         Lettore l = (Lettore) lettoreDAO.getOne(Utils.getSubjectFromToken(token));
         TicketPrestito ticketPrestito = prenotazioneService.richiediPrestito(l,idBiblioteca,Integer.parseInt(idLibro));
-        if(ticketPrestito != null) return new ResponseEntity<>("OK", HttpStatus.OK);
-        return new ResponseEntity<>("Errore", HttpStatus.INTERNAL_SERVER_ERROR);
+        if(ticketPrestito != null) return new BiblionetResponse("OK", true);
+        return new BiblionetResponse("Errore", false);
     }
 
     /**
@@ -174,12 +175,12 @@ public class PrenotazioneLibriController {
     @PostMapping(value = "/ticket/{id}/accetta")
     @ResponseBody
     @CrossOrigin
-    public ResponseEntity<String> accettaPrenotazione(final @PathVariable int id,
+    public BiblionetResponse accettaPrenotazione(final @PathVariable int id,
                         final @RequestParam(value = "giorni") int giorni) {
         TicketPrestito ticket = prenotazioneService.getTicketByID(id);
         ticket = prenotazioneService.accettaRichiesta(ticket, giorni);
-        if(ticket!=null) return new ResponseEntity<>("Richiesta accettata", HttpStatus.OK);
-        return new ResponseEntity<>("Errore", HttpStatus.INTERNAL_SERVER_ERROR);
+        if(ticket!=null) return new BiblionetResponse("Richiesta accettata", true);
+        return new BiblionetResponse("Errore", false);
     }
 
     /**
@@ -192,11 +193,11 @@ public class PrenotazioneLibriController {
     @PostMapping(value = "/ticket/{id}/rifiuta")
     @ResponseBody
     @CrossOrigin
-    public ResponseEntity<String> rifiutaPrenotazione(final @PathVariable int id) {
+    public BiblionetResponse rifiutaPrenotazione(final @PathVariable int id) {
         TicketPrestito ticket = prenotazioneService.getTicketByID(id);
         ticket = prenotazioneService.rifiutaRichiesta(ticket);
-        if(ticket!=null) return new ResponseEntity<>("Richiesta rifiutata", HttpStatus.OK);
-        return new ResponseEntity<>("Errore", HttpStatus.INTERNAL_SERVER_ERROR);
+        if(ticket!=null) return new BiblionetResponse("Richiesta rifiutata", true);
+        return new BiblionetResponse("Errore", false);
     }
 
     /**
@@ -210,11 +211,11 @@ public class PrenotazioneLibriController {
     @PostMapping(value = "/ticket/{id}/chiudi")
     @ResponseBody
     @CrossOrigin
-    public ResponseEntity<String> chiudiPrenotazione(final @PathVariable int id) {
+    public BiblionetResponse chiudiPrenotazione(final @PathVariable int id) {
         TicketPrestito ticket = prenotazioneService.getTicketByID(id);
         ticket = prenotazioneService.chiudiTicket(ticket);
-        if(ticket!=null) return new ResponseEntity<>("Prenotazione chiusa", HttpStatus.OK);
-        return new ResponseEntity<>("Errore", HttpStatus.INTERNAL_SERVER_ERROR);
+        if(ticket!=null) return new BiblionetResponse("Prenotazione chiusa", true);
+        return new BiblionetResponse("Errore", false);
     }
 
     /**

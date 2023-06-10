@@ -8,6 +8,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import it.unisa.c07.biblionet.model.dao.utente.EspertoDAO;
+import it.unisa.c07.biblionet.utils.BiblionetResponse;
 import it.unisa.c07.biblionet.utils.Utils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -73,16 +74,16 @@ public class ClubDelLibroController {
      *                   effettuare.
      * @return La view inserita.
      */
-    private ResponseEntity<String> modificaCreaEvento(final @Valid @ModelAttribute EventoForm eventoForm, BindingResult bindingResult,
-                                                      //@RequestParam final String view,
-                                                      @RequestParam final int idClub, @RequestParam final Optional<Integer> idEvento, @RequestParam final Consumer<Evento> operazione) {
+    private BiblionetResponse modificaCreaEvento(final @Valid @ModelAttribute EventoForm eventoForm, BindingResult bindingResult,
+                                                 //@RequestParam final String view,
+                                                 @RequestParam final int idClub, @RequestParam final Optional<Integer> idEvento, @RequestParam final Consumer<Evento> operazione) {
 
         if (bindingResult.hasErrors())
-            return new ResponseEntity<>("I dati inseriti non rispettano il formato atteso", HttpStatus.BAD_REQUEST);
+            return new BiblionetResponse("I dati inseriti non rispettano il formato atteso", false);
         var club = this.clubService.getClubByID(idClub);
 
         if (club == null) {
-            return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
+            return new BiblionetResponse("", false);
         }
 
         var evento = new Evento();
@@ -97,7 +98,7 @@ public class ClubDelLibroController {
 
         var dataOra = LocalDateTime.of(eventoForm.getData(), eventoForm.getOra());
         if (dataOra.isBefore(LocalDateTime.now())) {
-            return new ResponseEntity<>("Data non valida", HttpStatus.BAD_REQUEST);
+            return new BiblionetResponse("Data non valida", false);
         }
 
         evento.setDataOra(dataOra);
@@ -105,13 +106,13 @@ public class ClubDelLibroController {
         if (eventoForm.getLibro() != null) {
             var libro = this.eventiService.getLibroById(eventoForm.getLibro());
             if (libro.isEmpty()) {
-                return new ResponseEntity<>("Libro inserito non valido", HttpStatus.BAD_REQUEST);
+                return new BiblionetResponse("Libro inserito non valido", false);
             }
             evento.setLibro(libro.get());
         }
 
         operazione.accept(evento);
-        return new ResponseEntity<>("Evento creato/modificato", HttpStatus.OK);
+        return new BiblionetResponse("Evento creato/modificato", true);
 
     }
 
