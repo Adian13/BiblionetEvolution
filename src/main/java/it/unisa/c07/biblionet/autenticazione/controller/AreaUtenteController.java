@@ -216,35 +216,25 @@ public class AreaUtenteController {
      * Implementa la funzionalità di visualizzazione area utente
      * in base al tipo.
      *
-     * @param model Utilizzato per gestire la sessione.
      * @return La view di visualizzazione area utente
-
+    */
     @RequestMapping(value = "/area-utente", method = RequestMethod.GET)
-    public String areaUtente(final Model model) {
-        UtenteRegistrato utente = (UtenteRegistrato)
-                model.getAttribute("loggedUser");
-
-        if (utente != null) {
-            if (autenticazioneService.isBiblioteca(utente)) {
-                Biblioteca biblioteca = (Biblioteca) utente;
-                model.addAttribute("biblioteca", biblioteca);
-                return "area-utente/visualizza-biblioteca";
-
-            } else if (autenticazioneService.isEsperto(utente)) {
-                Esperto esperto = (Esperto) utente;
-                model.addAttribute("esperto", esperto);
-                return "area-utente/visualizza-esperto";
-
-            } else if (autenticazioneService.isLettore(utente)) {
-                Lettore lettore = (Lettore) utente;
-                model.addAttribute("lettore", lettore);
-                return "area-utente/visualizza-lettore";
+    public UtenteRegistrato datiAreaUtente(
+            @RequestHeader (name="Authorization") final String token
+            ) {
+        {
+            if (Utils.isUtenteBiblioteca(token)) {
+                return autenticazioneService.findBibliotecaByEmail(Utils.getSubjectFromToken(token));
+            } else if (Utils.isUtenteEsperto(token)) {
+                return autenticazioneService.findEspertoByEmail(Utils.getSubjectFromToken(token));
+            } else if (Utils.isUtenteLettore(token)) {
+                return autenticazioneService.findLettoreByEmail(Utils.getSubjectFromToken(token));
 
             }
         }
-        return "autenticazione/login";
+        return null;
     }
-    */
+
 
     /**
      * Implementa la funzionalità di visualizzazione dei clubs
