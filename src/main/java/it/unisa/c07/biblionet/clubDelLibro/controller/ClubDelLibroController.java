@@ -8,7 +8,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import it.unisa.c07.biblionet.model.dao.utente.EspertoDAO;
-import it.unisa.c07.biblionet.utils.BiblionetResponse;
 import it.unisa.c07.biblionet.utils.Utils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -74,16 +73,16 @@ public class ClubDelLibroController {
      *                   effettuare.
      * @return La view inserita.
      */
-    private BiblionetResponse modificaCreaEvento(final @Valid @ModelAttribute EventoForm eventoForm, BindingResult bindingResult,
+    private ResponseEntity<String> modificaCreaEvento(final @Valid @ModelAttribute EventoForm eventoForm, BindingResult bindingResult,
                                                       //@RequestParam final String view,
                                                       @RequestParam final int idClub, @RequestParam final Optional<Integer> idEvento, @RequestParam final Consumer<Evento> operazione) {
 
         if (bindingResult.hasErrors())
-            return new BiblionetResponse("I dati inseriti non rispettano il formato atteso", false);
+            return new ResponseEntity<>("I dati inseriti non rispettano il formato atteso", HttpStatus.BAD_REQUEST);
         var club = this.clubService.getClubByID(idClub);
 
         if (club == null) {
-            return new BiblionetResponse("", false);
+            return new ResponseEntity<>("", HttpStatus.BAD_REQUEST);
         }
 
         var evento = new Evento();
@@ -98,7 +97,7 @@ public class ClubDelLibroController {
 
         var dataOra = LocalDateTime.of(eventoForm.getData(), eventoForm.getOra());
         if (dataOra.isBefore(LocalDateTime.now())) {
-            return new BiblionetResponse("Data non valida", false);
+            return new ResponseEntity<>("Data non valida", HttpStatus.BAD_REQUEST);
         }
 
         evento.setDataOra(dataOra);
@@ -106,13 +105,13 @@ public class ClubDelLibroController {
         if (eventoForm.getLibro() != null) {
             var libro = this.eventiService.getLibroById(eventoForm.getLibro());
             if (libro.isEmpty()) {
-                return new BiblionetResponse("Libro inserito non valido", false);
+                return new ResponseEntity<>("Libro inserito non valido", HttpStatus.BAD_REQUEST);
             }
             evento.setLibro(libro.get());
         }
 
         operazione.accept(evento);
-        return new BiblionetResponse("Evento creato/modificato", true);
+        return new ResponseEntity<>("Evento creato/modificato", HttpStatus.OK);
 
     }
 
@@ -186,7 +185,7 @@ public class ClubDelLibroController {
      ClubForm club) {
      var utente = (UtenteRegistrato) model.getAttribute("loggedUser");
      if (utente == null || !utente.getTipo().equals("Esperto")) {
-     throw new ResponseStatusException(false);
+     throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
      }
      model.addAttribute("generi", this.clubService.getTuttiGeneri());
      model.addAttribute("club", club);
@@ -203,13 +202,13 @@ public class ClubDelLibroController {
      * @return la pagina del Club
      */
     @RequestMapping(value = "/crea", method = RequestMethod.POST)
-    public BiblionetResponse creaClubDelLibro(final @Valid @ModelAttribute ClubForm clubForm, @RequestHeader(name = "Authorization") final String token, BindingResult bindingResult) {
+    public ResponseEntity<String> creaClubDelLibro(final @Valid @ModelAttribute ClubForm clubForm, @RequestHeader(name = "Authorization") final String token, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            return new BiblionetResponse("Formato dati non valido", false);
+            return new ResponseEntity<>("Formato dati non valido", HttpStatus.BAD_REQUEST);
         }
         if (!Utils.isUtenteEsperto(token)) {
-            return new BiblionetResponse("Non sei autorizzato", false);
+            return new ResponseEntity<>("Non sei autorizzato", HttpStatus.UNAUTHORIZED);
         }
         Esperto esperto = (Esperto) espertoDAO.getOne(Utils.getSubjectFromToken(token));
 
@@ -225,7 +224,7 @@ public class ClubDelLibroController {
         cdl.setGeneri(this.clubService.getGeneri(clubForm.getGeneri()));
 
         this.clubService.creaClubDelLibro(cdl);
-        return new BiblionetResponse("Club del Libro creato", false);
+        return new ResponseEntity<>("Club del Libro creato", HttpStatus.UNAUTHORIZED);
 
     }
 
@@ -250,7 +249,7 @@ public class ClubDelLibroController {
      }
      if (esperto == null
      || !cdl.getEsperto().getEmail().equals(esperto.getEmail())) {
-     throw new ResponseStatusException(false);
+     throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
      }
 
      club.setNome(cdl.getNome());
@@ -274,12 +273,12 @@ public class ClubDelLibroController {
      * @return La schermata del club
      */
     @RequestMapping(value = "/{id}/modifica", method = RequestMethod.POST)
-    public BiblionetResponse modificaDatiClub(final @PathVariable int id, @RequestHeader(name = "Authorization") final String token, final @Valid @ModelAttribute ClubForm clubForm, BindingResult bindingResult) {
+    public ResponseEntity<String> modificaDatiClub(final @PathVariable int id, @RequestHeader(name = "Authorization") final String token, final @Valid @ModelAttribute ClubForm clubForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return new BiblionetResponse("Formato dati non valido", false);
+            return new ResponseEntity<>("Formato dati non valido", HttpStatus.BAD_REQUEST);
         }
         if (!Utils.isUtenteEsperto(token)) {
-            return new BiblionetResponse("Non sei autorizzato", false);
+            return new ResponseEntity<>("Non sei autorizzato", HttpStatus.UNAUTHORIZED);
         }
 
         ClubDelLibro clubPers = this.clubService.getClubByID(id);
@@ -293,7 +292,7 @@ public class ClubDelLibroController {
         clubPers.setNome(clubForm.getNome());
         clubPers.setDescrizione(clubForm.getDescrizione());
         this.clubService.modificaDatiClub(clubPers);
-        return new BiblionetResponse("Modifiche apportate", true);
+        return new ResponseEntity<>("Modifiche apportate", HttpStatus.OK);
     }
 
     /**
@@ -310,7 +309,7 @@ public class ClubDelLibroController {
 
         UtenteRegistrato lettore = (UtenteRegistrato) model.getAttribute("loggedUser");
         if (lettore == null || !lettore.getTipo().equals("Lettore")) {
-            //throw new ResponseStatusException(false);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
         ClubDelLibro clubDelLibro = this.clubService.getClubByID(id);
         if (clubDelLibro.getLettori().contains(lettore)) {
@@ -351,14 +350,14 @@ public class ClubDelLibroController {
 
      if (esperto != null && !eventoBaseOpt.get().getClub().getEsperto()
      .getEmail().equals(esperto.getEmail())) {
-     throw new ResponseStatusException(false);
+     throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
      }
 
      var eventoBase = eventoBaseOpt.get();
 
      if (eventoBase.getClub().getIdClub() != idClub) {
      throw new ResponseStatusException(
-     false,
+     HttpStatus.BAD_REQUEST,
      "L'evento con id " + idEvento
      + "non è associato al club con id "
      + idClub + "."
@@ -426,7 +425,7 @@ public class ClubDelLibroController {
      this.eventiService.modificaEvento(evento);
      if (statusModifica.isEmpty()) {
      throw new ResponseStatusException(
-     false,
+     HttpStatus.BAD_REQUEST,
      "L'evento con id " + idEvento
      + "non è associato al club con id "
      + idClub + "."
@@ -534,7 +533,7 @@ public class ClubDelLibroController {
         }
         UtenteRegistrato utente = (UtenteRegistrato) model.getAttribute("loggedUser");
         if (utente == null || !utente.getTipo().equals("Lettore")) {
-            //throw new ResponseStatusException(false);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
         Lettore l = (Lettore) utente;
         List<Evento> tutti = clubService.getClubByID(id).getEventi();
@@ -571,7 +570,7 @@ public class ClubDelLibroController {
     public String partecipaEvento(final @PathVariable int idEvento, final @PathVariable int idClub, final Model model) {
         UtenteRegistrato utente = (UtenteRegistrato) model.getAttribute("loggedUser");
         if (utente == null || !utente.getTipo().equals("Lettore")) {
-            //throw new ResponseStatusException(false);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
         model.addAttribute("loggedUser", eventiService.partecipaEvento(utente.getEmail(), idEvento));
         return "redirect:/club-del-libro/" + idClub + "/eventi";
@@ -591,7 +590,7 @@ public class ClubDelLibroController {
     public String abbandonaEvento(final @PathVariable int idEvento, final @PathVariable int idClub, final Model model) {
         UtenteRegistrato utente = (UtenteRegistrato) model.getAttribute("loggedUser");
         if (utente == null || !utente.getTipo().equals("Lettore")) {
-
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
         }
         model.addAttribute("loggedUser", eventiService.abbandonaEvento(utente.getEmail(), idEvento));
         return "redirect:/club-del-libro/" + idClub + "/eventi";
@@ -610,5 +609,3 @@ public class ClubDelLibroController {
         return null;
     }
 }
-
-//todo //throw new ResponseStatusException(false); questi commenti corrispondono a codice non valido, va visto sull'origianle
