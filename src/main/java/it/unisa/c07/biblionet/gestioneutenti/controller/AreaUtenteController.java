@@ -9,6 +9,7 @@ import it.unisa.c07.biblionet.gestioneprestitilibro.repository.Biblioteca;
 import it.unisa.c07.biblionet.gestioneprestitilibro.PrenotazioneLibriService;
 import it.unisa.c07.biblionet.gestioneutenti.AutenticazioneService;
 import it.unisa.c07.biblionet.common.*;
+import it.unisa.c07.biblionet.gestioneutenti.RegistrazioneService;
 import it.unisa.c07.biblionet.utils.BiblionetResponse;
 import it.unisa.c07.biblionet.utils.RispettoVincoli;
 import it.unisa.c07.biblionet.utils.Utils;
@@ -33,6 +34,7 @@ public class AreaUtenteController {
     private final AutenticazioneService autenticazioneService;
     private final PrenotazioneLibriService prenotazioneLibriService;
     private final ClubDelLibroService clubService;
+    private final RegistrazioneService registrazioneService;
 
     /**
      * Implementa la funzionalità di smistare l'utente sulla view di
@@ -126,7 +128,7 @@ public class AreaUtenteController {
         if (!s.isEmpty()) return new BiblionetResponse(s, false);
 
 
-        //prenotazioneLibriService.salvaBiblioteca(biblioteca);
+        registrazioneService.registraBiblioteca(biblioteca);
 
         return new BiblionetResponse(BiblionetResponse.OPERAZIONE_OK, true);
     }
@@ -160,19 +162,14 @@ public class AreaUtenteController {
         if (!Utils.isUtenteEsperto(Utils.getSubjectFromToken(token)))
             return new BiblionetResponse("Non sei autorizzato", false);
 
+        if (!Utils.getSubjectFromToken(token).equals(esperto.getEmail()))
+            return new BiblionetResponse("Non puoi cambiare email", false); //todo
+
         esperto.setPassword(qualePassword(vecchia, nuova, conferma));
         String s = controlliPreliminari(bindingResult, vecchia, esperto);
         if (!s.isEmpty()) return new BiblionetResponse(s, false);
 
-
-        Biblioteca b = prenotazioneLibriService.findBibliotecaByEmail(emailBiblioteca);
-        if (b != null) {
-            //esperto.setBiblioteca(b);
-        } else {
-            //esperto.setBiblioteca(toUpdate.getBiblioteca());
-        }
-
-        //autenticazioneService.aggiornaEsperto(esperto);
+        registrazioneService.aggiornaEsperto(esperto, emailBiblioteca); //todo qualche check in più sull'esistenza dell'esperto, anche se se ha il token è autoamticamente registrato
 
         return new BiblionetResponse("Dati aggiornati", true);
     }
@@ -202,7 +199,7 @@ public class AreaUtenteController {
         if (!s.isEmpty()) return new BiblionetResponse(s, false);
 
 
-        //autenticazioneService.aggiornaLettore(lettore);
+        registrazioneService.aggiornaLettore(lettore);
 
         return new BiblionetResponse("Dati aggiornati", true);
     }

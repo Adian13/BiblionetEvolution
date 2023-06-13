@@ -5,7 +5,7 @@ import it.unisa.c07.biblionet.gestioneclubdellibro.ClubDelLibroService;
 import it.unisa.c07.biblionet.gestioneclubdellibro.EspertoDTO;
 import it.unisa.c07.biblionet.gestioneclubdellibro.LettoreDTO;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.*;
-import it.unisa.c07.biblionet.gestioneprestitilibro.repository.Biblioteca;
+import it.unisa.c07.biblionet.gestioneprestitilibro.PrenotazioneLibriService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -186,9 +186,15 @@ public class ClubDelLibroServiceImpl implements ClubDelLibroService {
 
     @Override
     public UtenteRegistrato creaEspertoDaModel(EspertoDTO form, UtenteRegistrato biblioteca) {
-        System.out.println(biblioteca.getVia());
-        return espertoDAO.save(new Esperto(form, (Biblioteca) biblioteca));
+        return espertoDAO.save(new Esperto(form, biblioteca));
     }
+
+    @Override
+    public UtenteRegistrato aggiornaEspertoDaModel(EspertoDTO form, UtenteRegistrato biblioteca) {
+        if(biblioteca == null) biblioteca = findEspertoByEmail(form.getEmail()).getBiblioteca(); //todo ok, e se cambio anche la mail?
+        return espertoDAO.save(new Esperto(form, biblioteca));
+    }
+
 
     /**
      * Implementa la funzionalità di salvataggio delle modifiche
@@ -265,7 +271,12 @@ public class ClubDelLibroServiceImpl implements ClubDelLibroService {
 
     @Override
     public UtenteRegistrato creaLettoreDaModel(LettoreDTO form) {
-        return espertoDAO.save(new Lettore(form));
+        return lettoreDAO.save(new Lettore(form));
+    }
+
+    @Override
+    public UtenteRegistrato aggiornaLettoreDaModel(LettoreDTO form) {
+        return creaLettoreDaModel(form);
     }
 
 }

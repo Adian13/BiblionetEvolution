@@ -1,7 +1,6 @@
 package it.unisa.c07.biblionet.gestioneprestitilibro.service;
 
 import it.unisa.c07.biblionet.common.*;
-import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Lettore;
 import it.unisa.c07.biblionet.gestioneprestitilibro.BibliotecaDTO;
 import it.unisa.c07.biblionet.gestioneprestitilibro.PrenotazioneLibriService;
 import it.unisa.c07.biblionet.gestioneprestitilibro.repository.*;
@@ -33,12 +32,10 @@ public class PrenotazioneLibriServiceImpl implements PrenotazioneLibriService {
     private final TicketPrestitoDAO ticketPrestitoDAO;
 
     @Override
-    public UtenteRegistrato creaBibliotecaDaModel(BibliotecaDTO form, String nomeBiblioteca, String password){
+    public UtenteRegistrato bibliotecaDaModel(BibliotecaDTO form){
         Biblioteca biblioteca = new Biblioteca(form);
         biblioteca.setTipo("Biblioteca");
-        biblioteca.setNomeBiblioteca(nomeBiblioteca);
-
-       return bibliotecaDAO.save(biblioteca);
+       return aggiornaBiblioteca(biblioteca);
 
     }
     @Override
@@ -508,11 +505,7 @@ public class PrenotazioneLibriServiceImpl implements PrenotazioneLibriService {
         return bibliotecaDAO.save(utente);
     }
 
-    @Override
-    public Biblioteca salvaBiblioteca(final UtenteRegistrato utenteRegistrato) {
-        //TODO FORSE INUTILE
-        return aggiornaBiblioteca((Biblioteca) utenteRegistrato);
-    }
+
 
 
 }

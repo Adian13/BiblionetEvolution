@@ -107,6 +107,8 @@ public interface ClubDelLibroService {
 
     UtenteRegistrato creaEspertoDaModel(EspertoDTO form, UtenteRegistrato biblioteca);
 
+    UtenteRegistrato aggiornaEspertoDaModel(EspertoDTO form, UtenteRegistrato biblioteca);
+
     List<Esperto> findEspertiByGeneri(Set<String> generi);
 
     Lettore findLettoreByEmail(String email);
@@ -127,4 +129,6 @@ public interface ClubDelLibroService {
     Lettore getLettoreByEmail(String email);
 
     UtenteRegistrato creaLettoreDaModel(LettoreDTO lettore);
+
+    UtenteRegistrato aggiornaLettoreDaModel(LettoreDTO form);
 }

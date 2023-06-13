@@ -90,8 +90,7 @@ public final class RegistrazioneController {
         if (!s.isEmpty()) {
             return new BiblionetResponse(s, false);
         }
-
-        registrazioneService.registraEsperto(esperto, bibliotecaEmail);
+        registrazioneService.aggiornaEsperto(esperto, bibliotecaEmail);
         return new BiblionetResponse("Registrazione ok", true);
     }
 
@@ -115,7 +114,7 @@ public final class RegistrazioneController {
         if (!s.isEmpty()) {
             return new BiblionetResponse(s, false);
         }
-        registrazioneService.registraBiblioteca(biblioteca, nomeBiblioteca, password);
+        registrazioneService.aggiornaBiblioteca(biblioteca);
         return new BiblionetResponse("Registrazione effettuata correttamente", true);
     }
 

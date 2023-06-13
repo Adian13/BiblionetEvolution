@@ -5,7 +5,6 @@ import it.unisa.c07.biblionet.gestioneclubdellibro.ClubDelLibroService;
 import it.unisa.c07.biblionet.gestioneclubdellibro.LettoreDTO;
 import it.unisa.c07.biblionet.gestioneprestitilibro.BibliotecaDTO;
 import it.unisa.c07.biblionet.gestioneprestitilibro.PrenotazioneLibriService;
-import it.unisa.c07.biblionet.gestioneprestitilibro.repository.BibliotecaDAO;
 import it.unisa.c07.biblionet.gestioneutenti.RegistrazioneService;
 import it.unisa.c07.biblionet.common.UtenteRegistrato;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +42,17 @@ public class RegistrazioneServiceImpl implements RegistrazioneService {
         return clubDelLibroService.creaEspertoDaModel(esperto, prenotazioneLibriService.findBibliotecaByEmail(emailBiblioteca));
     }
 
+    @Override
+    public final UtenteRegistrato aggiornaEsperto(final EspertoDTO esperto, final String emailBiblioteca) {
+        return clubDelLibroService.aggiornaEspertoDaModel(esperto, prenotazioneLibriService.findBibliotecaByEmail(emailBiblioteca));
+    }
+
+    @Override
+    public final UtenteRegistrato aggiornaLettore(final LettoreDTO lettore) {
+        return clubDelLibroService.aggiornaLettoreDaModel(lettore);
+    }
+
+
 
 
     /**
@@ -51,9 +61,14 @@ public class RegistrazioneServiceImpl implements RegistrazioneService {
      * @return L'utente registrato
      */
     @Override
-    public UtenteRegistrato registraBiblioteca(final BibliotecaDTO biblioteca, String nomeBiblioteca, String password) {
-        return prenotazioneLibriService.creaBibliotecaDaModel(biblioteca, nomeBiblioteca, password);
+    public UtenteRegistrato registraBiblioteca(final BibliotecaDTO biblioteca) {
+        return prenotazioneLibriService.bibliotecaDaModel(biblioteca);
     }
+    @Override
+    public UtenteRegistrato aggiornaBiblioteca(final BibliotecaDTO biblioteca) {
+        return registraBiblioteca(biblioteca);
+    }
+
 
 
 

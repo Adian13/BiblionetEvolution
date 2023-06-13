@@ -16,7 +16,8 @@ public interface PrenotazioneLibriService {
 
 
 
-    UtenteRegistrato creaBibliotecaDaModel(BibliotecaDTO form, String nomeBiblioteca, String password);
+
+    UtenteRegistrato bibliotecaDaModel(BibliotecaDTO form);
 
     UtenteRegistrato findBibliotecaByEmailAndPassword(String email, byte[] password);
 
@@ -199,5 +200,4 @@ public interface PrenotazioneLibriService {
 
     Biblioteca aggiornaBiblioteca(Biblioteca utente);
 
-    Biblioteca salvaBiblioteca(UtenteRegistrato utenteRegistrato);
 }
