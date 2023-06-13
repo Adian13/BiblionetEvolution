@@ -21,7 +21,7 @@ import java.util.List;
  * Questa classe rappresenta una Biblioteca.
  * Una Biblioteca possiede un nome, la lista degli esperti
  * che lavorano presso di essa, la lista di libri che possiede
- * che quindi può prestare ad un lettore,
+ * che quindi può prestare a un lettore,
  * e una lista di ticket che rappresentano le richieste di prestito dei lettori.
  */
 @Entity
