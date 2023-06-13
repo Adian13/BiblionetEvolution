@@ -1,6 +1,6 @@
-package it.unisa.c07.biblionet.gestioneprestitilibro.service.bookapiadapter;
+package it.unisa.c07.biblionet.gestionebiblioteca.service.bookapiadapter;
 
-import it.unisa.c07.biblionet.gestioneprestitilibro.repository.LibroBiblioteca;
+import it.unisa.c07.biblionet.gestionebiblioteca.repository.LibroBiblioteca;
 
 /**
  * Rappresenta l'interfaccia dello Adapter usata

@@ -1,9 +1,7 @@
-package it.unisa.c07.biblionet.gestioneprestitilibro.repository;
+package it.unisa.c07.biblionet.gestionebiblioteca.repository;
 
 
-import it.unisa.c07.biblionet.gestioneprestitilibro.repository.Possesso;
-import it.unisa.c07.biblionet.gestioneprestitilibro.repository.TicketPrestito;
-import it.unisa.c07.biblionet.utils.Length;
+import it.unisa.c07.biblionet.utils.BiblionetConstraints;
 import lombok.*;
 
 import javax.persistence.*;
@@ -32,20 +30,20 @@ public class LibroBiblioteca {
      * Rappresenta il titolo di un libro.
      */
     @NonNull
-    @Column(length = Length.LENGTH_90)
+    @Column(length = BiblionetConstraints.LENGTH_90)
     private String titolo;
 
     /**
      * Rappresenta l'autore di un libro.
      */
     @NonNull
-    @Column(length = Length.LENGTH_60)
+    @Column(length = BiblionetConstraints.LENGTH_60)
     private String autore;
 
     /**
      * Rappresenta il codice ISBN di un libro se presente.
      */
-    @Column(unique = true, length = Length.LENGTH_13)
+    @Column(unique = true, length = BiblionetConstraints.LENGTH_13)
     @NonNull
     private String isbn;
 
@@ -59,14 +57,14 @@ public class LibroBiblioteca {
     /**
      * Rappresenta la descrizione di un libro.
      */
-    @Column(nullable = false, length = Length.LENGTH_144)
+    @Column(nullable = false, length = BiblionetConstraints.LENGTH_144)
     @NonNull
     private String descrizione;
 
     /**
      * Rappresenta la casa editrice di un libro.
      */
-    @Column(nullable = false, length = Length.LENGTH_30)
+    @Column(nullable = false, length = BiblionetConstraints.LENGTH_30)
     @NonNull
     private String casaEditrice;
 

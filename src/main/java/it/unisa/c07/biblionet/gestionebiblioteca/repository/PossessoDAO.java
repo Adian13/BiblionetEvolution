@@ -1,4 +1,4 @@
-package it.unisa.c07.biblionet.gestioneprestitilibro.repository;
+package it.unisa.c07.biblionet.gestionebiblioteca.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

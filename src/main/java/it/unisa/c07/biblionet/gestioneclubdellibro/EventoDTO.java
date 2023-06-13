@@ -1,9 +1,9 @@
-package it.unisa.c07.biblionet.gestioneclubdellibro.form;
+package it.unisa.c07.biblionet.gestioneclubdellibro;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import it.unisa.c07.biblionet.utils.ValidazioneEvento;
+import it.unisa.c07.biblionet.utils.BiblionetConstraints;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
@@ -22,20 +22,20 @@ import javax.validation.constraints.Size;
 @Data
 @NoArgsConstructor(force = true)
 @RequiredArgsConstructor
-public class EventoForm {
+public class EventoDTO {
 
     /**
      * Il nome dell'evento.
      */
     @NonNull
-    @Size(min = ValidazioneEvento.LUNGHEZZA_MINIMA_NOME, max = ValidazioneEvento.LUNGHEZZA_MASSIMA_NOME)
+    @Size(min = BiblionetConstraints.LUNGHEZZA_MINIMA_NOME, max = BiblionetConstraints.LUNGHEZZA_MASSIMA_NOME)
     private String nome;
 
     /**
      * Una descrizione dell'evento.
      */
     @NonNull
-    @Size(min = ValidazioneEvento.LUNGHEZZA_MINIMA_DESCRIZIONE, max = ValidazioneEvento.LUNGHEZZA_MASSIMA_DESCRIZIONE)
+    @Size(min = BiblionetConstraints.LUNGHEZZA_MINIMA_DESCRIZIONE, max = BiblionetConstraints.LUNGHEZZA_MASSIMA_DESCRIZIONE)
     private String descrizione;
 
     /**

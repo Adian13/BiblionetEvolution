@@ -1,10 +1,10 @@
-package it.unisa.c07.biblionet.gestioneprestitilibro.service;
+package it.unisa.c07.biblionet.gestionebiblioteca.service;
 
 import it.unisa.c07.biblionet.common.*;
-import it.unisa.c07.biblionet.gestioneprestitilibro.BibliotecaDTO;
-import it.unisa.c07.biblionet.gestioneprestitilibro.PrenotazioneLibriService;
-import it.unisa.c07.biblionet.gestioneprestitilibro.repository.*;
-import it.unisa.c07.biblionet.gestioneprestitilibro.service.bookapiadapter.BookApiAdapter;
+import it.unisa.c07.biblionet.gestionebiblioteca.BibliotecaDTO;
+import it.unisa.c07.biblionet.gestionebiblioteca.PrenotazioneLibriService;
+import it.unisa.c07.biblionet.gestionebiblioteca.repository.*;
+import it.unisa.c07.biblionet.gestionebiblioteca.service.bookapiadapter.BookApiAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;

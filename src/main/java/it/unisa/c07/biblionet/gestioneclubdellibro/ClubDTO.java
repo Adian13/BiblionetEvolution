@@ -1,4 +1,4 @@
-package it.unisa.c07.biblionet.gestioneclubdellibro.form;
+package it.unisa.c07.biblionet.gestioneclubdellibro;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class ClubForm {
+public class ClubDTO {
 
     /**
      * Nome del club.

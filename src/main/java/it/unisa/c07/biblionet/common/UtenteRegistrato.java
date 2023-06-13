@@ -1,7 +1,6 @@
 package it.unisa.c07.biblionet.common;
 
-import it.unisa.c07.biblionet.utils.Length;
-import it.unisa.c07.biblionet.utils.RispettoVincoli;
+import it.unisa.c07.biblionet.utils.BiblionetConstraints;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -32,45 +31,45 @@ public abstract class UtenteRegistrato {
      * Rappresenta l'ID di un utente registrato.
      */
     @Id
-    @Column(nullable = false, length = Length.LENGTH_320)
+    @Column(nullable = false, length = BiblionetConstraints.LENGTH_320)
     @NonNull
     private String email;
 
     /**
      * Rappresenta la password di un utente registrato.
      */
-    @Column(nullable = false, length = Length.LENGTH_32)
+    @Column(nullable = false, length = BiblionetConstraints.LENGTH_32)
     @NonNull
     private byte[] password;
 
     /**
      * Rappresente la provincia dove vive l'utente registrato.
      */
-    @Column(nullable = false, length = Length.LENGTH_30)
+    @Column(nullable = false, length = BiblionetConstraints.LENGTH_30)
     @NonNull
     private String provincia;
 
     /**
      * Rappresenta la città dove vive l'utente registrato.
      */
-    @Column(nullable = false, length = Length.LENGTH_30)
+    @Column(nullable = false, length = BiblionetConstraints.LENGTH_30)
     @NonNull
     private String citta;
 
     /**
      * Rappresenta la via dove vive l'utente registrato.
      */
-    @Column(nullable = false, length = Length.LENGTH_30)
+    @Column(nullable = false, length = BiblionetConstraints.LENGTH_30)
     @NonNull
-    @Pattern(regexp = RispettoVincoli.ADDRESS_REGEX)
+    @Pattern(regexp = BiblionetConstraints.ADDRESS_REGEX)
     private String via;
 
     /**
      * Rappresenta il recapito telefonico dell'utente registrato.
      */
-    @Column(nullable = false, length = Length.LENGTH_10)
+    @Column(nullable = false, length = BiblionetConstraints.LENGTH_10)
     @NonNull
-    @Pattern(regexp = RispettoVincoli.PHONE_REGEX)
+    @Pattern(regexp = BiblionetConstraints.PHONE_REGEX)
     private String recapitoTelefonico;
 
 
@@ -101,7 +100,7 @@ public abstract class UtenteRegistrato {
         this.via = via;
         this.recapitoTelefonico = recapitoTelefonico;
         this.tipo = tipo;
-        this.password = RispettoVincoli.trasformaPassword(password);
+        this.password = BiblionetConstraints.trasformaPassword(password);
     }
     public UtenteRegistrato(final String email, final byte[] password,
                                final String provincia, final String citta,

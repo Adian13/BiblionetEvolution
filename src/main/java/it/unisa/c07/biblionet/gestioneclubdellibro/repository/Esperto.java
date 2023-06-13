@@ -2,8 +2,7 @@ package it.unisa.c07.biblionet.gestioneclubdellibro.repository;
 
 import it.unisa.c07.biblionet.common.UtenteRegistrato;
 import it.unisa.c07.biblionet.gestioneclubdellibro.EspertoDTO;
-import it.unisa.c07.biblionet.utils.Length;
-import it.unisa.c07.biblionet.utils.RispettoVincoli;
+import it.unisa.c07.biblionet.utils.BiblionetConstraints;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -14,7 +13,6 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -36,23 +34,23 @@ public class Esperto extends UtenteRegistrato {
      * Rappresenta l'username dell'esperto.
      */
     @NonNull
-    @Column(nullable = false, length = Length.LENGTH_30)
+    @Column(nullable = false, length = BiblionetConstraints.LENGTH_30)
     private String username;
 
     /**
      * Rappresenta il nome dell'esperto.
      */
     @NonNull
-    @Column(nullable = false, length = Length.LENGTH_30)
-    @Pattern(regexp = RispettoVincoli.NAME_REGEX, message = "Il campo deve contenere esattamente 9 cifre.")
+    @Column(nullable = false, length = BiblionetConstraints.LENGTH_30)
+    @Pattern(regexp = BiblionetConstraints.NAME_REGEX, message = "Il campo deve contenere esattamente 9 cifre.")
     private String nome;
 
     /**
      * Rappresenta il cognome dell'esperto.
      */
     @NonNull
-    @Column(nullable = false, length = Length.LENGTH_30)
-    @Pattern(regexp = RispettoVincoli.NAME_REGEX)
+    @Column(nullable = false, length = BiblionetConstraints.LENGTH_30)
+    @Pattern(regexp = BiblionetConstraints.NAME_REGEX)
     private String cognome;
 
     /**

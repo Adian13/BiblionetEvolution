@@ -1,10 +1,7 @@
 package it.unisa.c07.biblionet.gestioneclubdellibro.repository;
 
 
-import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Evento;
-import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Esperto;
-import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Lettore;
-import it.unisa.c07.biblionet.utils.Length;
+import it.unisa.c07.biblionet.utils.BiblionetConstraints;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -43,14 +40,14 @@ public class ClubDelLibro {
      * Rappresenta il nome di un club.
      */
     @NonNull
-    @Column(nullable = false, length = Length.LENGTH_30)
+    @Column(nullable = false, length = BiblionetConstraints.LENGTH_30)
     private String nome;
 
     /**
      * Rappresenta la descrizione di un club.
      */
     @NonNull
-    @Column(nullable = false, length = Length.LENGTH_255)
+    @Column(nullable = false, length = BiblionetConstraints.LENGTH_255)
     private String descrizione;
 
     /**

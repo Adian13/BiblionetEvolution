@@ -1,9 +1,8 @@
-package it.unisa.c07.biblionet.gestioneprestitilibro.repository;
+package it.unisa.c07.biblionet.gestionebiblioteca.repository;
 
 import it.unisa.c07.biblionet.common.UtenteRegistrato;
-import it.unisa.c07.biblionet.gestioneprestitilibro.BibliotecaDTO;
-import it.unisa.c07.biblionet.utils.Length;
-import it.unisa.c07.biblionet.utils.RispettoVincoli;
+import it.unisa.c07.biblionet.gestionebiblioteca.BibliotecaDTO;
+import it.unisa.c07.biblionet.utils.BiblionetConstraints;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -14,7 +13,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Pattern;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -35,9 +33,9 @@ public class Biblioteca extends UtenteRegistrato {
     /**
      * Rappresenta il nome della biblioteca.
      */
-    @Column(nullable = false, length = Length.LENGTH_60)
+    @Column(nullable = false, length = BiblionetConstraints.LENGTH_60)
     @NonNull
-    @Pattern(regexp = RispettoVincoli.NAME_REGEX)
+    @Pattern(regexp = BiblionetConstraints.NAME_REGEX)
     private String nomeBiblioteca;
 
     /**

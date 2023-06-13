@@ -1,6 +1,6 @@
 package it.unisa.c07.biblionet.gestioneclubdellibro.repository;
 
-import it.unisa.c07.biblionet.utils.Length;
+import it.unisa.c07.biblionet.utils.BiblionetConstraints;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -43,7 +43,7 @@ public class Evento {
      * Rappresenta l'ID di un evento.
      */
     @NonNull
-    @Column(nullable = false, length = Length.LENGTH_30)
+    @Column(nullable = false, length = BiblionetConstraints.LENGTH_30)
     private String nomeEvento;
 
     /**

@@ -7,6 +7,8 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import it.unisa.c07.biblionet.gestioneclubdellibro.ClubDTO;
+import it.unisa.c07.biblionet.gestioneclubdellibro.EventoDTO;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.ClubDelLibro;
 import it.unisa.c07.biblionet.utils.BiblionetResponse;
 import it.unisa.c07.biblionet.utils.Utils;
@@ -20,8 +22,6 @@ import it.unisa.c07.biblionet.gestioneclubdellibro.GestioneEventiService;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Evento;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Esperto;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Lettore;
-import it.unisa.c07.biblionet.gestioneclubdellibro.form.ClubForm;
-import it.unisa.c07.biblionet.gestioneclubdellibro.form.EventoForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -56,7 +56,7 @@ public class ClubDelLibroController {
      * Metodo di utilità che modifica o crea un evento, validando
      * i dati.
      *
-     * @param eventoForm Il form con i dati da modificare
+     * @param eventoDTO Il form con i dati da modificare
      * @param idClub     L'id del club del libro in cui inserire l'evento.
      * @param idEvento   L'id dell'evento, che può essere vuoto per ottenere
      *                   l'autoassegnazione.
@@ -64,7 +64,7 @@ public class ClubDelLibroController {
      *                   effettuare.
      * @return La view inserita.
      */
-    private BiblionetResponse modificaCreaEvento(final EventoForm eventoForm, BindingResult bindingResult,
+    private BiblionetResponse modificaCreaEvento(final EventoDTO eventoDTO, BindingResult bindingResult,
                                                  //@RequestParam final String view,
                                                  final int idClub, final Optional < Integer > idEvento, final Consumer < Evento > operazione) {
 
@@ -83,18 +83,18 @@ public class ClubDelLibroController {
         }
 
         evento.setClub(club);
-        evento.setNomeEvento(eventoForm.getNome());
-        evento.setDescrizione(eventoForm.getDescrizione());
+        evento.setNomeEvento(eventoDTO.getNome());
+        evento.setDescrizione(eventoDTO.getDescrizione());
 
-        var dataOra = LocalDateTime.of(eventoForm.getData(), eventoForm.getOra());
+        var dataOra = LocalDateTime.of(eventoDTO.getData(), eventoDTO.getOra());
         if (dataOra.isBefore(LocalDateTime.now())) {
             return new BiblionetResponse("Data non valida", false);
         }
 
         evento.setDataOra(dataOra);
 
-        if (eventoForm.getLibro() != null) {
-            var libro = this.eventiService.getLibroById(eventoForm.getLibro());
+        if (eventoDTO.getLibro() != null) {
+            var libro = this.eventiService.getLibroById(eventoDTO.getLibro());
             if (libro.isEmpty()) {
                 return new BiblionetResponse("Libro inserito non valido", false);
             }
@@ -189,13 +189,13 @@ public class ClubDelLibroController {
     /**
      * Implementa la funzionalità di creazione di un club del libro.
      *
-     * @param clubForm Il club che si vuole creare
+     * @param clubDTO Il club che si vuole creare
      * @return la pagina del Club
      */
     @PostMapping(value = "/crea")
     @CrossOrigin
     @ResponseBody
-    public BiblionetResponse creaClubDelLibro(final @Valid @ModelAttribute ClubForm clubForm,
+    public BiblionetResponse creaClubDelLibro(final @Valid @ModelAttribute ClubDTO clubDTO,
                                               @RequestHeader(name = "Authorization") final String token,
                                               BindingResult bindingResult) {
 
@@ -208,13 +208,13 @@ public class ClubDelLibroController {
         Esperto esperto = (Esperto) clubService.findEspertoByEmail(Utils.getSubjectFromToken(token));
 
         ClubDelLibro cdl = new ClubDelLibro();
-        cdl.setNome(clubForm.getNome());
-        cdl.setDescrizione(clubForm.getDescrizione());
+        cdl.setNome(clubDTO.getNome());
+        cdl.setDescrizione(clubDTO.getDescrizione());
         cdl.setEsperto(esperto);
-        String copertina = getBase64Image(clubForm.getCopertina());
+        String copertina = getBase64Image(clubDTO.getCopertina());
         if (copertina != null) cdl.setImmagineCopertina(copertina);
 
-        cdl.setGeneri(new HashSet<>(clubForm.getGeneri()));
+        cdl.setGeneri(new HashSet<>(clubDTO.getGeneri()));
 
         this.clubService.creaClubDelLibro(cdl);
         return new BiblionetResponse("Club del Libro creato", false);
@@ -266,7 +266,7 @@ public class ClubDelLibroController {
     @ResponseBody
     @CrossOrigin
     public BiblionetResponse visualizzaModificaDatiClub(final @PathVariable int id,
-                                                        final @ModelAttribute ClubForm club,
+                                                        final @ModelAttribute ClubDTO club,
                                                         @RequestHeader(name = "Authorization") final String token
     ) {
         Esperto esperto = (Esperto) clubService.findEspertoByEmail(Utils.getSubjectFromToken(token));
@@ -292,13 +292,13 @@ public class ClubDelLibroController {
      * Implementa la funzionalità per la modifica dei dati di un Club.
      *
      * @param id       Lo Id del Club
-     * @param clubForm Il form dove inserire i nuovi dati
+     * @param clubDTO Il form dove inserire i nuovi dati
      * @return La schermata del club
      */
     @PostMapping(value = "/{id}/modifica")
     @ResponseBody
     @CrossOrigin
-    public BiblionetResponse modificaDatiClub(final @PathVariable int id, @RequestHeader(name = "Authorization") final String token, final @Valid @ModelAttribute ClubForm clubForm, BindingResult bindingResult) {
+    public BiblionetResponse modificaDatiClub(final @PathVariable int id, @RequestHeader(name = "Authorization") final String token, final @Valid @ModelAttribute ClubDTO clubDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new BiblionetResponse(BiblionetResponse.FORMATO_NON_VALIDO, false);
         }
@@ -308,13 +308,13 @@ public class ClubDelLibroController {
 
         ClubDelLibro clubPers = this.clubService.getClubByID(id);
 
-        String copertina = getBase64Image(clubForm.getCopertina());
+        String copertina = getBase64Image(clubDTO.getCopertina());
         if (copertina != null) clubPers.setImmagineCopertina(copertina);
-        if (clubForm.getGeneri() != null) {
-            clubPers.setGeneri(new HashSet < > (clubForm.getGeneri()));
+        if (clubDTO.getGeneri() != null) {
+            clubPers.setGeneri(new HashSet < > (clubDTO.getGeneri()));
         }
-        clubPers.setNome(clubForm.getNome());
-        clubPers.setDescrizione(clubForm.getDescrizione());
+        clubPers.setNome(clubDTO.getNome());
+        clubPers.setDescrizione(clubDTO.getDescrizione());
         this.clubService.modificaDatiClub(clubPers);
         return new BiblionetResponse("Modifiche apportate", true);
     }
@@ -354,7 +354,7 @@ public class ClubDelLibroController {
     @ResponseBody
     public BiblionetResponse visualizzaModificaEvento(final @PathVariable int idClub,
                                                       final @PathVariable int idEvento,
-                                                      final @Valid @ModelAttribute EventoForm evento,
+                                                      final @Valid @ModelAttribute EventoDTO evento,
                                                       BindingResult bindingResult,
                                                       @RequestHeader(name = "Authorization") final String token) {
 
@@ -396,17 +396,17 @@ public class ClubDelLibroController {
      * per creare un evento un club del libro.
      *
      * @param id         l'id dell'evento
-     * @param eventoForm il form dell'evento
+     * @param eventoDTO il form dell'evento
      * @return la view della lista degli eventi
      */
     @PostMapping(value = "/{id}/eventi/crea")
     @CrossOrigin
     @ResponseBody
     public BiblionetResponse creaEvento(final @PathVariable int id,
-                                        final @Valid @ModelAttribute EventoForm eventoForm,
+                                        final @Valid @ModelAttribute EventoDTO eventoDTO,
                                         BindingResult bindingResult) {
         return this.modificaCreaEvento(
-                eventoForm,
+                eventoDTO,
                 bindingResult,
                 id,
                 Optional.empty(),
@@ -418,17 +418,17 @@ public class ClubDelLibroController {
      * Implementa la funzionalità che permette la modifica di un evento.
      * @param idClub l'ID del club
      * @param idEvento l'ID dell'evento
-     * @param eventoForm il form dell'evento
+     * @param eventoDTO il form dell'evento
      * @return la view che visualizza la lista degli eventi
      */
     @PostMapping(value = "/{idClub}/eventi/{idEvento}/modifica")
     @CrossOrigin
     @ResponseBody
     public BiblionetResponse modificaEvento(final @PathVariable int idClub,
-                                 final @PathVariable int idEvento,
-                                 final @Valid @ModelAttribute EventoForm eventoForm, BindingResult bindingResult) {
+                                            final @PathVariable int idEvento,
+                                            final @Valid @ModelAttribute EventoDTO eventoDTO, BindingResult bindingResult) {
         return this.modificaCreaEvento(
-                eventoForm,
+                eventoDTO,
                 bindingResult,
                 idClub,
                 Optional.of(idEvento),
@@ -457,7 +457,7 @@ public class ClubDelLibroController {
     @CrossOrigin
     @ResponseBody
     public BiblionetResponse visualizzaCreaEvento(final @PathVariable int id,
-                                                  final @Valid @ModelAttribute EventoForm evento, BindingResult bindingResult) {
+                                                  final @Valid @ModelAttribute EventoDTO evento, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return new BiblionetResponse(BiblionetResponse.FORMATO_NON_VALIDO, false);

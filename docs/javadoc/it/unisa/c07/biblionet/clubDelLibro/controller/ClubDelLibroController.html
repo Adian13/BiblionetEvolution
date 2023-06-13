@@ -156,7 +156,7 @@ org.springframework.ui.Model&nbsp;model)</code></th>
 <tr class="alt-color" id="i2">
 <td class="col-first"><code>java.lang.String</code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#creaEvento(int,it.unisa.c07.biblionet.model.form.EventoForm)">creaEvento</a></span>&#8203;(int&nbsp;id,
-<a href="../../model/form/EventoForm.html" title="class in it.unisa.c07.biblionet.model.form">EventoForm</a>&nbsp;eventoForm)</code></th>
+<a href="../../model/form/EventoForm.html" title="class in it.unisa.c07.biblionet.model.form">EventoForm</a>&nbsp;eventoDTO)</code></th>
 <td class="col-last">
 <div class="block">Implementa la funzionalità che permette
  di gestire la chiamata POST
@@ -184,7 +184,7 @@ int&nbsp;id)</code></th>
 <td class="col-first"><code>java.lang.String</code></td>
 <th class="col-second" scope="row"><code><span class="member-name-link"><a href="#modificaEvento(int,int,it.unisa.c07.biblionet.model.form.EventoForm)">modificaEvento</a></span>&#8203;(int&nbsp;idClub,
 int&nbsp;idEvento,
-<a href="../../model/form/EventoForm.html" title="class in it.unisa.c07.biblionet.model.form">EventoForm</a>&nbsp;eventoForm)</code></th>
+<a href="../../model/form/EventoForm.html" title="class in it.unisa.c07.biblionet.model.form">EventoForm</a>&nbsp;eventoDTO)</code></th>
 <td class="col-last">
 <div class="block">Implementa la funzionalità che permette la modifica di un evento.</div>
 </td>
@@ -480,14 +480,14 @@ org.springframework.ui.Model&nbsp;model)</span></div>
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type">java.lang.String</span>&nbsp;<span class="member-name">creaEvento</span>&#8203;(<span class="parameters">@PathVariable
 int&nbsp;id,
 @ModelAttribute
-<a href="../../model/form/EventoForm.html" title="class in it.unisa.c07.biblionet.model.form">EventoForm</a>&nbsp;eventoForm)</span></div>
+<a href="../../model/form/EventoForm.html" title="class in it.unisa.c07.biblionet.model.form">EventoForm</a>&nbsp;eventoDTO)</span></div>
 <div class="block">Implementa la funzionalità che permette
  di gestire la chiamata POST
  per creare un evento un club del libro.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>id</code> - l'id dell'evento</dd>
-<dd><code>eventoForm</code> - il form dell'evento</dd>
+<dd><code>eventoDTO</code> - il form dell'evento</dd>
 <dt>Returns:</dt>
 <dd>la view della lista degli eventi</dd>
 </dl>
@@ -503,13 +503,13 @@ int&nbsp;idClub,
 @PathVariable
 int&nbsp;idEvento,
 @ModelAttribute
-<a href="../../model/form/EventoForm.html" title="class in it.unisa.c07.biblionet.model.form">EventoForm</a>&nbsp;eventoForm)</span></div>
+<a href="../../model/form/EventoForm.html" title="class in it.unisa.c07.biblionet.model.form">EventoForm</a>&nbsp;eventoDTO)</span></div>
 <div class="block">Implementa la funzionalità che permette la modifica di un evento.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>idClub</code> - l'ID del club</dd>
 <dd><code>idEvento</code> - l'ID dell'evento</dd>
-<dd><code>eventoForm</code> - il form dell'evento</dd>
+<dd><code>eventoDTO</code> - il form dell'evento</dd>
 <dt>Returns:</dt>
 <dd>la view che visualizza la lista degli eventi</dd>
 </dl>

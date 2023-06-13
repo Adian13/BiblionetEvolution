@@ -1,5 +1,5 @@
 package it.unisa.c07.biblionet.gestioneclubdellibro.repository;
-import it.unisa.c07.biblionet.utils.Length;
+import it.unisa.c07.biblionet.utils.BiblionetConstraints;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -31,14 +31,14 @@ public class Genere {
      */
     @Id
     @NonNull
-    @Column(nullable = false, length = Length.LENGTH_30)
+    @Column(nullable = false, length = BiblionetConstraints.LENGTH_30)
     private String nome;
 
     /**
      * Rappresenta la descrizione del genere.
      */
     @NonNull
-    @Column(nullable = false, length = Length.LENGTH_255)
+    @Column(nullable = false, length = BiblionetConstraints.LENGTH_255)
     @EqualsAndHashCode.Exclude
     private String descrizione;
 

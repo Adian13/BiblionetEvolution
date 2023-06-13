@@ -1,9 +1,9 @@
-package it.unisa.c07.biblionet.gestioneprestitilibro;
+package it.unisa.c07.biblionet.gestionebiblioteca;
 
 import it.unisa.c07.biblionet.common.*;
-import it.unisa.c07.biblionet.gestioneprestitilibro.repository.Biblioteca;
-import it.unisa.c07.biblionet.gestioneprestitilibro.repository.LibroBiblioteca;
-import it.unisa.c07.biblionet.gestioneprestitilibro.repository.TicketPrestito;
+import it.unisa.c07.biblionet.gestionebiblioteca.repository.Biblioteca;
+import it.unisa.c07.biblionet.gestionebiblioteca.repository.LibroBiblioteca;
+import it.unisa.c07.biblionet.gestionebiblioteca.repository.TicketPrestito;
 
 import java.util.List;
 

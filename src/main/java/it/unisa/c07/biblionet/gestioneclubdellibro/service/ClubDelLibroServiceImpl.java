@@ -5,7 +5,6 @@ import it.unisa.c07.biblionet.gestioneclubdellibro.ClubDelLibroService;
 import it.unisa.c07.biblionet.gestioneclubdellibro.EspertoDTO;
 import it.unisa.c07.biblionet.gestioneclubdellibro.LettoreDTO;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.*;
-import it.unisa.c07.biblionet.gestioneprestitilibro.PrenotazioneLibriService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

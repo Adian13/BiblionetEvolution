@@ -2,8 +2,7 @@ package it.unisa.c07.biblionet.gestioneclubdellibro.repository;
 
 import it.unisa.c07.biblionet.common.UtenteRegistrato;
 import it.unisa.c07.biblionet.gestioneclubdellibro.LettoreDTO;
-import it.unisa.c07.biblionet.utils.Length;
-import it.unisa.c07.biblionet.utils.RispettoVincoli;
+import it.unisa.c07.biblionet.utils.BiblionetConstraints;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -34,23 +33,23 @@ public class Lettore extends UtenteRegistrato {
      * Rappresenta un lettore sulla piattaforma.
      */
     @NonNull
-    @Column(nullable = false, length = Length.LENGTH_30)
+    @Column(nullable = false, length = BiblionetConstraints.LENGTH_30)
     private String username;
 
     /**
      * Rappresenta il nome del lettore.
      */
     @NonNull
-    @Column(nullable = false, length = Length.LENGTH_30)
-    @Pattern(regexp = RispettoVincoli.NAME_REGEX)
+    @Column(nullable = false, length = BiblionetConstraints.LENGTH_30)
+    @Pattern(regexp = BiblionetConstraints.NAME_REGEX)
     private String nome;
 
     /**
      * Rappresenta il cognome di un lettore.
      */
     @NonNull
-    @Column(nullable = false, length = Length.LENGTH_30)
-    @Pattern(regexp = RispettoVincoli.NAME_REGEX)
+    @Column(nullable = false, length = BiblionetConstraints.LENGTH_30)
+    @Pattern(regexp = BiblionetConstraints.NAME_REGEX)
     private String cognome;
 
     /**

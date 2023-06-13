@@ -26,8 +26,8 @@ import it.unisa.c07.biblionet.model.entity.Genere;
 import it.unisa.c07.biblionet.model.entity.Esperto;
 import it.unisa.c07.biblionet.model.entity.Lettore;
 import it.unisa.c07.biblionet.model.entity.UtenteRegistrato;
-import it.unisa.c07.biblionet.gestioneclubdellibro.form.ClubForm;
-import it.unisa.c07.biblionet.gestioneclubdellibro.form.EventoForm;
+import it.unisa.c07.biblionet.gestioneclubdellibro.ClubDTO;
+import it.unisa.c07.biblionet.gestioneclubdellibro.EventoDTO;
 import it.unisa.c07.biblionet.utils.ValidazioneEvento;
 import lombok.RequiredArgsConstructor;
 
@@ -61,7 +61,7 @@ public class ClubDelLibroController {
     /**
      * Metodo di utilità che modifica o crea un evento, validando
      * i dati.
-     * @param eventoForm Il form con i dati da modificare
+     * @param eventoDTO Il form con i dati da modificare
      * @param view La view da restituire se l'operazione va a buon fine.
      * @param idClub L'id del club del libro in cui inserire l'evento.
      * @param idEvento L'id dell'evento, che può essere vuoto per ottenere
@@ -70,7 +70,7 @@ public class ClubDelLibroController {
      *                   effettuare.
      * @return La view inserita.
      */
-    private String modificaCreaEvento(final EventoForm eventoForm,
+    private String modificaCreaEvento(final EventoForm eventoDTO,
                                       final String view,
                                       final int idClub,
                                       final Optional&lt;Integer&gt; idEvento,
@@ -93,27 +93,27 @@ public class ClubDelLibroController {
 
 <span class="fc" id="L94">        evento.setClub(club);</span>
 
-<span class="fc bfc" id="L96" title="All 2 branches covered.">        if (!ValidazioneEvento.isNomeValido(eventoForm.getNome())) {</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">        if (!ValidazioneEvento.isNomeValido(eventoDTO.getNome())) {</span>
 <span class="fc" id="L97">            throw new ResponseStatusException(</span>
                 HttpStatus.BAD_REQUEST,
                 &quot;Lunghezza del nome non valida.&quot;
             );
         }
 
-<span class="fc" id="L103">        evento.setNomeEvento(eventoForm.getNome());</span>
+<span class="fc" id="L103">        evento.setNomeEvento(eventoDTO.getNome());</span>
 
 <span class="fc" id="L105">        if (!ValidazioneEvento.</span>
-<span class="fc bfc" id="L106" title="All 2 branches covered.">                isDescrizioneValida(eventoForm.getDescrizione())) {</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">                isDescrizioneValida(eventoDTO.getDescrizione())) {</span>
 <span class="fc" id="L107">            throw new ResponseStatusException(</span>
                 HttpStatus.BAD_REQUEST,
                 &quot;Lunghezza della descrizione non valida.&quot;
             );
         }
 
-<span class="fc" id="L113">        evento.setDescrizione(eventoForm.getDescrizione());</span>
+<span class="fc" id="L113">        evento.setDescrizione(eventoDTO.getDescrizione());</span>
 
 <span class="fc" id="L115">        var dataOra =</span>
-<span class="fc" id="L116">                LocalDateTime.of(eventoForm.getData(), eventoForm.getOra());</span>
+<span class="fc" id="L116">                LocalDateTime.of(eventoDTO.getData(), eventoDTO.getOra());</span>
 
 <span class="fc bfc" id="L118" title="All 2 branches covered.">        if (dataOra.isBefore(LocalDateTime.now())) {</span>
 <span class="fc" id="L119">            throw new ResponseStatusException(</span>
@@ -124,9 +124,9 @@ public class ClubDelLibroController {
 
 <span class="fc" id="L125">        evento.setDataOra(dataOra);</span>
 
-<span class="pc bpc" id="L127" title="1 of 2 branches missed.">        if (eventoForm.getLibro() != null) {</span>
+<span class="pc bpc" id="L127" title="1 of 2 branches missed.">        if (eventoDTO.getLibro() != null) {</span>
 <span class="fc" id="L128">            var libro =</span>
-<span class="fc" id="L129">                    this.eventiService.getLibroById(eventoForm.getLibro());</span>
+<span class="fc" id="L129">                    this.eventiService.getLibroById(eventoDTO.getLibro());</span>
 <span class="pc bpc" id="L130" title="1 of 2 branches missed.">            if (libro.isEmpty()) {</span>
 <span class="fc" id="L131">                throw new ResponseStatusException(</span>
                     HttpStatus.BAD_REQUEST,
@@ -449,14 +449,14 @@ public class ClubDelLibroController {
      * di gestire la chiamata POST
      * per creare un evento un club del libro.
      * @param id l'id dell'evento
-     * @param eventoForm il form dell'evento
+     * @param eventoDTO il form dell'evento
      * @return la view della lista degli eventi
      */
     @RequestMapping(value = &quot;/{id}/eventi/crea&quot;, method = RequestMethod.POST)
     public String creaEvento(final @PathVariable int id,
-                             final @ModelAttribute EventoForm eventoForm) {
+                             final @ModelAttribute EventoForm eventoDTO) {
 <span class="pc" id="L458">        return this.modificaCreaEvento(</span>
-            eventoForm,
+            eventoDTO,
             &quot;redirect:/club-del-libro/&quot; + id,
             id,
 <span class="fc" id="L462">            Optional.empty(),</span>
@@ -468,16 +468,16 @@ public class ClubDelLibroController {
      * Implementa la funzionalità che permette la modifica di un evento.
      * @param idClub l'ID del club
      * @param idEvento l'ID dell'evento
-     * @param eventoForm il form dell'evento
+     * @param eventoDTO il form dell'evento
      * @return la view che visualizza la lista degli eventi
      */
     @RequestMapping(value = &quot;/{idClub}/eventi/{idEvento}/modifica&quot;,
             method = RequestMethod.POST)
     public String modificaEvento(final @PathVariable int idClub,
                                  final @PathVariable int idEvento,
-                                 final @ModelAttribute EventoForm eventoForm) {
+                                 final @ModelAttribute EventoForm eventoDTO) {
 <span class="nc" id="L479">        return this.modificaCreaEvento(</span>
-            eventoForm,
+            eventoDTO,
             &quot;redirect:/club-del-libro/&quot; + idClub,
             idClub,
 <span class="nc" id="L483">            Optional.of(idEvento),</span>

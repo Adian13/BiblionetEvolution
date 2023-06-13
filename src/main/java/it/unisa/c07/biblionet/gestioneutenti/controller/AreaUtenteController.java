@@ -4,14 +4,13 @@ import it.unisa.c07.biblionet.gestioneclubdellibro.ClubDelLibroService;
 import it.unisa.c07.biblionet.gestioneclubdellibro.EspertoDTO;
 import it.unisa.c07.biblionet.common.UtenteRegistratoDTO;
 import it.unisa.c07.biblionet.gestioneclubdellibro.LettoreDTO;
-import it.unisa.c07.biblionet.gestioneprestitilibro.BibliotecaDTO;
-import it.unisa.c07.biblionet.gestioneprestitilibro.repository.Biblioteca;
-import it.unisa.c07.biblionet.gestioneprestitilibro.PrenotazioneLibriService;
+import it.unisa.c07.biblionet.gestionebiblioteca.BibliotecaDTO;
+import it.unisa.c07.biblionet.gestionebiblioteca.PrenotazioneLibriService;
 import it.unisa.c07.biblionet.gestioneutenti.AutenticazioneService;
 import it.unisa.c07.biblionet.common.*;
 import it.unisa.c07.biblionet.gestioneutenti.RegistrazioneService;
 import it.unisa.c07.biblionet.utils.BiblionetResponse;
-import it.unisa.c07.biblionet.utils.RispettoVincoli;
+import it.unisa.c07.biblionet.utils.BiblionetConstraints;
 import it.unisa.c07.biblionet.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -94,7 +93,7 @@ public class AreaUtenteController {
 
     private String qualePassword(String vecchia, String nuova, String conferma) {
         if (nuova.isEmpty() && conferma.isEmpty()) return vecchia;
-        if (RispettoVincoli.confrontoPassword(nuova, conferma)) {
+        if (BiblionetConstraints.confrontoPassword(nuova, conferma)) {
             return conferma;
         }
         return vecchia;

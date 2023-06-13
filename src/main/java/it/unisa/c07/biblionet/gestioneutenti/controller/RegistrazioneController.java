@@ -3,11 +3,11 @@ package it.unisa.c07.biblionet.gestioneutenti.controller;
 import it.unisa.c07.biblionet.common.UtenteRegistratoDTO;
 import it.unisa.c07.biblionet.gestioneclubdellibro.EspertoDTO;
 import it.unisa.c07.biblionet.gestioneclubdellibro.LettoreDTO;
-import it.unisa.c07.biblionet.gestioneprestitilibro.BibliotecaDTO;
-import it.unisa.c07.biblionet.gestioneprestitilibro.PrenotazioneLibriService;
+import it.unisa.c07.biblionet.gestionebiblioteca.BibliotecaDTO;
+import it.unisa.c07.biblionet.gestionebiblioteca.PrenotazioneLibriService;
 import it.unisa.c07.biblionet.gestioneutenti.RegistrazioneService;
 import it.unisa.c07.biblionet.utils.BiblionetResponse;
-import it.unisa.c07.biblionet.utils.RispettoVincoli;
+import it.unisa.c07.biblionet.utils.BiblionetConstraints;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -152,7 +152,7 @@ public final class RegistrazioneController {
         if (registrazioneService.isEmailRegistrata(utenteRegistrato.getEmail())) {
             return "Il sistema presenta un account già registrato per questo indirizzo e-mail.";
         }
-        if (!RispettoVincoli.passwordRispettaVincoli(utenteRegistrato.getPassword(), password)) {
+        if (!BiblionetConstraints.passwordRispettaVincoli(utenteRegistrato.getPassword(), password)) {
             return "Password non adeguata";
         }
         return "";

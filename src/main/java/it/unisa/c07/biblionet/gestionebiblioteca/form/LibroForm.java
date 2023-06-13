@@ -1,4 +1,4 @@
-package it.unisa.c07.biblionet.gestioneprestitilibro.form;
+package it.unisa.c07.biblionet.gestionebiblioteca.form;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

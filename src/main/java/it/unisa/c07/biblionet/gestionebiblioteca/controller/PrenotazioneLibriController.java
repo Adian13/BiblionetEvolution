@@ -1,12 +1,11 @@
-package it.unisa.c07.biblionet.gestioneprestitilibro.controller;
+package it.unisa.c07.biblionet.gestionebiblioteca.controller;
 
 import it.unisa.c07.biblionet.common.*;
 import it.unisa.c07.biblionet.gestioneclubdellibro.ClubDelLibroService;
-import it.unisa.c07.biblionet.gestioneprestitilibro.PrenotazioneLibriService;
-import it.unisa.c07.biblionet.gestioneprestitilibro.repository.Biblioteca;
-import it.unisa.c07.biblionet.gestioneutenti.AutenticazioneService;
-import it.unisa.c07.biblionet.gestioneprestitilibro.repository.LibroBiblioteca;
-import it.unisa.c07.biblionet.gestioneprestitilibro.repository.TicketPrestito;
+import it.unisa.c07.biblionet.gestionebiblioteca.PrenotazioneLibriService;
+import it.unisa.c07.biblionet.gestionebiblioteca.repository.Biblioteca;
+import it.unisa.c07.biblionet.gestionebiblioteca.repository.LibroBiblioteca;
+import it.unisa.c07.biblionet.gestionebiblioteca.repository.TicketPrestito;
 import it.unisa.c07.biblionet.utils.BiblionetResponse;
 import it.unisa.c07.biblionet.utils.Utils;
 import lombok.RequiredArgsConstructor;

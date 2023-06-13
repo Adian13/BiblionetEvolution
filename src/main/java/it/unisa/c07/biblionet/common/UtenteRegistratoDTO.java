@@ -1,6 +1,6 @@
 package it.unisa.c07.biblionet.common;
 
-import it.unisa.c07.biblionet.utils.RispettoVincoli;
+import it.unisa.c07.biblionet.utils.BiblionetConstraints;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -47,14 +47,14 @@ public abstract class UtenteRegistratoDTO {
      * Rappresenta la via dove vive l'utente registrato.
      */
     @NonNull
-    @Pattern(regexp = RispettoVincoli.ADDRESS_REGEX)
+    @Pattern(regexp = BiblionetConstraints.ADDRESS_REGEX)
     private String via;
 
     /**
      * Rappresenta il recapito telefonico dell'utente registrato.
      */
     @NonNull
-    @Pattern(regexp = RispettoVincoli.PHONE_REGEX)
+    @Pattern(regexp = BiblionetConstraints.PHONE_REGEX)
     private String recapitoTelefonico;
 
     public UtenteRegistratoDTO(String email,
@@ -68,7 +68,7 @@ public abstract class UtenteRegistratoDTO {
             this.via = via;
             this.recapitoTelefonico = recapitoTelefonico;
             this.citta = citta;
-            this.password = RispettoVincoli.trasformaPassword(password);
+            this.password = BiblionetConstraints.trasformaPassword(password);
     }
 
     public void setPassword(final String password) {

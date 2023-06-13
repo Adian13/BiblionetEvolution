@@ -1,9 +1,9 @@
-package it.unisa.c07.biblionet.gestioneprestitilibro.controller;
+package it.unisa.c07.biblionet.gestionebiblioteca.controller;
 
-import it.unisa.c07.biblionet.gestioneprestitilibro.PrenotazioneLibriService;
-import it.unisa.c07.biblionet.gestioneprestitilibro.repository.LibroBiblioteca;
-import it.unisa.c07.biblionet.gestioneprestitilibro.repository.Biblioteca;
-import it.unisa.c07.biblionet.gestioneprestitilibro.form.LibroForm;
+import it.unisa.c07.biblionet.gestionebiblioteca.PrenotazioneLibriService;
+import it.unisa.c07.biblionet.gestionebiblioteca.repository.LibroBiblioteca;
+import it.unisa.c07.biblionet.gestionebiblioteca.repository.Biblioteca;
+import it.unisa.c07.biblionet.gestionebiblioteca.form.LibroForm;
 import it.unisa.c07.biblionet.utils.BiblionetResponse;
 import it.unisa.c07.biblionet.utils.Utils;
 import lombok.RequiredArgsConstructor;
@@ -66,7 +66,7 @@ public class BibliotecaController {
             return new BiblionetResponse(BiblionetResponse.NON_AUTORIZZATO, false);
         }
         if (isbn == null) {
-            return new BiblionetResponse("ISBN inesistente", false);
+            return new BiblionetResponse("L'ISBN inserito non è valido", false);
         }
         Biblioteca b = prenotazioneService.findBibliotecaByEmail(Utils.getSubjectFromToken(token));
 
@@ -74,7 +74,7 @@ public class BibliotecaController {
         LibroBiblioteca l = prenotazioneService.inserimentoPerIsbn(
                 isbn, b.getEmail(), numCopie, glist);
         if (l == null) {
-            return new BiblionetResponse("Libro non crato", false);
+            return new BiblionetResponse("Libro non creato", false);
         }
         return new BiblionetResponse("Libro creato con successo", true);
 

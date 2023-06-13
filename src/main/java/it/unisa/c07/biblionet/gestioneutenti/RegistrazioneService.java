@@ -4,7 +4,7 @@ package it.unisa.c07.biblionet.gestioneutenti;
 import it.unisa.c07.biblionet.common.UtenteRegistrato;
 import it.unisa.c07.biblionet.gestioneclubdellibro.EspertoDTO;
 import it.unisa.c07.biblionet.gestioneclubdellibro.LettoreDTO;
-import it.unisa.c07.biblionet.gestioneprestitilibro.BibliotecaDTO;
+import it.unisa.c07.biblionet.gestionebiblioteca.BibliotecaDTO;
 
 /**
  * @author Alessio Casolaro

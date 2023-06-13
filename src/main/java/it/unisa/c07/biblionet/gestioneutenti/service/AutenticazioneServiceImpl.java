@@ -2,14 +2,11 @@ package it.unisa.c07.biblionet.gestioneutenti.service;
 
 import it.unisa.c07.biblionet.common.*;
 import it.unisa.c07.biblionet.gestioneclubdellibro.ClubDelLibroService;
-import it.unisa.c07.biblionet.gestioneprestitilibro.PrenotazioneLibriService;
+import it.unisa.c07.biblionet.gestionebiblioteca.PrenotazioneLibriService;
 import it.unisa.c07.biblionet.gestioneutenti.AutenticazioneService;
-import it.unisa.c07.biblionet.utils.RispettoVincoli;
+import it.unisa.c07.biblionet.utils.BiblionetConstraints;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 /**
  * Implementa la classe che esplicita i metodi
@@ -40,7 +37,7 @@ public class AutenticazioneServiceImpl implements AutenticazioneService {
      */
     @Override
     public UtenteRegistrato login(final String email, final String password) {
-        byte[] arr = RispettoVincoli.trasformaPassword(password);
+        byte[] arr = BiblionetConstraints.trasformaPassword(password);
         UtenteRegistrato u;
 
         if ((u = clubDelLibroService.findEspertoByEmailAndPassword(email, arr)) != null) {

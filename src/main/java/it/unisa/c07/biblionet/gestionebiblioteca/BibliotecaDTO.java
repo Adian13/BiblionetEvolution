@@ -1,7 +1,7 @@
-package it.unisa.c07.biblionet.gestioneprestitilibro;
+package it.unisa.c07.biblionet.gestionebiblioteca;
 
 import it.unisa.c07.biblionet.common.UtenteRegistratoDTO;
-import it.unisa.c07.biblionet.utils.RispettoVincoli;
+import it.unisa.c07.biblionet.utils.BiblionetConstraints;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -26,11 +26,11 @@ public class BibliotecaDTO extends UtenteRegistratoDTO {
 
 
 
-    public BibliotecaDTO(@NonNull String email, @NonNull String password, @NonNull String provincia, @NonNull String citta, @NonNull @Pattern(regexp = RispettoVincoli.ADDRESS_REGEX) String via, @NonNull @Pattern(regexp = RispettoVincoli.PHONE_REGEX) String recapitoTelefonico, String nomeBiblioteca) {
+    public BibliotecaDTO(@NonNull String email, @NonNull String password, @NonNull String provincia, @NonNull String citta, @NonNull @Pattern(regexp = BiblionetConstraints.ADDRESS_REGEX) String via, @NonNull @Pattern(regexp = BiblionetConstraints.PHONE_REGEX) String recapitoTelefonico, String nomeBiblioteca) {
         super(email, password, provincia, citta, via, recapitoTelefonico);
         this.nomeBiblioteca = nomeBiblioteca;
     }
-    public BibliotecaDTO(@NonNull String email, @NonNull byte[] password, @NonNull String provincia, @NonNull String citta, @NonNull @Pattern(regexp = RispettoVincoli.ADDRESS_REGEX) String via, @NonNull @Pattern(regexp = RispettoVincoli.PHONE_REGEX) String recapitoTelefonico, String nomeBiblioteca) {
+    public BibliotecaDTO(@NonNull String email, @NonNull byte[] password, @NonNull String provincia, @NonNull String citta, @NonNull @Pattern(regexp = BiblionetConstraints.ADDRESS_REGEX) String via, @NonNull @Pattern(regexp = BiblionetConstraints.PHONE_REGEX) String recapitoTelefonico, String nomeBiblioteca) {
         super(email, password, provincia, citta, via, recapitoTelefonico);
         this.nomeBiblioteca = nomeBiblioteca;
     }
