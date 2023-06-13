@@ -69,7 +69,6 @@ public class ComunicazioneEspertoController {
     @ResponseBody
     @CrossOrigin
     public final List<Esperto> visualizzaListaEspertiFiltrati(
-            //todo check se loggato
             @RequestParam("stringa") final String stringa,
             @RequestParam("filtro") final String filtro) {
         switch (filtro) {

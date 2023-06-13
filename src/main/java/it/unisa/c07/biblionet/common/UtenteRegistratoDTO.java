@@ -15,9 +15,6 @@ import java.security.NoSuchAlgorithmException;
 @NoArgsConstructor(force = true)
 public abstract class UtenteRegistratoDTO {
 
-
-    //todo tecnicamente è un DTO credo
-
     /**
      * Rappresenta l'ID di un utente registrato.
      */
@@ -57,7 +54,7 @@ public abstract class UtenteRegistratoDTO {
     @Pattern(regexp = BiblionetConstraints.PHONE_REGEX)
     private String recapitoTelefonico;
 
-    public UtenteRegistratoDTO(String email,
+    protected UtenteRegistratoDTO(String email,
                                 String password,
                                 String provincia,
                                 String citta,

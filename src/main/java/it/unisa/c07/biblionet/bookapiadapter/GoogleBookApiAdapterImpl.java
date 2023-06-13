@@ -1,6 +1,7 @@
-package it.unisa.c07.biblionet.gestionebiblioteca.service.bookapiadapter;
+package it.unisa.c07.biblionet.bookapiadapter;
 
-import it.unisa.c07.biblionet.gestionebiblioteca.repository.LibroBiblioteca;
+
+import it.unisa.c07.biblionet.common.Libro;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -17,9 +18,9 @@ import java.time.LocalDateTime;
 import java.util.Base64;
 
 /**
- * Implementa l'intefaccia del design pattern Adapter per
+ * Implementa l'interfaccia del design pattern Adapter per
  * l'interfacciamento con la Google API Books
- * Esegue la chiamata alla API e riceve un JSON che viene
+ * Esegue la chiamata all'API e riceve un JSON che viene
  * trasformato in un oggetto Libro di BiblioNet.
  * Documentazione di google sulla API:
  * https://developers.google.com/books/docs/overview.
@@ -46,7 +47,7 @@ public class GoogleBookApiAdapterImpl implements BookApiAdapter {
      * @return L'oggetto Libro contenente le informazioni sul libro cercato
      */
     @Override
-    public LibroBiblioteca getLibroDaBookApi(final String isbn) {
+    public Libro getLibroDaBookApi(final String isbn, Libro libro) {
         try {
             // Compose url string
             String formattedIsbn = isbn.replace("-", "");
@@ -75,7 +76,7 @@ public class GoogleBookApiAdapterImpl implements BookApiAdapter {
                 bf.close();
                 con.disconnect();
 
-                return creaLibroDaResponse(stringBuilder, isbn);
+                return creaLibroDaResponse(stringBuilder, isbn, libro);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -90,10 +91,9 @@ public class GoogleBookApiAdapterImpl implements BookApiAdapter {
      * @param isbn l'isbn con cui si effettua la richiesta
      * @return il libro creato
      */
-    private LibroBiblioteca creaLibroDaResponse(final StringBuilder stringBuilder,
-                                            final String isbn) {
+    private Libro creaLibroDaResponse(final StringBuilder stringBuilder,
+                                            final String isbn, Libro libro) {
         JSONParser parser = new JSONParser();
-        LibroBiblioteca libro = new LibroBiblioteca();
         try {
             //Parsing in Object dello StringBuilder che rappresenta il JSON
             Object obj = parser.parse(stringBuilder.toString());
@@ -160,7 +160,7 @@ public class GoogleBookApiAdapterImpl implements BookApiAdapter {
                 byte[] bytes = output.toByteArray();
                 base64Image = Base64.getEncoder().encodeToString(bytes);
             } catch (Exception e) {
-                System.out.println(e);
+                System.err.println(e);
             }
             //Creazione dell'oggetto Libro
             libro.setTitolo(titolo);
@@ -179,5 +179,6 @@ public class GoogleBookApiAdapterImpl implements BookApiAdapter {
         }
         return libro;
     }
+
 
 }

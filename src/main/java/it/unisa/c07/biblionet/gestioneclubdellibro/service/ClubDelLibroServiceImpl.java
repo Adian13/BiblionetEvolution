@@ -131,7 +131,7 @@ public class ClubDelLibroServiceImpl implements ClubDelLibroService {
         }
         listaClubs.add(club);
         lettore.setClubs(listaClubs);
-        //registrazioneService.registraLettore(lettore); TODO
+        this.aggiornaLettore(lettore);
         return true;
     }
 
@@ -202,6 +202,7 @@ public class ClubDelLibroServiceImpl implements ClubDelLibroService {
      * @param utente L'esperto da aggiornare
      * @return l'esperto aggiornato
      */
+    @Override
     public Esperto aggiornaEsperto(final Esperto utente) {
         return espertoDAO.save(utente);
     }

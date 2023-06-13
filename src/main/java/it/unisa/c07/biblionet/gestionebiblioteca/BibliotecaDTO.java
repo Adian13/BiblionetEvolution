@@ -13,8 +13,6 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor(force = true)
 public class BibliotecaDTO extends UtenteRegistratoDTO {
 
-    //todo tecnicamente è un DTO credo
-
     /**
      * Rappresenta l'ID di un utente registrato.
      */

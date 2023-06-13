@@ -79,7 +79,6 @@ public class BiblionetConstraints {
 
     public static boolean passwordRispettaVincoli(byte[] passwordUtente, String password){
         if(password.length() <= 7) return false;
-        System.out.println(trasformaPassword(password));
         return Arrays.equals(passwordUtente, trasformaPassword(password));
     }
     public static boolean confrontoPassword(String nuova, String conferma){
@@ -95,13 +94,12 @@ public class BiblionetConstraints {
         try {
             MessageDigest md;
             md = MessageDigest.getInstance("SHA-256");
-            byte[] arr = md.digest(password.getBytes());
-            return arr;
+            return md.digest(password.getBytes());
 
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        return null;
+        return new byte[0];
     }
 
 

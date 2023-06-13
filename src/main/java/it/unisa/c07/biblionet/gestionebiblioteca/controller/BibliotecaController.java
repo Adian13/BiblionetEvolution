@@ -1,16 +1,17 @@
 package it.unisa.c07.biblionet.gestionebiblioteca.controller;
 
+import it.unisa.c07.biblionet.common.Libro;
 import it.unisa.c07.biblionet.gestionebiblioteca.PrenotazioneLibriService;
 import it.unisa.c07.biblionet.gestionebiblioteca.repository.LibroBiblioteca;
 import it.unisa.c07.biblionet.gestionebiblioteca.repository.Biblioteca;
-import it.unisa.c07.biblionet.gestionebiblioteca.form.LibroForm;
 import it.unisa.c07.biblionet.utils.BiblionetResponse;
 import it.unisa.c07.biblionet.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import java.io.IOException;
+
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
@@ -119,7 +120,7 @@ public class BibliotecaController {
     @CrossOrigin
     public BiblionetResponse inserisciManualmente(
             @RequestHeader (name="Authorization") final String token,
-            @RequestParam final LibroForm libro,
+            @RequestParam final Libro libro,
             @RequestParam final int numCopie,
             @RequestParam final String annoPubblicazione) {
 
@@ -129,28 +130,20 @@ public class BibliotecaController {
         Biblioteca b = prenotazioneService.findBibliotecaByEmail(Utils.getSubjectFromToken(token));
         LibroBiblioteca l = new LibroBiblioteca();
         l.setTitolo(libro.getTitolo());
-        if (libro.getIsbn() != null) {
-            l.setIsbn(libro.getIsbn());
-        }
-        if (libro.getDescrizione() != null) {
-            l.setDescrizione(libro.getDescrizione());
-        }
+        l.setIsbn(libro.getIsbn());
+        l.setDescrizione(libro.getDescrizione());
         l.setCasaEditrice(libro.getCasaEditrice());
         l.setAutore(libro.getAutore());
         if (libro.getImmagineLibro() != null) {
-            try {
-                byte[] imageBytes = libro.getImmagineLibro().getBytes();
-                String base64Image =
-                        Base64.getEncoder().encodeToString(imageBytes);
-                l.setImmagineLibro(base64Image);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            byte[] imageBytes = libro.getImmagineLibro().getBytes();
+            String base64Image =
+                    Base64.getEncoder().encodeToString(imageBytes);
+            l.setImmagineLibro(base64Image);
         }
         LocalDateTime anno = LocalDateTime.of(
                 Integer.parseInt(annoPubblicazione), 1, 1, 1, 1);
         l.setAnnoDiPubblicazione(anno);
-        LibroBiblioteca newLibro = prenotazioneService.inserimentoManuale(l, b.getEmail(), numCopie, libro.getGeneri());
+        LibroBiblioteca newLibro = prenotazioneService.inserimentoManuale(l, b.getEmail(), numCopie, new ArrayList<>(libro.getGeneri()));
         if(newLibro == null) return new BiblionetResponse("Errore inserimento libro", false);
         return new BiblionetResponse("Libro inserito con successo", true);
 

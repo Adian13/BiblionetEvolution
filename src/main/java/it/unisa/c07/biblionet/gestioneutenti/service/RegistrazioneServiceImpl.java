@@ -80,15 +80,11 @@ public class RegistrazioneServiceImpl implements RegistrazioneService {
      */
     @Override
     public boolean isEmailRegistrata(final String email) {
-        if ((clubDelLibroService.findLettoreByEmail(email)) != null) {
+        if (clubDelLibroService.findLettoreByEmail(email) != null ||
+        prenotazioneLibriService.findBibliotecaByEmail(email) != null ||
+        clubDelLibroService.findEspertoByEmail(email) != null)
             return true;
-        }
-        if ((prenotazioneLibriService.findBibliotecaByEmail(email)) != null) {
-            return true;
-        }
-        if ((clubDelLibroService.findEspertoByEmail(email)) != null) {
-            return true;
-        }
+
         return false;
     }
 

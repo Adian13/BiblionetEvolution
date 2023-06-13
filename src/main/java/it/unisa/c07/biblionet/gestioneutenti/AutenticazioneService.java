@@ -1,12 +1,6 @@
 package it.unisa.c07.biblionet.gestioneutenti;
-
-
-import it.unisa.c07.biblionet.gestioneclubdellibro.repository.ClubDelLibro;
-import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Esperto;
-import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Lettore;
 import it.unisa.c07.biblionet.common.UtenteRegistrato;
 
-import java.util.List;
 
 /**
  * @author Ciro Maiorino , Giulio Triggiani

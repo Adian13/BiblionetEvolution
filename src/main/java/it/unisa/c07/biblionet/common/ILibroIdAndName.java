@@ -11,7 +11,7 @@ public interface ILibroIdAndName {
     Integer getIdLibro();
 
     /**
-     * Implementa la funzionalità di ottenutmento del titolo di un libro.
+     * Implementa la funzionalità di ottenimento del titolo di un libro.
      * @return il titolo di un libro.
      */
     String getTitolo();

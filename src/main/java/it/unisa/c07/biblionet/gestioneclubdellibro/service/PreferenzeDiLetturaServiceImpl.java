@@ -1,7 +1,7 @@
 package it.unisa.c07.biblionet.gestioneclubdellibro.service;
 
+import it.unisa.c07.biblionet.gestioneclubdellibro.ClubDelLibroService;
 import it.unisa.c07.biblionet.gestioneclubdellibro.PreferenzeDiLetturaService;
-import it.unisa.c07.biblionet.gestioneutenti.AutenticazioneService;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Esperto;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Genere;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Lettore;
@@ -21,6 +21,7 @@ public class PreferenzeDiLetturaServiceImpl implements
         PreferenzeDiLetturaService {
 
 
+    private final ClubDelLibroService clubDelLibroService;
 
     /**
      * Implementa la funzionalità di aggiungere una lista di generi
@@ -36,7 +37,7 @@ public class PreferenzeDiLetturaServiceImpl implements
             setGeneri.add(genere.getNome());
         }
         esperto.setNomeGeneri(setGeneri);
-        //autenticazioneService.aggiornaEsperto(esperto);
+        clubDelLibroService.aggiornaEsperto(esperto);
     }
 
     /**
@@ -53,7 +54,8 @@ public class PreferenzeDiLetturaServiceImpl implements
             setGeneri.add(genere.getNome());
         }
         lettore.setNomeGeneri(setGeneri);
-        //autenticazioneService.aggiornaLettore(lettore);
+        clubDelLibroService.aggiornaLettore(lettore);
+
     }
 
 

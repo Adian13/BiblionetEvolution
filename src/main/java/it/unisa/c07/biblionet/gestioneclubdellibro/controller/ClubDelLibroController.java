@@ -205,7 +205,7 @@ public class ClubDelLibroController {
         if (!Utils.isUtenteEsperto(token)) {
             return new BiblionetResponse(BiblionetResponse.NON_AUTORIZZATO, false);
         }
-        Esperto esperto = (Esperto) clubService.findEspertoByEmail(Utils.getSubjectFromToken(token));
+        Esperto esperto = clubService.findEspertoByEmail(Utils.getSubjectFromToken(token));
 
         ClubDelLibro cdl = new ClubDelLibro();
         cdl.setNome(clubDTO.getNome());
@@ -269,7 +269,7 @@ public class ClubDelLibroController {
                                                         final @ModelAttribute ClubDTO club,
                                                         @RequestHeader(name = "Authorization") final String token
     ) {
-        Esperto esperto = (Esperto) clubService.findEspertoByEmail(Utils.getSubjectFromToken(token));
+        Esperto esperto = clubService.findEspertoByEmail(Utils.getSubjectFromToken(token));
         var cdl = this.clubService.getClubByID(id);
         if (cdl == null || esperto == null) {
             return new BiblionetResponse(BiblionetResponse.OGGETTO_NON_TROVATO, false);
@@ -311,7 +311,7 @@ public class ClubDelLibroController {
         String copertina = getBase64Image(clubDTO.getCopertina());
         if (copertina != null) clubPers.setImmagineCopertina(copertina);
         if (clubDTO.getGeneri() != null) {
-            clubPers.setGeneri(new HashSet < > (clubDTO.getGeneri()));
+            clubPers.setGeneri(new HashSet<>(clubDTO.getGeneri()));
         }
         clubPers.setNome(clubDTO.getNome());
         clubPers.setDescrizione(clubDTO.getDescrizione());

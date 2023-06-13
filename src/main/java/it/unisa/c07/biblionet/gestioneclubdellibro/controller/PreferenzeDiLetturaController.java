@@ -1,7 +1,6 @@
 package it.unisa.c07.biblionet.gestioneclubdellibro.controller;
 
-import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Esperto;
-import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Lettore;
+
 import it.unisa.c07.biblionet.gestioneclubdellibro.ClubDelLibroService;
 import it.unisa.c07.biblionet.gestioneclubdellibro.GenereService;
 import it.unisa.c07.biblionet.gestioneclubdellibro.PreferenzeDiLetturaService;
@@ -88,12 +87,12 @@ public class PreferenzeDiLetturaController {
 
         if (Utils.isUtenteEsperto(token)) {
             preferenzeDiLetturaService
-                    .addGeneriEsperto(toAdd, (Esperto) clubService.findEspertoByEmail(Utils.getSubjectFromToken(token)));
+                    .addGeneriEsperto(toAdd, clubService.findEspertoByEmail(Utils.getSubjectFromToken(token)));
             return new BiblionetResponse("Generi modificati", true);
         }
         if (Utils.isUtenteLettore(token)) {
             preferenzeDiLetturaService
-                    .addGeneriLettore(toAdd, (Lettore) clubService.getLettoreByEmail(Utils.getSubjectFromToken(token)));
+                    .addGeneriLettore(toAdd, clubService.getLettoreByEmail(Utils.getSubjectFromToken(token)));
             return new BiblionetResponse("Generi modificati", true);
         }
 

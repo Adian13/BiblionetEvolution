@@ -3,6 +3,7 @@ package it.unisa.c07.biblionet.filter;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import it.unisa.c07.biblionet.utils.Utils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.filter.GenericFilterBean;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -14,6 +15,8 @@ import java.io.IOException;
 
 public class JwtFilter extends GenericFilterBean {
 
+    @Value("${jwt.secret}")
+    private String secret;
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -29,7 +32,7 @@ public class JwtFilter extends GenericFilterBean {
             }
         }
         final String token = authHeader.substring(7);
-        Claims claims = Jwts.parser().setSigningKey(Utils.CHIAVE_SEGRETA).parseClaimsJws(token).getBody();
+        Claims claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
         request.setAttribute("claims", claims);
         request.setAttribute("blog", servletRequest.getParameter("id"));
         filterChain.doFilter(request, response);

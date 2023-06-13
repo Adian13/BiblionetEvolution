@@ -1,16 +1,20 @@
 package it.unisa.c07.biblionet.gestionebiblioteca.service;
 
-import it.unisa.c07.biblionet.common.*;
+import it.unisa.c07.biblionet.bookapiadapter.BookApiAdapter;
+import it.unisa.c07.biblionet.common.ILibroIdAndName;
+import it.unisa.c07.biblionet.common.UtenteRegistrato;
 import it.unisa.c07.biblionet.gestionebiblioteca.BibliotecaDTO;
 import it.unisa.c07.biblionet.gestionebiblioteca.PrenotazioneLibriService;
 import it.unisa.c07.biblionet.gestionebiblioteca.repository.*;
-import it.unisa.c07.biblionet.gestionebiblioteca.service.bookapiadapter.BookApiAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Implementa la classe che esplicita i metodi
@@ -32,16 +36,18 @@ public class PrenotazioneLibriServiceImpl implements PrenotazioneLibriService {
     private final TicketPrestitoDAO ticketPrestitoDAO;
 
     @Override
-    public UtenteRegistrato bibliotecaDaModel(BibliotecaDTO form){
+    public UtenteRegistrato bibliotecaDaModel(BibliotecaDTO form) {
         Biblioteca biblioteca = new Biblioteca(form);
         biblioteca.setTipo("Biblioteca");
-       return aggiornaBiblioteca(biblioteca);
+        return aggiornaBiblioteca(biblioteca);
 
     }
+
     @Override
-    public UtenteRegistrato findBibliotecaByEmailAndPassword(String email, byte[] password){
+    public UtenteRegistrato findBibliotecaByEmailAndPassword(String email, byte[] password) {
         return bibliotecaDAO.findByEmailAndPassword(email, password);
     }
+
     /**
      * Implementa la funzionalità che permette
      * di visualizzare la lista completa dei libri
@@ -164,9 +170,9 @@ public class PrenotazioneLibriServiceImpl implements PrenotazioneLibriService {
     @Override
     public List<Biblioteca> getBibliotecheLibro(final LibroBiblioteca libro) {
         List<Biblioteca> lista = new ArrayList<>();
+
         for (Possesso p : libro.getPossessi()) {
-            lista.add(this.
-                    findBibliotecaByEmail(p.getPossessoID().getBibliotecaID()));
+            lista.add(this.findBibliotecaByEmail(p.getPossessoID().getBibliotecaID()));
         }
         return lista;
     }
@@ -322,29 +328,19 @@ public class PrenotazioneLibriServiceImpl implements PrenotazioneLibriService {
                                               final List<String> generi) {
 
         //Recupero l'oggetto Libro da Api per isbn
-        LibroBiblioteca l = bookApiAdapter.getLibroDaBookApi(isbn);
-        if (l == null) {
+        LibroBiblioteca libro = (LibroBiblioteca) bookApiAdapter.getLibroDaBookApi(isbn, new LibroBiblioteca());
+        if (libro == null) {
             return null;
         }
-        l.setGeneri(new HashSet<>(generi));
+        libro.setGeneri(new HashSet<>(generi));
 
-        //Controllo che il libro non sia già salvato
-        boolean exists = false;
-        LibroBiblioteca libro = null;
-        for (LibroBiblioteca tl : libroBibliotecaDAO.findAll()) {
-            if (tl.getIsbn().equals(l.getIsbn())) {
-                exists = true;
-                libro = tl;
-            }
-        }
+        boolean exists = (libroBibliotecaDAO.findByIsbn(libro.getIsbn()) != null);
+        if (!exists) libroBibliotecaDAO.save(libro);
 
-        if (!exists) {
-            libro = libroBibliotecaDAO.save(l);
-        }
         Biblioteca b = this.findBibliotecaByEmail(idBiblioteca);
 
         //Se per errore avesse inserito un libro che possiede già,
-        //aggiorno semplicemente il numero di copie che ha.
+        //aggiorno semplicemente il numero di copie che ha. todo ok ma andrebbe richiamata un'apposita funzione non ricopiare il tutto qui
         for (Possesso p : b.getPossessi()) {
             if (p.getPossessoID().getLibroID() == libro.getIdLibro()) {
                 p.setNumeroCopie(p.getNumeroCopie() + numCopie);
@@ -504,8 +500,6 @@ public class PrenotazioneLibriServiceImpl implements PrenotazioneLibriService {
     public Biblioteca aggiornaBiblioteca(final Biblioteca utente) {
         return bibliotecaDAO.save(utente);
     }
-
-
 
 
 }

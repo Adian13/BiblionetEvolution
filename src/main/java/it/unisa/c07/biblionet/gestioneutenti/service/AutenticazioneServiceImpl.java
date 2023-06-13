@@ -73,7 +73,6 @@ public class AutenticazioneServiceImpl implements AutenticazioneService {
      */
     @Override
     public boolean isEsperto(final UtenteRegistrato utente) {
-        //return "Esperto".equals(utente.getClass().getSimpleName());
         return utente.getTipo().equalsIgnoreCase("Esperto");
     }
 
@@ -86,7 +85,6 @@ public class AutenticazioneServiceImpl implements AutenticazioneService {
      */
     @Override
     public boolean isBiblioteca(final UtenteRegistrato utente) {
-        //return "Biblioteca".equals(utente.getClass().getSimpleName());
         return utente.getTipo().equalsIgnoreCase("Biblioteca");
     }
 

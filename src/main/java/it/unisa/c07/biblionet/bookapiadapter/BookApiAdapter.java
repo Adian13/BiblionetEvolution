@@ -1,6 +1,6 @@
-package it.unisa.c07.biblionet.gestionebiblioteca.service.bookapiadapter;
+package it.unisa.c07.biblionet.bookapiadapter;
 
-import it.unisa.c07.biblionet.gestionebiblioteca.repository.LibroBiblioteca;
+import it.unisa.c07.biblionet.common.Libro;
 
 /**
  * Rappresenta l'interfaccia dello Adapter usata
@@ -15,5 +15,5 @@ public interface BookApiAdapter {
      * @param isbn l'isbn del libro
      * @return il libro
      */
-    LibroBiblioteca getLibroDaBookApi(String isbn);
+    Libro getLibroDaBookApi(String isbn, Libro libro);
 }

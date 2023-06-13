@@ -39,4 +39,13 @@ public interface LibroBibliotecaDAO extends JpaRepository<LibroBiblioteca, Integ
             + "FROM LibroBiblioteca l "
             + "WHERE UPPER(l.titolo) LIKE UPPER(concat('%', ?1,'%'))")
     List<ILibroIdAndName> findByTitoloContains(String titolo);
+
+    /**
+     * Query custom per il recupero dal DB di un libro
+     * @param isbn del libro
+     * @return il libro associato all'isbn
+     */
+    @Query("SELECT l FROM LibroBiblioteca l "
+            + "WHERE l.isbn = ?1")
+    LibroBiblioteca findByIsbn(String isbn);
 }

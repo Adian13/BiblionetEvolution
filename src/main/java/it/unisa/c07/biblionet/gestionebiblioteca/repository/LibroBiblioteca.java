@@ -1,9 +1,8 @@
 package it.unisa.c07.biblionet.gestionebiblioteca.repository;
 
 
-import it.unisa.c07.biblionet.utils.BiblionetConstraints;
+import it.unisa.c07.biblionet.common.Libro;
 import lombok.*;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,65 +14,8 @@ import java.util.Set;
 @Entity
 @Data
 @AllArgsConstructor
-@NoArgsConstructor(force = true)
-@RequiredArgsConstructor
-public class LibroBiblioteca {
-
-    /**
-     * Rappresenta l'ID autogenerato di un libro.
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int idLibro;
-
-    /**
-     * Rappresenta il titolo di un libro.
-     */
-    @NonNull
-    @Column(length = BiblionetConstraints.LENGTH_90)
-    private String titolo;
-
-    /**
-     * Rappresenta l'autore di un libro.
-     */
-    @NonNull
-    @Column(length = BiblionetConstraints.LENGTH_60)
-    private String autore;
-
-    /**
-     * Rappresenta il codice ISBN di un libro se presente.
-     */
-    @Column(unique = true, length = BiblionetConstraints.LENGTH_13)
-    @NonNull
-    private String isbn;
-
-    /**
-     * Rappresenta l'anno di pubblicazione di un libro.
-     */
-    @Column(nullable = false)
-    @NonNull
-    private LocalDateTime annoDiPubblicazione;
-
-    /**
-     * Rappresenta la descrizione di un libro.
-     */
-    @Column(nullable = false, length = BiblionetConstraints.LENGTH_144)
-    @NonNull
-    private String descrizione;
-
-    /**
-     * Rappresenta la casa editrice di un libro.
-     */
-    @Column(nullable = false, length = BiblionetConstraints.LENGTH_30)
-    @NonNull
-    private String casaEditrice;
-
-    /**
-     * Rappresenta l'immagine di copertina del libro.
-     */
-    @Lob
-    @ToString.Exclude
-    private String immagineLibro;
+@NoArgsConstructor
+public class LibroBiblioteca extends Libro {
 
     /**
      * Rappresenta i tickets di cui fa parte il libro.
@@ -82,13 +24,6 @@ public class LibroBiblioteca {
     @ToString.Exclude
     private List<TicketPrestito> tickets;
 
-    /**
-     * Rappresenta i generi di un libro.
-     */
-    @ElementCollection
-    @ToString.Exclude
-    private Set<String> generi;
-
 
     /**
      * Rappresenta la relazione di possesso con una biblioteca.
@@ -96,4 +31,21 @@ public class LibroBiblioteca {
     @OneToMany(mappedBy = "possessoID.libroID")
     @ToString.Exclude
     private List<Possesso> possessi;
+
+    public LibroBiblioteca(
+            String titolo,
+            String autore,
+            String isbn,
+            LocalDateTime annoDiPubblicazione,
+            String descrizione,
+            String casaEditrice,
+            String immagineLibro,
+            Set<String> generi,
+            List<Possesso> possessi,
+            List<TicketPrestito> tickets){
+        super(titolo, autore, isbn, annoDiPubblicazione, descrizione, casaEditrice, immagineLibro, generi);
+        this.possessi = possessi;
+        this.tickets = tickets;
+    }
+
 }

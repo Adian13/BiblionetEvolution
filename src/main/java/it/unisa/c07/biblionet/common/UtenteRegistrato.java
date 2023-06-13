@@ -102,7 +102,7 @@ public abstract class UtenteRegistrato {
         this.tipo = tipo;
         this.password = BiblionetConstraints.trasformaPassword(password);
     }
-    public UtenteRegistrato(final String email, final byte[] password,
+    protected UtenteRegistrato(final String email, final byte[] password,
                                final String provincia, final String citta,
                                final String via, final String recapitoTelefonico, final String tipo) {
 
