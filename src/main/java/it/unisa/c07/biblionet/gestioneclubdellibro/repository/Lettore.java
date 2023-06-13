@@ -15,7 +15,6 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -86,7 +85,7 @@ public class Lettore extends UtenteRegistrato {
      * @param citta la città del lettore.
      * @param via la via dove vive.
      * @param recapitoTelefonico il recapito del lettore.
-     * @param username l'usurname del lettore.
+     * @param username l'username del lettore.
      * @param nome il nome del lettore.
      * @param cognome il cognome del lettore.
      */
