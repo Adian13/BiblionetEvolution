@@ -1,6 +1,6 @@
 package it.unisa.c07.biblionet.gestionebiblioteca.service;
 
-import it.unisa.c07.biblionet.bookapiadapter.BookApiAdapter;
+import it.unisa.c07.biblionet.gestionebiblioteca.bookapiadapter.BookApiAdapter;
 import it.unisa.c07.biblionet.common.ILibroIdAndName;
 import it.unisa.c07.biblionet.common.UtenteRegistrato;
 import it.unisa.c07.biblionet.gestionebiblioteca.BibliotecaDTO;
@@ -328,7 +328,7 @@ public class PrenotazioneLibriServiceImpl implements PrenotazioneLibriService {
                                               final List<String> generi) {
 
         //Recupero l'oggetto Libro da Api per isbn
-        LibroBiblioteca libro = (LibroBiblioteca) bookApiAdapter.getLibroDaBookApi(isbn, new LibroBiblioteca());
+        LibroBiblioteca libro = bookApiAdapter.getLibroDaBookApi(isbn, new LibroBiblioteca());
         if (libro == null) {
             return null;
         }

@@ -1,6 +1,6 @@
 package it.unisa.c07.biblionet.gestionebiblioteca.controller;
 
-import it.unisa.c07.biblionet.common.Libro;
+import it.unisa.c07.biblionet.gestionebiblioteca.LibroBibliotecaDTO;
 import it.unisa.c07.biblionet.gestionebiblioteca.PrenotazioneLibriService;
 import it.unisa.c07.biblionet.gestionebiblioteca.repository.LibroBiblioteca;
 import it.unisa.c07.biblionet.gestionebiblioteca.repository.Biblioteca;
@@ -120,7 +120,7 @@ public class BibliotecaController {
     @CrossOrigin
     public BiblionetResponse inserisciManualmente(
             @RequestHeader (name="Authorization") final String token,
-            @RequestParam final Libro libro,
+            @RequestParam final LibroBibliotecaDTO libro,
             @RequestParam final int numCopie,
             @RequestParam final String annoPubblicazione) {
 

@@ -1,7 +1,7 @@
-package it.unisa.c07.biblionet.bookapiadapter;
+package it.unisa.c07.biblionet.gestionebiblioteca.bookapiadapter;
 
 
-import it.unisa.c07.biblionet.common.Libro;
+import it.unisa.c07.biblionet.gestionebiblioteca.repository.LibroBiblioteca;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -47,7 +47,7 @@ public class GoogleBookApiAdapterImpl implements BookApiAdapter {
      * @return L'oggetto Libro contenente le informazioni sul libro cercato
      */
     @Override
-    public Libro getLibroDaBookApi(final String isbn, Libro libro) {
+    public LibroBiblioteca getLibroDaBookApi(final String isbn, LibroBiblioteca libro) {
         try {
             // Compose url string
             String formattedIsbn = isbn.replace("-", "");
@@ -91,8 +91,8 @@ public class GoogleBookApiAdapterImpl implements BookApiAdapter {
      * @param isbn l'isbn con cui si effettua la richiesta
      * @return il libro creato
      */
-    private Libro creaLibroDaResponse(final StringBuilder stringBuilder,
-                                            final String isbn, Libro libro) {
+    private LibroBiblioteca creaLibroDaResponse(final StringBuilder stringBuilder,
+                                            final String isbn, LibroBiblioteca libro) {
         JSONParser parser = new JSONParser();
         try {
             //Parsing in Object dello StringBuilder che rappresenta il JSON
@@ -111,7 +111,7 @@ public class GoogleBookApiAdapterImpl implements BookApiAdapter {
             String descrizione = "";
             JSONArray categories = (JSONArray) volumeInfo.get("categories");
             if (categories.isEmpty()) {
-                descrizione = "NA";
+                descrizione = "N/A";
             }
             int i = 0;
             for (Object c : categories) {
@@ -160,13 +160,13 @@ public class GoogleBookApiAdapterImpl implements BookApiAdapter {
                 byte[] bytes = output.toByteArray();
                 base64Image = Base64.getEncoder().encodeToString(bytes);
             } catch (Exception e) {
-                System.err.println(e);
+                //System.out.println(e);
             }
             //Creazione dell'oggetto Libro
             libro.setTitolo(titolo);
             libro.setDescrizione(descrizione);
             if (casaEditrice == null) {
-                libro.setCasaEditrice("NA");
+                libro.setCasaEditrice("N/A");
             } else {
                 libro.setCasaEditrice(casaEditrice);
             }

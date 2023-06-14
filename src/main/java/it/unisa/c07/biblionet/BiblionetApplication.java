@@ -1,7 +1,7 @@
 package it.unisa.c07.biblionet;
 
-import it.unisa.c07.biblionet.bookapiadapter.BookApiAdapter;
-import it.unisa.c07.biblionet.bookapiadapter.GoogleBookApiAdapterImpl;
+import it.unisa.c07.biblionet.gestionebiblioteca.bookapiadapter.BookApiAdapter;
+import it.unisa.c07.biblionet.gestionebiblioteca.bookapiadapter.GoogleBookApiAdapterImpl;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.boot.SpringApplication;
