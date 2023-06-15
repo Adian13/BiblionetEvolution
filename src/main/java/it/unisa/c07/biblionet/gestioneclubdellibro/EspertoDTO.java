@@ -26,16 +26,18 @@ public class EspertoDTO extends UtenteRegistratoDTO {
     @NonNull
     private String username;
 
-    public EspertoDTO(@NonNull String email, @NonNull String password, @NonNull String provincia, @NonNull String citta, @NonNull @Pattern(regexp = BiblionetConstraints.ADDRESS_REGEX) String via, @NonNull @Pattern(regexp = BiblionetConstraints.PHONE_REGEX) String recapitoTelefonico, String nome, String cognome, String username) {
+    public EspertoDTO(@NonNull String email, @NonNull String password, @NonNull String provincia, @NonNull String citta, @NonNull @Pattern(regexp = BiblionetConstraints.ADDRESS_REGEX) String via, @NonNull @Pattern(regexp = BiblionetConstraints.PHONE_REGEX) String recapitoTelefonico, String nome, String cognome, String username, Set<String> generi) {
         super(email, password, provincia, citta, via, recapitoTelefonico);
         this.cognome = cognome;
         this.nome = nome;
         this.username = username;
+        this.generi = generi;
     }
-    public EspertoDTO(@NonNull String email, @NonNull byte[] password, @NonNull String provincia, @NonNull String citta, @NonNull @Pattern(regexp = BiblionetConstraints.ADDRESS_REGEX) String via, @NonNull @Pattern(regexp = BiblionetConstraints.PHONE_REGEX) String recapitoTelefonico, String nome, String cognome, String username) {
+    public EspertoDTO(@NonNull String email, @NonNull byte[] password, @NonNull String provincia, @NonNull String citta, @NonNull @Pattern(regexp = BiblionetConstraints.ADDRESS_REGEX) String via, @NonNull @Pattern(regexp = BiblionetConstraints.PHONE_REGEX) String recapitoTelefonico, String nome, String cognome, String username, Set<String> generi) {
         super(email, password, provincia, citta, via, recapitoTelefonico);
         this.cognome = cognome;
         this.nome = nome;
         this.username = username;
+        this.generi = generi;
     }
 }
