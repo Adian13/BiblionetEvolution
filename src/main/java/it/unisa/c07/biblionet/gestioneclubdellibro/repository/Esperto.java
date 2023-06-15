@@ -108,6 +108,7 @@ public class Esperto extends UtenteRegistrato {
         this.nome = dto.getNome();
         this.cognome = dto.getCognome();
         this.biblioteca = biblioteca;
+        this.nomeGeneri = dto.getGeneri();
     }
 
     public Set<String> getGeneri() {

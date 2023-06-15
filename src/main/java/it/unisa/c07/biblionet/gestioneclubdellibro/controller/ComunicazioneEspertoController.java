@@ -45,7 +45,6 @@ public class ComunicazioneEspertoController {
     /**
      * Implementa la funzionalità di visualizzare tutti gli Esperti
      * presenti sulla piattaforma.
-     * @param model il model per la richiesta
      * @return la view che visualizza tutti gli Esperti
      */
     @GetMapping(value = "/lista-esperti")

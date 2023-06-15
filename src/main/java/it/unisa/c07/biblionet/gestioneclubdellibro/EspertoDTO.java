@@ -19,7 +19,6 @@ public class EspertoDTO extends UtenteRegistratoDTO {
 
     private Set<String> generi;
 
-
     @NonNull
     private String nome;
     @NonNull
