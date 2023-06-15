@@ -51,11 +51,8 @@ public class ComunicazioneEspertoController {
     @GetMapping(value = "/lista-esperti")
     @CrossOrigin
     @ResponseBody
-    public final String visualizzaListaEsperti(final Model model) {
-        List<Esperto> listaEsperti =
-                clubService.findAllEsperti();
-        model.addAttribute("listaEsperti", listaEsperti);
-        return "comunicazione-esperto/lista-completa-esperti";
+    public final List<Esperto> visualizzaListaEsperti() {
+        return clubService.findAllEsperti();
     }
 
     /**
