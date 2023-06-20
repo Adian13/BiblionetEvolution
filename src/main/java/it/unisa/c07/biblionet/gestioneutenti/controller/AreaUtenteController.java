@@ -202,7 +202,4 @@ public class AreaUtenteController {
 
         return new BiblionetResponse("Dati aggiornati", true);
     }
-
-
-
 }

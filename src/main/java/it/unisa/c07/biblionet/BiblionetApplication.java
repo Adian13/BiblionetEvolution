@@ -3,9 +3,9 @@ package it.unisa.c07.biblionet;
 import it.unisa.c07.biblionet.gestionebiblioteca.bookapiadapter.BookApiAdapter;
 import it.unisa.c07.biblionet.gestionebiblioteca.bookapiadapter.GoogleBookApiAdapterImpl;
 
-import org.apache.commons.io.FileUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +40,10 @@ public class BiblionetApplication {
         //init(configurableApplicationContext);
     }
 
-    public static String getCopertinaClubFromUrl(String filePath) {
+    public static void init(ApplicationContext applicationContext) {
+    }
+
+   /* public static String getCopertinaClubFromUrl(String filePath) {
         try{
             byte[] fileContent = FileUtils.readFileToByteArray(new File(filePath));
             return Base64.getEncoder().encodeToString(fileContent);
@@ -50,5 +53,5 @@ public class BiblionetApplication {
             return "noImage";
         }
 
-    }
+    }*/
 }

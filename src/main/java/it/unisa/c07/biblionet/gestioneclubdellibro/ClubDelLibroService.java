@@ -2,8 +2,11 @@ package it.unisa.c07.biblionet.gestioneclubdellibro;
 
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.ClubDelLibro;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Esperto;
+import it.unisa.c07.biblionet.gestioneclubdellibro.repository.EspertoDAO;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Lettore;
 import it.unisa.c07.biblionet.common.UtenteRegistrato;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
@@ -12,13 +15,10 @@ import java.util.function.Predicate;
 /**
  * Implementa l'interfaccia service
  * per il sottosistema ClubDelLibro.
- * @author Viviana Pentangelo, Gianmario Voria
  */
+
+@Service
 public interface ClubDelLibroService {
-
-    List<ClubDelLibro> findClubsEsperto(Esperto esperto);
-
-    List<ClubDelLibro> findClubsLettore(Lettore lettore);
 
     /**
      * Implementa la funzionalità che permette
@@ -105,30 +105,13 @@ public interface ClubDelLibroService {
      */
     List<ClubDelLibro> findAllByEsperto(Esperto esperto);
 
-    UtenteRegistrato creaEspertoDaModel(EspertoDTO form, UtenteRegistrato biblioteca);
-
-    UtenteRegistrato aggiornaEspertoDaModel(EspertoDTO form, UtenteRegistrato biblioteca);
-
-    Esperto aggiornaEsperto(Esperto utente);
-
-    List<Esperto> findEspertiByGeneri(Set<String> generi);
-
     Lettore findLettoreByEmail(String email);
 
     Lettore aggiornaLettore(Lettore utente);
 
-    List<Esperto> findAllEsperti();
+    UtenteRegistrato findByEmailAndPassword(String email, byte[] password);
 
-    List<Esperto> findEspertiByNome(String nome);
-
-    UtenteRegistrato findEspertoByEmailAndPassword(String email, byte[] password);
-
-    UtenteRegistrato findLettoreByEmailAndPassword(String email, byte[] password);
-
-    Esperto findEspertoByEmail(String email);
-
-
-    Lettore getLettoreByEmail(String email);
+    Lettore getByEmail(String email);
 
     UtenteRegistrato creaLettoreDaModel(LettoreDTO lettore);
 

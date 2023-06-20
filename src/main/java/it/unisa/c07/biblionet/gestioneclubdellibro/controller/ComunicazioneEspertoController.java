@@ -69,11 +69,11 @@ public class ComunicazioneEspertoController {
             @RequestParam("filtro") final String filtro) {
         switch (filtro) {
             case "nome":
-                return clubService.findEspertiByNome(stringa);
+                return clubService.findByNome(stringa);
             case "genere":
                 return clubService.findEspertiByGeneri(new HashSet<>(Collections.singleton(stringa)));
             default:
-                return clubService.findAllEsperti();
+                return clubService.findAll();
         }
     }
 }

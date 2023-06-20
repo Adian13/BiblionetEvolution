@@ -2,12 +2,14 @@ package it.unisa.c07.biblionet.gestioneutenti.service;
 
 import it.unisa.c07.biblionet.gestioneclubdellibro.EspertoDTO;
 import it.unisa.c07.biblionet.gestioneclubdellibro.ClubDelLibroService;
+import it.unisa.c07.biblionet.gestioneclubdellibro.EspertoService;
 import it.unisa.c07.biblionet.gestioneclubdellibro.LettoreDTO;
 import it.unisa.c07.biblionet.gestionebiblioteca.BibliotecaDTO;
 import it.unisa.c07.biblionet.gestionebiblioteca.PrenotazioneLibriService;
 import it.unisa.c07.biblionet.gestioneutenti.RegistrazioneService;
 import it.unisa.c07.biblionet.common.UtenteRegistrato;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,6 +22,8 @@ public class RegistrazioneServiceImpl implements RegistrazioneService {
 
     private final PrenotazioneLibriService prenotazioneLibriService;
     private final ClubDelLibroService clubDelLibroService;
+    @Autowired
+    EspertoService espertoService;
 
 
     /**
@@ -39,12 +43,12 @@ public class RegistrazioneServiceImpl implements RegistrazioneService {
      */
     @Override
     public final UtenteRegistrato registraEsperto(final EspertoDTO esperto, final String emailBiblioteca) {
-        return clubDelLibroService.creaEspertoDaModel(esperto, prenotazioneLibriService.findBibliotecaByEmail(emailBiblioteca));
+        return espertoService.creaEspertoDaModel(esperto, prenotazioneLibriService.findBibliotecaByEmail(emailBiblioteca));
     }
 
     @Override
     public final UtenteRegistrato aggiornaEsperto(final EspertoDTO esperto, final String emailBiblioteca) {
-        return clubDelLibroService.aggiornaEspertoDaModel(esperto, prenotazioneLibriService.findBibliotecaByEmail(emailBiblioteca));
+        return espertoService.aggiornaEspertoDaModel(esperto, prenotazioneLibriService.findBibliotecaByEmail(emailBiblioteca));
     }
 
     @Override
@@ -82,7 +86,7 @@ public class RegistrazioneServiceImpl implements RegistrazioneService {
     public boolean isEmailRegistrata(final String email) {
         if (clubDelLibroService.findLettoreByEmail(email) != null ||
         prenotazioneLibriService.findBibliotecaByEmail(email) != null ||
-        clubDelLibroService.findEspertoByEmail(email) != null)
+        espertoService.findByEmail(email) != null)
             return true;
 
         return false;

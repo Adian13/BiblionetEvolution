@@ -6,6 +6,7 @@ import it.unisa.c07.biblionet.gestioneclubdellibro.EspertoDTO;
 import it.unisa.c07.biblionet.gestioneclubdellibro.LettoreDTO;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,20 +30,26 @@ public class ClubDelLibroServiceImpl implements ClubDelLibroService {
     /**
      * Si occupa delle operazioni CRUD per un club.
      */
+    @Autowired
     private final ClubDelLibroDAO clubDAO;
+    @Autowired
+    private final UtenteRegistratoDAO utenteRegistratoDAO;
+    @Autowired
     private final EspertoDAO espertoDAO;
+    @Autowired
     private final LettoreDAO lettoreDAO;
 
 
     @Override
-    public final List<ClubDelLibro> findClubsEsperto(Esperto esperto) {
+    public final List<ClubDelLibro> findClubsByEsperto(Esperto esperto) {
         return esperto.getClubs();
     }
 
     @Override
-    public final List<ClubDelLibro> findClubsLettore(Lettore lettore) {
+    public final List<ClubDelLibro> findClubsByLettore(Lettore lettore) {
         return lettore.getClubs();
     }
+
 
     /**
      * Implementa la funzionalità che permette
@@ -183,43 +190,19 @@ public class ClubDelLibroServiceImpl implements ClubDelLibroService {
         return clubDAO.findAllByEsperto(esperto);
     }
 
-    @Override
-    public UtenteRegistrato creaEspertoDaModel(EspertoDTO form, UtenteRegistrato biblioteca) {
-        return espertoDAO.save(new Esperto(form, biblioteca));
-    }
-
-    @Override
-    public UtenteRegistrato aggiornaEspertoDaModel(EspertoDTO form, UtenteRegistrato biblioteca) {
-        if(biblioteca == null) biblioteca = findEspertoByEmail(form.getEmail()).getBiblioteca(); //todo ok, e se cambio anche la mail?
-        return espertoDAO.save(new Esperto(form, biblioteca));
-    }
-
-
-    /**
+      /**
      * Implementa la funzionalità di salvataggio delle modifiche
      * all'account esperto.
      *
      * @param utente L'esperto da aggiornare
      * @return l'esperto aggiornato
      */
-    @Override
+
     public Esperto aggiornaEsperto(final Esperto utente) {
         return espertoDAO.save(utente);
     }
 
-    @Override
-    public final List<Esperto> findEspertiByGeneri(final Set<String> generi) {
-        List<Esperto> toReturn = new ArrayList<>();
 
-        for (Esperto esperto : espertoDAO.findAllEsperti()) {
-            for (String genere : esperto.getGeneri()) {
-                if (generi.contains(genere) && !toReturn.contains(esperto)) {
-                    toReturn.add(esperto);
-                }
-            }
-        }
-        return toReturn;
-    }
 
     /**
      * Implementa la funzionalità di trovare un lettore.
@@ -229,7 +212,7 @@ public class ClubDelLibroServiceImpl implements ClubDelLibroService {
      */
     @Override
     public final Lettore findLettoreByEmail(final String email) {
-        return lettoreDAO.findLettoreByEmail(email, "Lettore");
+        return lettoreDAO.findByEmail(email, "Lettore");
     }
 
 
@@ -239,34 +222,24 @@ public class ClubDelLibroServiceImpl implements ClubDelLibroService {
     }
 
     @Override
-    public List<Esperto> findAllEsperti() {
-        return espertoDAO.findAllEsperti();
+    public List<Esperto> findAll() {
+        return espertoDAO.findAll();
     }
 
     @Override
-    public List<Esperto> findEspertiByNome(String nome) {
+    public List<Esperto> findByNome(String nome) {
         return espertoDAO.findByNomeLike(nome);
     }
 
     @Override
-    public UtenteRegistrato findEspertoByEmailAndPassword(String email, byte[] password) {
-        return espertoDAO.findByEmailAndPassword(email, password);
+    public UtenteRegistrato findByEmailAndPassword(String email, byte[] password) {
+        return utenteRegistratoDAO.findByEmailAndPassword(email, password);
     }
 
-    @Override
-    public UtenteRegistrato findLettoreByEmailAndPassword(String email, byte[] password) {
-        return lettoreDAO.findByEmailAndPassword(email, password);
-    }
 
     @Override
-    public Esperto findEspertoByEmail(final String email) {
-        return espertoDAO.findEspertoByEmail(email, "Esperto");
-    }
-
-    @Override
-    public Lettore getLettoreByEmail(final String email) {
-        Optional<UtenteRegistrato> lettore = lettoreDAO.findById(email);
-        return (Lettore) lettore.orElse(null);
+    public Lettore getByEmail(String email) {
+        return null;
     }
 
     @Override

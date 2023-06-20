@@ -359,7 +359,7 @@ public class ClubDelLibroController {
                                                       @RequestHeader(name = "Authorization") final String token) {
 
         var eventoBaseOpt = this.eventiService.getEventoById(idEvento);
-        Esperto esperto = (Esperto) clubService.findEspertiByNome(Utils.getSubjectFromToken(token));
+        Esperto esperto = (Esperto) clubService.findByNome(Utils.getSubjectFromToken(token));
 
         if (eventoBaseOpt.isEmpty()) {
             return new BiblionetResponse(BiblionetResponse.OGGETTO_NON_TROVATO, false);

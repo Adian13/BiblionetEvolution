@@ -1,5 +1,6 @@
 package it.unisa.c07.biblionet.gestioneutenti;
 import it.unisa.c07.biblionet.common.UtenteRegistrato;
+import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Esperto;
 
 
 /**
@@ -35,7 +36,5 @@ public interface AutenticazioneService {
       * @return true se l'utente è una biblioteca altrimenti false.
       */
      boolean isBiblioteca(UtenteRegistrato utente);
-
-
 
 }

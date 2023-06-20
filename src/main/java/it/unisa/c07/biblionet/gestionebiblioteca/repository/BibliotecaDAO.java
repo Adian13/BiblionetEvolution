@@ -63,4 +63,6 @@ public interface BibliotecaDAO extends JpaRepository<UtenteRegistrato, String> {
      */
     @Query("SELECT b FROM Biblioteca b")
     List<Biblioteca> findAllBiblioteche();
+
+    Biblioteca findByEmail(String email);
 }

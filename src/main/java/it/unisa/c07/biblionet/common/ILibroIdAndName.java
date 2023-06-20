@@ -1,9 +1,11 @@
 package it.unisa.c07.biblionet.common;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+
 /**
  * Implementa la custom query result per la ricerca dei Libri per nome.
  */
-public interface ILibroIdAndName {
+public interface ILibroIdAndName  {
     /**
      * Implementa la funzionalità di ottenimento dell'id di un libro.
      * @return L'id del libro

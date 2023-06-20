@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
  * Questa classe rappresenta il DAO di un Lettore.
  */
 @Repository
-public interface LettoreDAO extends JpaRepository<UtenteRegistrato, String> {
+public interface LettoreDAO extends JpaRepository<Lettore, String> {
     /**
      * Implementa la funzionalità di ricerca di un utente Lettore nel DB.
      * @param email dell'utente da cercare.
@@ -28,9 +28,8 @@ public interface LettoreDAO extends JpaRepository<UtenteRegistrato, String> {
     Lettore findByID(String email);
 
     @Query("SELECT l FROM Lettore l WHERE l.email=?1 and l.tipo=?2")
-    Lettore findLettoreByEmail(String email, String tipo);
+    Lettore findByEmail(String email, String tipo);
 
-
-
+    Lettore findByEmail(String email);
 
 }

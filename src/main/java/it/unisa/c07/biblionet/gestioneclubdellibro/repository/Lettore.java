@@ -3,10 +3,7 @@ package it.unisa.c07.biblionet.gestioneclubdellibro.repository;
 import it.unisa.c07.biblionet.common.UtenteRegistrato;
 import it.unisa.c07.biblionet.gestioneclubdellibro.LettoreDTO;
 import it.unisa.c07.biblionet.utils.BiblionetConstraints;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
@@ -26,6 +23,8 @@ import java.util.Set;
 @Entity
 @SuperBuilder
 @Data
+@Getter
+@Setter
 @NoArgsConstructor(force = true)
 public class Lettore extends UtenteRegistrato {
 

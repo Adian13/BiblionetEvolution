@@ -28,7 +28,7 @@ public class LibroEvento extends Libro {
     @ToString.Exclude
     private List<Evento> eventi;
 
-    public LibroEvento(
+  /*  public LibroEvento(
         String titolo,
         String autore,
         String isbn,
@@ -40,7 +40,7 @@ public class LibroEvento extends Libro {
         List<Evento> eventi){
         super(titolo, autore, isbn, annoDiPubblicazione, descrizione, casaEditrice, immagineLibro, generi);
         this.eventi = eventi;
-    }
+    }*/
 
 
 }

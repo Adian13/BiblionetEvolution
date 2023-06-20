@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+    <component name="ProjectCodeStyleConfiguration">
+    <code_scheme name="MyJavaScheme" version="173">
+            <JavaCodeStyleSettings>
+                <option name="ALIGN_MULTILINE_PARAMETERS" value="true" />
+                <option name="ALIGN_MULTILINE_FOR" value="true" />
+                <option name="ALIGN_MULTILINE_BINARY_OPERATION" value="true" />
+                <option name="SPACE_BEFORE_TYPE_PARAMETER_LIST" value="false" />
+                <option name="SPACE_WITHIN_TYPE_PARAMETER_LIST" value="false" />
+                <option name="SPACE_BEFORE_METHOD_PARENTHESES" value="false" />
+                <option name="SPACE_WITHIN_METHOD_PARENTHESES" value="false" />
+                <option name="SPACE_BEFORE_METHOD_LBRACE" value="true" />
+                <option name="SPACE_BEFORE_FOR_PARENTHESES" value="false" />
+                <option name="SPACE_WITHIN_FOR_PARENTHESES" value="false" />
+                <option name="SPACE_BEFORE_WHILE_KEYWORD" value="true" />
+                <option name="SPACE_BEFORE_DO_KEYWORD" value="true" />
+                <option name="SPACE_AFTER_DO_KEYWORD" value="true" />
+                <option name="SPACE_BEFORE_IF_PARENTHESES" value="false" />
+                <option name="SPACE_WITHIN_IF_PARENTHESES" value="false" />
+                <option name="SPACE_BEFORE_ELSE_KEYWORD" value="true" />
+                <option name="SPACE_BEFORE_SWITCH_PARENTHESES" value="false" />
+                <option name="SPACE_WITHIN_SWITCH_PARENTHESES" value="false" />
+                <option name="SPACE_BEFORE_CASE_COLON" value="true" />
+                <option name="SPACE_AFTER_CASE_COLON" value="true" />
+                <option name="SPACE_BEFORE_DEFAULT_COLON" value="true" />
+                <option name="SPACE_AFTER_DEFAULT_COLON" value="true" />
+                <option name="SPACE_BEFORE_SYNCHRONIZED_PARENTHESES" value="false" />
+                <option name="SPACE_WITHIN_SYNCHRONIZED_PARENTHESES" value="false" />
+                <option name="SPACE_BEFORE_ARRAY_INITIALIZER_LBRACE" value="true" />
+                <option name="SPACE_WITHIN_ARRAY_INITIALIZER_LBRACE" value="false" />
+                <option name="SPACE_BEFORE_ARRAY_INITIALIZER_COMMA" value="false" />
+                <option name="SPACE_AFTER_ARRAY_INITIALIZER_COMMA" value="true" />
+                <option name="SPACE_BEFORE_ARRAY_INITIALIZER_RBRACE" value="true" />
+                <option name="SPACE_WITHIN_ARRAY_INITIALIZER_RBRACE" value="false" />
+                <option name="SPACE_BEFORE_METHOD_BODY_LBRACE" value="true" />
+                <option name="SPACE_WITHIN_METHOD_BODY_LBRACE" value="true" />
+                <option name="SPACE_BEFORE_METHOD_BODY_RBRACE" value="true" />
+                <option name="SPACE_WITHIN_METHOD_BODY_RBRACE" value="true" />
+                <option name="SPACE_BEFORE_IF_KEYWORD" value="true" />
+                <option name="SPACE_BEFORE_FOR_KEYWORD" value="true" />
+                <option name="SPACE_BEFORE_WHILE_KEYWORD" value="true" />
+                <option name="SPACE_BEFORE_DO_KEYWORD" value="true" />
+                <option name="SPACE_BEFORE_SWITCH_KEYWORD" value="true" />
+                <option name="SPACE_BEFORE_CASE_COLON" value="true" />
+                <option name="SPACE_AFTER_CASE_COLON" value="true" />
+                <option name="SPACE_BEFORE_DEFAULT_COLON" value="true" />
+                <option name="SPACE_AFTER_DEFAULT_COLON" value="true" />
+                <option name="SPACE_BEFORE_SYNCHRONIZED_KEYWORD" value="true" />
+                <option name="SPACE_BEFORE_SYNC_KEYWORD" value="true" />
+            </JavaCodeStyleSettings>
+        </code_scheme>
+</component>
+</project>

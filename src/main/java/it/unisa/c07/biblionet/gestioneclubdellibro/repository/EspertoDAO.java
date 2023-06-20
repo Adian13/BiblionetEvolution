@@ -11,7 +11,7 @@ import java.util.List;
  * Questa classe rappresenta il DAO di un Esperto.
  */
 @Repository
-public interface EspertoDAO extends JpaRepository<UtenteRegistrato, String> {
+public interface EspertoDAO extends JpaRepository<Esperto, String> {
 
     /**
      * Implementa la funzionalità di ricerca di un utente Esperto nel DB.
@@ -26,7 +26,7 @@ public interface EspertoDAO extends JpaRepository<UtenteRegistrato, String> {
      * @return dell'utente trovato.
      */
     @Query("SELECT e FROM Esperto e")
-    List<Esperto> findAllEsperti();
+    List<Esperto> findAll();
 
     /**
      * Query custom che recupera dal DB una lista
@@ -43,7 +43,8 @@ public interface EspertoDAO extends JpaRepository<UtenteRegistrato, String> {
     Esperto findByID(String email);
 
     @Query("SELECT e FROM Esperto e WHERE e.email=?1 and e.tipo=?2")
-    Esperto findEspertoByEmail(String email, String tipo);
+    Esperto findByEmail(String email, String tipo);
 
+    Esperto findByEmail(String email);
 
 }

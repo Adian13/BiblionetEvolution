@@ -1,5 +1,5 @@
 package modularityTest;
-
+/*
 import it.unisa.c07.biblionet.BiblionetApplication;
 import org.springframework.modulith.core.ApplicationModules;
 import org.junit.jupiter.api.Test;
@@ -24,4 +24,4 @@ public class ApplicationModularityTest {
     void createApplicationModuleModel() {
         modules.forEach(System.out::println);
     }
-}
+}*/

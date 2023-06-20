@@ -4,6 +4,7 @@ import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Esperto;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Genere;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Lettore;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -28,4 +29,6 @@ public interface PreferenzeDiLetturaService {
      * @param lettore il lettore a cui inserirli
      */
     void addGeneriLettore(Set<Genere> generi, Lettore lettore);
+
+    List<Genere> getGeneriByName(String[] generi);
 }

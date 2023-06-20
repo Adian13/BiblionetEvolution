@@ -22,7 +22,7 @@ import java.io.Serializable;
  */
 @Entity
 @Data
-@NoArgsConstructor
+@NoArgsConstructor(force = true)
 public class Possesso implements Serializable {
 
     /**

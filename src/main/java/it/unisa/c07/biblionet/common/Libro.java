@@ -17,7 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @RequiredArgsConstructor
-public abstract class Libro {
+public class Libro {
 
     /**
      * Rappresenta l'ID autogenerato di un libro.
@@ -84,7 +84,7 @@ public abstract class Libro {
     private Set<String> generi;
 
 
-    protected Libro(String titolo, String autore, String isbn, LocalDateTime annoDiPubblicazione, String descrizione, String casaEditrice, String immagineLibro, Set<String> generi) {
+  /*  protected Libro(String titolo, String autore, String isbn, LocalDateTime annoDiPubblicazione, String descrizione, String casaEditrice, String immagineLibro, Set<String> generi) {
         this.titolo = titolo;
         this.annoDiPubblicazione = annoDiPubblicazione;
         this.autore = autore;
@@ -93,5 +93,5 @@ public abstract class Libro {
         this.casaEditrice = casaEditrice;
         this.immagineLibro = immagineLibro;
         this.generi = generi;
-    }
+    }*/
 }
