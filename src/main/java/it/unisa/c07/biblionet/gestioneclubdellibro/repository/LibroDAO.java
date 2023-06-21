@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface LibroDAO extends JpaRepository<Libro, String> {
 
+    Libro save(Libro libro);
+
 }

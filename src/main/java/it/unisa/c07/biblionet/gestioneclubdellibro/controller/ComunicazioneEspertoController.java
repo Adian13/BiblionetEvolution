@@ -2,17 +2,17 @@ package it.unisa.c07.biblionet.gestioneclubdellibro.controller;
 
 import it.unisa.c07.biblionet.gestioneclubdellibro.ClubDelLibroService;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Esperto;
+import it.unisa.c07.biblionet.gestioneclubdellibro.repository.EspertoDAO;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Lettore;
 import it.unisa.c07.biblionet.utils.Utils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Alessio Casolaro
@@ -26,7 +26,12 @@ public class ComunicazioneEspertoController {
     /**
      * Il service per effettuare le operazioni di persistenza.
      */
+    @Qualifier("clubDelLibroService")
+    @Autowired
     private final ClubDelLibroService clubService;
+
+     @Autowired
+     private EspertoDAO espertoDAO;
 
     /**
      * Implementa la funzionalità di mostrare gli esperti in base
@@ -39,7 +44,7 @@ public class ComunicazioneEspertoController {
     public final List<Esperto> visualizzaEspertiGeneri(@RequestHeader(name = "Authorization") final String token) {
         if(!Utils.isUtenteLettore(token)) return new ArrayList<>();
         Lettore lettore = clubService.findLettoreByEmail(Utils.getSubjectFromToken(token));
-        return clubService.findEspertiByGeneri(lettore.getGeneri());
+        return espertoDAO.findByGenereSet(lettore.getGenereSet());
     }
 
     /**
@@ -51,7 +56,7 @@ public class ComunicazioneEspertoController {
     @CrossOrigin
     @ResponseBody
     public final List<Esperto> visualizzaListaEsperti() {
-        return clubService.findAllEsperti();
+        return espertoDAO.findAll();
     }
 
     /**
@@ -69,11 +74,11 @@ public class ComunicazioneEspertoController {
             @RequestParam("filtro") final String filtro) {
         switch (filtro) {
             case "nome":
-                return clubService.findByNome(stringa);
+                return espertoDAO.findByNome(stringa);
             case "genere":
-                return clubService.findEspertiByGeneri(new HashSet<>(Collections.singleton(stringa)));
+                return espertoDAO.findByGenereSet(stringa);
             default:
-                return clubService.findAll();
+                return espertoDAO.findAll();
         }
     }
 }

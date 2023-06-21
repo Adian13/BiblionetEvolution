@@ -20,6 +20,8 @@ import java.util.function.Predicate;
 @Service
 public interface ClubDelLibroService {
 
+    List<ClubDelLibro> findClubsByUtente(UtenteRegistrato u);
+
     /**
      * Implementa la funzionalità che permette
      * a un Esperto di creare un Club del Libro.
@@ -116,4 +118,5 @@ public interface ClubDelLibroService {
     UtenteRegistrato creaLettoreDaModel(LettoreDTO lettore);
 
     UtenteRegistrato aggiornaLettoreDaModel(LettoreDTO form);
+
 }

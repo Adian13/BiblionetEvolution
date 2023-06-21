@@ -23,7 +23,7 @@ import java.util.List;
  *
  * @author Viviana Pentangelo, Gianmario Voria
  */
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/biblioteca")
 public class BibliotecaController {

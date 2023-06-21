@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Questa classe rappresenta il DAO di un Lettore.
  */
@@ -31,5 +33,11 @@ public interface LettoreDAO extends JpaRepository<Lettore, String> {
     Lettore findByEmail(String email, String tipo);
 
     Lettore findByEmail(String email);
+    @Override
+    Lettore getById(String s);
+
+    @Override
+    List<Lettore> findAll();
+    Lettore save();
 
 }

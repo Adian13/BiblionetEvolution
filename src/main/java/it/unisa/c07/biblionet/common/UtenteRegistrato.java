@@ -1,19 +1,15 @@
 package it.unisa.c07.biblionet.common;
 
+import it.unisa.c07.biblionet.gestioneclubdellibro.repository.ClubDelLibro;
 import it.unisa.c07.biblionet.utils.BiblionetConstraints;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.Column;
-import javax.persistence.InheritanceType;
+
+import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 /**
  * Questa classe rappresenta un utente registrato alla piattaforma.
@@ -82,6 +78,13 @@ public abstract class UtenteRegistrato {
     private String tipo;
 
     /**
+     * Rappresenta la lista di club correlati dall'utente.
+     */
+    @OneToMany
+    @ToString.Exclude
+    private List<ClubDelLibro> clubs;
+
+    /**
      *
      * @param email la mail dell'utente registrato.
      * @param password la password dell'utente registrato.
@@ -119,7 +122,7 @@ public abstract class UtenteRegistrato {
      * Implementa il set della password effettuando l'hash.
      * @param password la password da settare
      */
-    public void setPassword(final String password) {
+    public void setPassword(String password) {
         try {
             MessageDigest md;
             md = MessageDigest.getInstance("SHA-256");
@@ -139,7 +142,5 @@ public abstract class UtenteRegistrato {
     public void setHashedPassword(final byte[] hashPassword) {
         this.password = hashPassword;
     }
-
-
 
 }

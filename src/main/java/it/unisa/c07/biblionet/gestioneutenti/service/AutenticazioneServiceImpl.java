@@ -40,13 +40,13 @@ public class AutenticazioneServiceImpl implements AutenticazioneService {
         byte[] arr = BiblionetConstraints.trasformaPassword(password);
         UtenteRegistrato u;
 
-        if ((u = clubDelLibroService.findEspertoByEmailAndPassword(email, arr)) != null) {
+        if ((u = clubDelLibroService.findByEmailAndPassword(email, arr)) != null) {
             return u;
         }
         else if ((u = prenotazioneLibriService.findBibliotecaByEmailAndPassword(email, arr)) != null) {
             return u;
         } else {
-            u = clubDelLibroService.findLettoreByEmailAndPassword(email, arr);
+            u = clubDelLibroService.findByEmailAndPassword(email, arr);
             return u;
         }
 

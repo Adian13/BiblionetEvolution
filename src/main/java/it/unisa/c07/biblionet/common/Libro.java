@@ -73,7 +73,7 @@ public class Libro {
      */
     @Lob
     @ToString.Exclude
-    private String immagineLibro;
+    private byte[] immagineLibro;
 
 
     /**

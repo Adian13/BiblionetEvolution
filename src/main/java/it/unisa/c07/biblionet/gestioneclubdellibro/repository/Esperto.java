@@ -3,16 +3,13 @@ package it.unisa.c07.biblionet.gestioneclubdellibro.repository;
 import it.unisa.c07.biblionet.common.UtenteRegistrato;
 import it.unisa.c07.biblionet.gestioneclubdellibro.EspertoDTO;
 import it.unisa.c07.biblionet.utils.BiblionetConstraints;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -26,6 +23,8 @@ import java.util.Set;
 @Entity
 @SuperBuilder
 @Data
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor(force = true)
 public class Esperto extends UtenteRegistrato {
@@ -64,30 +63,21 @@ public class Esperto extends UtenteRegistrato {
     /**
      * Rappresenta la lista di generi di cui un esperto è esperto.
      */
-    @ElementCollection
-    private Set<String> nomeGeneri;
-
-    /**
-     * Rappresenta la lista di club gestiti dall'esperto.
-     */
-    @OneToMany
-    @ToString.Exclude
-    private List<ClubDelLibro> clubs;
-
+    @ManyToMany
+    private Set<Genere> genereSet;
 
 
     /**
-     *
-     * @param email È la mail dell'esperto.
-     * @param password È la password di accesso dell'esperto.
-     * @param provincia È la provincia in cui lavora l'esperto.
-     * @param citta È la città in cui lavora l'esperto.
-     * @param via È l'indirizzo in cui lavora l'esperto.
+     * @param email              È la mail dell'esperto.
+     * @param password           È la password di accesso dell'esperto.
+     * @param provincia          È la provincia in cui lavora l'esperto.
+     * @param citta              È la città in cui lavora l'esperto.
+     * @param via                È l'indirizzo in cui lavora l'esperto.
      * @param recapitoTelefonico È il numero di telefono dell'esperto.
-     * @param username È l'username dell'esperto.
-     * @param nome È il nome dell'esperto.
-     * @param cognome È il cognome dell'esperto.
-     * @param biblioteca È la biblioteca dove lavora l'esperto.
+     * @param username           È l'username dell'esperto.
+     * @param nome               È il nome dell'esperto.
+     * @param cognome            È il cognome dell'esperto.
+     * @param biblioteca         È la biblioteca dove lavora l'esperto.
      */
     public Esperto(final String email, final String password,
                    final String provincia, final String citta,
@@ -102,18 +92,7 @@ public class Esperto extends UtenteRegistrato {
         this.biblioteca = biblioteca;
     }
 
-    public Esperto(EspertoDTO dto, UtenteRegistrato biblioteca){
-        super(dto.getEmail(), dto.getPassword(), dto.getProvincia(), dto.getCitta(), dto.getVia(), dto.getRecapitoTelefonico(), "Esperto");
-        this.username = dto.getUsername();
-        this.nome = dto.getNome();
-        this.cognome = dto.getCognome();
-        this.biblioteca = biblioteca;
-        this.nomeGeneri = dto.getGeneri();
+    private Set<Genere> setGeneri(Set<Genere> generi) {
+        return generi;
     }
-
-    public Set<String> getGeneri() {
-        return getNomeGeneri();
-    }
-
-
 }

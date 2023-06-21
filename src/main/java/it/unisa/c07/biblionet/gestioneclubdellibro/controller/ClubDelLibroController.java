@@ -7,18 +7,17 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import it.unisa.c07.biblionet.gestioneclubdellibro.ClubDTO;
-import it.unisa.c07.biblionet.gestioneclubdellibro.EventoDTO;
+import it.unisa.c07.biblionet.gestioneclubdellibro.*;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.ClubDelLibro;
 import it.unisa.c07.biblionet.utils.BiblionetResponse;
 import it.unisa.c07.biblionet.utils.Utils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import it.unisa.c07.biblionet.gestioneclubdellibro.ClubDelLibroService;
-import it.unisa.c07.biblionet.gestioneclubdellibro.GestioneEventiService;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Evento;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Esperto;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Lettore;
@@ -44,7 +43,13 @@ public class ClubDelLibroController {
     /**
      * Il service per effettuare le operazioni di persistenza.
      */
-    private final ClubDelLibroService clubService;
+    @Qualifier("clubDelLibroService")
+    @Autowired
+    private  ClubDelLibroService clubService;
+     @Autowired
+    private  EspertoService espertoService;
+     @Autowired
+    private  LettoreService lettoreService;
 
     /**
      * Il service per effettuare le operazioni di persistenza
@@ -205,7 +210,7 @@ public class ClubDelLibroController {
         if (!Utils.isUtenteEsperto(token)) {
             return new BiblionetResponse(BiblionetResponse.NON_AUTORIZZATO, false);
         }
-        Esperto esperto = clubService.findEspertoByEmail(Utils.getSubjectFromToken(token));
+        Esperto esperto = espertoService.findByEmail(Utils.getSubjectFromToken(token));
 
         ClubDelLibro cdl = new ClubDelLibro();
         cdl.setNome(clubDTO.getNome());
@@ -234,8 +239,8 @@ public class ClubDelLibroController {
             final @RequestHeader(name = "Authorization") String token
     ) {
         if (!Utils.isUtenteLettore(Utils.getSubjectFromToken(token))) return new ArrayList<>();
-        Lettore lettore =  clubService.getLettoreByEmail(Utils.getSubjectFromToken(token));
-        return clubService.findClubsLettore(lettore);
+        Lettore lettore =  lettoreService.findByEmail(Utils.getSubjectFromToken(token));
+        return clubService.findClubsByUtente(lettore);
     }
 
 
@@ -251,7 +256,7 @@ public class ClubDelLibroController {
     public List<ClubDelLibro> visualizzaClubsEsperto(final @RequestHeader(name = "Authorization") String token) {
         //todo da controllare
         if (!Utils.isUtenteEsperto(Utils.getSubjectFromToken(token))) return new ArrayList<>();
-        return clubService.findClubsEsperto(clubService.findEspertoByEmail(Utils.getSubjectFromToken(token)));
+        return clubService.findClubsByUtente(espertoService.findByEmail(Utils.getSubjectFromToken(token)));
     }
     /**
      * Implementa la funzionalità che permette
@@ -269,7 +274,7 @@ public class ClubDelLibroController {
                                                         final @ModelAttribute ClubDTO club,
                                                         @RequestHeader(name = "Authorization") final String token
     ) {
-        Esperto esperto = clubService.findEspertoByEmail(Utils.getSubjectFromToken(token));
+        Esperto esperto = espertoService.findByEmail(Utils.getSubjectFromToken(token));
         var cdl = this.clubService.getClubByID(id);
         if (cdl == null || esperto == null) {
             return new BiblionetResponse(BiblionetResponse.OGGETTO_NON_TROVATO, false);
@@ -359,7 +364,7 @@ public class ClubDelLibroController {
                                                       @RequestHeader(name = "Authorization") final String token) {
 
         var eventoBaseOpt = this.eventiService.getEventoById(idEvento);
-        Esperto esperto = (Esperto) clubService.findByNome(Utils.getSubjectFromToken(token));
+        Esperto esperto = espertoService.findByEmail(Utils.getSubjectFromToken(token));
 
         if (eventoBaseOpt.isEmpty()) {
             return new BiblionetResponse(BiblionetResponse.OGGETTO_NON_TROVATO, false);

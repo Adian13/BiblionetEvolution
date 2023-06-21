@@ -2,7 +2,6 @@ package it.unisa.c07.biblionet.gestioneclubdellibro.service;
 
 import it.unisa.c07.biblionet.common.UtenteRegistrato;
 import it.unisa.c07.biblionet.gestioneclubdellibro.ClubDelLibroService;
-import it.unisa.c07.biblionet.gestioneclubdellibro.EspertoDTO;
 import it.unisa.c07.biblionet.gestioneclubdellibro.LettoreDTO;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -39,15 +38,9 @@ public class ClubDelLibroServiceImpl implements ClubDelLibroService {
     @Autowired
     private final LettoreDAO lettoreDAO;
 
-
     @Override
-    public final List<ClubDelLibro> findClubsByEsperto(Esperto esperto) {
-        return esperto.getClubs();
-    }
-
-    @Override
-    public final List<ClubDelLibro> findClubsByLettore(Lettore lettore) {
-        return lettore.getClubs();
+    public final List<ClubDelLibro> findClubsByEsperto(UtenteRegistrato u) {
+        return u.getClubs();
     }
 
 
@@ -219,16 +212,6 @@ public class ClubDelLibroServiceImpl implements ClubDelLibroService {
     @Override
     public Lettore aggiornaLettore(final Lettore utente) {
         return lettoreDAO.save(utente);
-    }
-
-    @Override
-    public List<Esperto> findAll() {
-        return espertoDAO.findAll();
-    }
-
-    @Override
-    public List<Esperto> findByNome(String nome) {
-        return espertoDAO.findByNomeLike(nome);
     }
 
     @Override

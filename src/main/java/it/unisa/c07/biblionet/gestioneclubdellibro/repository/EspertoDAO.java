@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Questa classe rappresenta il DAO di un Esperto.
@@ -47,4 +48,8 @@ public interface EspertoDAO extends JpaRepository<Esperto, String> {
 
     Esperto findByEmail(String email);
 
+    List<Esperto> findByGenereSet(Set<Genere> genereSet);
+    List<Esperto> findByGenereSet(String genereSet);
+
+    List<Esperto> findByNome(String stringa);
 }

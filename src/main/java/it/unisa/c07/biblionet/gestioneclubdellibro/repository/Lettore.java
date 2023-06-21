@@ -54,16 +54,9 @@ public class Lettore extends UtenteRegistrato {
     /**
      * Rappresenta i generi che interessano a un lettore.
      */
-    @ElementCollection
-    private Set<String> nomeGeneri;
-
-    /**
-     * Rappresenta i clubs a cui il lettore appartiene.
-     */
     @ManyToMany
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @ToString.Exclude
-    private List<ClubDelLibro> clubs;
+    private Set<Genere> genereSet;
+
 
     /**
      * Rappresenta gli eventi a cui prende parte.
@@ -103,23 +96,5 @@ public class Lettore extends UtenteRegistrato {
         this.username = dto.getUsername();
         this.nome = dto.getNome();
         this.cognome = dto.getCognome();
-    }
-
-    @Override
-    public boolean equals(final Object obj) throws NullPointerException {
-        if (obj.getClass().equals(this.getClass())) {
-            Lettore lettore = (Lettore) obj;
-            return (this.getEmail().equals(lettore.getEmail())
-                    && this.getUsername().equals(lettore.getUsername())
-                    && this.getCognome().equals(lettore.getCognome())
-                    && this.getNome().equals(lettore.getNome()));
-        }
-        return false;
-    }
-
-
-
-    public Set<String> getGeneri() {
-        return getNomeGeneri();
     }
 }
