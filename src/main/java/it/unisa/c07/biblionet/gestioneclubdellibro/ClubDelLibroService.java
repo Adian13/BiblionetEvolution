@@ -105,9 +105,11 @@ public interface ClubDelLibroService {
      */
     List<ClubDelLibro> findAllByEsperto(Esperto esperto);
 
-    UtenteRegistrato creaEspertoDaModel(EspertoDTO form, UtenteRegistrato biblioteca);
+    UtenteRegistrato creaEspertoDaModel(EspertoDTO espertoDTO, String emailBiblioteca);
 
-    UtenteRegistrato aggiornaEspertoDaModel(EspertoDTO form, UtenteRegistrato biblioteca);
+    UtenteRegistrato aggiornaEspertoDaModel(EspertoDTO espertoDTO, String biblioteca);
+
+    UtenteRegistrato loginUtente(String email, String password);
 
     Esperto aggiornaEsperto(Esperto utente);
 

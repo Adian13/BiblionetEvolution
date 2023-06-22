@@ -35,14 +35,30 @@ public class PrenotazioneLibriController {
      */
     private final PrenotazioneLibriService prenotazioneService;
 
+    /**
+     * Implementa la funzionalità che permette di
+     * richiedere il prestito di un libro.
+     *
+     * @param idBiblioteca L'ID della biblioteca che possiede il libro
+     * @param idLibro      L'ID del libro di cui effettuare la prenotazione
+     * @return La view che visualizza la lista dei libri prenotabili
+     */
+    @PostMapping(value = "/conferma-prenotazione")
+    @ResponseBody
+    @CrossOrigin
+    public BiblionetResponse confermaPrenotazione(@RequestParam final String idBiblioteca,
+                                     @RequestParam final String idLibro,
+                                     @RequestHeader (name="Authorization") final String token) {
 
-    @Async
-    @EventListener
-    public BiblionetResponse on(ConfermaPrenotazioneEvent confermaPrenotazioneEvent){
-        //System.err.println("Test");
-        prenotazioneService.richiediPrestito(confermaPrenotazioneEvent.getUtenteRegistrato(),
-                confermaPrenotazioneEvent.getEmailBiblioteca(),
-                confermaPrenotazioneEvent.getIdLibro());
+        //todo siamo sicuri sia fatto bene?
+        if (!Utils.isUtenteLettore(token)) {
+            return new BiblionetResponse("Impossibile prenotare un libro per l'utente selezionato", true);
+        }
+        UtenteRegistrato l = prenotazioneService.findUtenteRegistratoByEmail(Utils.getSubjectFromToken(token));
+        if(!l.getTipo().equals("Lettore")) return new BiblionetResponse("Impossibile prenotare un libro per l'utente selezionato", false);;
+        prenotazioneService.richiediPrestito(l,
+                idBiblioteca,
+                Integer.parseInt(idLibro));
         return new BiblionetResponse("OK", true);
     }
 

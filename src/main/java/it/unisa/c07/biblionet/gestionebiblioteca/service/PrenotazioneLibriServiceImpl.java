@@ -6,6 +6,7 @@ import it.unisa.c07.biblionet.gestionebiblioteca.BibliotecaDTO;
 import it.unisa.c07.biblionet.gestionebiblioteca.PrenotazioneLibriService;
 import it.unisa.c07.biblionet.gestionebiblioteca.bookapiadapter.BookApiAdapter;
 import it.unisa.c07.biblionet.gestionebiblioteca.repository.*;
+import it.unisa.c07.biblionet.utils.BiblionetConstraints;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -44,8 +45,18 @@ public class PrenotazioneLibriServiceImpl implements PrenotazioneLibriService {
     }
 
     @Override
+    public UtenteRegistrato loginBiblioteca(String email, String password) {
+        return bibliotecaDAO.findByEmailAndPassword(email, BiblionetConstraints.trasformaPassword(password));
+    }
+
+    @Override
     public UtenteRegistrato findBibliotecaByEmailAndPassword(String email, byte[] password) {
         return bibliotecaDAO.findByEmailAndPassword(email, password);
+    }
+
+    @Override
+    public UtenteRegistrato findUtenteRegistratoByEmail(String email) {
+        return bibliotecaDAO.findUtenteRegistratoByEmail(email);
     }
 
     /**

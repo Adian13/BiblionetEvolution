@@ -55,6 +55,7 @@ public interface BibliotecaDAO extends JpaRepository<UtenteRegistrato, String> {
     @Query("SELECT b FROM Biblioteca b WHERE b.email=?1 and b.tipo=?2")
     Biblioteca findBibliotecaByEmail(String email, String tipo);
 
+    UtenteRegistrato findUtenteRegistratoByEmail(String email);
 
     /**
      * Query custom che recupera dal DB la liste di tutte

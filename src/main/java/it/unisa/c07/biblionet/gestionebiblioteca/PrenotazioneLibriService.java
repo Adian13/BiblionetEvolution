@@ -19,7 +19,11 @@ public interface PrenotazioneLibriService {
 
     UtenteRegistrato bibliotecaDaModel(BibliotecaDTO form);
 
+    UtenteRegistrato loginBiblioteca(String email, String password);
+
     UtenteRegistrato findBibliotecaByEmailAndPassword(String email, byte[] password);
+
+    UtenteRegistrato findUtenteRegistratoByEmail(String email);
 
     /**
      * Implementa la funzionalità che permette

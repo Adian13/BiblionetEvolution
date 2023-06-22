@@ -8,12 +8,12 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import it.unisa.c07.biblionet.common.UtenteRegistrato;
-import it.unisa.c07.biblionet.events.ConfermaPrenotazioneEvent;
-import it.unisa.c07.biblionet.events.CreateEsperto;
+import it.unisa.c07.biblionet.common.UtenteRegistratoDTO;
 import it.unisa.c07.biblionet.events.CreateLettore;
-import it.unisa.c07.biblionet.gestionebiblioteca.repository.TicketPrestito;
+import it.unisa.c07.biblionet.events.MiddleEsperto;
 import it.unisa.c07.biblionet.gestioneclubdellibro.*;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.ClubDelLibro;
+import it.unisa.c07.biblionet.utils.BiblionetConstraints;
 import it.unisa.c07.biblionet.utils.BiblionetResponse;
 import it.unisa.c07.biblionet.utils.Utils;
 import org.springframework.context.ApplicationEventPublisher;
@@ -46,20 +46,158 @@ import javax.validation.Valid;
 @RequestMapping("/club-del-libro")
 public class ClubDelLibroController {
 
-
     private final ClubDelLibroService clubService;
     private final GestioneEventiService eventiService;
-    private final ApplicationEventPublisher events;
 
-    @Async
-    @EventListener
-    public void on(CreateLettore createLettore){
-        clubService.creaLettoreDaModel(createLettore.getLettoreDTO());
+    /**
+     * Implementa la funzionalità di login come utente.
+     * @param email
+     * @param password
+     * @return rimanda alla pagina di home.
+     */
+    @PostMapping(value = "/login")
+    @CrossOrigin
+    @ResponseBody
+    public BiblionetResponse login(@RequestParam String email,
+                                   @RequestParam String password) {
+
+        UtenteRegistrato utente = clubService.loginUtente(email, password);
+
+        if (utente == null) {
+            return new BiblionetResponse("Login fallito.", false);
+        } else {
+            return new BiblionetResponse("", true);
+        }
     }
-    @Async
-    @EventListener
-    public void on(CreateEsperto createEsperto) {
-        clubService.creaEspertoDaModel(createEsperto.getEspertoDTO(), createEsperto.getBiblioteca());
+
+    @PostMapping(value = "/conferma-modifica-lettore")
+    @ResponseBody
+    @CrossOrigin
+    public BiblionetResponse modificaDatiLettore(
+            final @RequestHeader(name = "Authorization") String token,
+            final @Valid @RequestParam("Lettore") LettoreDTO lettore,
+            BindingResult bindingResult,
+            final @RequestParam("vecchia_password") String vecchia,
+            final @RequestParam("nuova_password") String nuova,
+            final @RequestParam("conferma_password") String conferma) {
+
+
+
+        if (!Utils.isUtenteLettore(Utils.getSubjectFromToken(token)))
+            return new BiblionetResponse(BiblionetResponse.NON_AUTORIZZATO, false);
+
+        if (!Utils.getSubjectFromToken(token).equals(lettore.getEmail()))
+            return new BiblionetResponse("Non puoi cambiare email", false); //todo non si può modificare la mail, va fatto anche per lettore e biblioteca sto controllo
+
+        //todo tecnicamente non controllo se è un lettore
+        if(clubService.loginUtente(lettore.getEmail(), vecchia) == null) return new BiblionetResponse(BiblionetResponse.NON_AUTORIZZATO, false);
+        String password = (BiblionetConstraints.confrontoPassword(nuova, conferma));
+        if(password.isEmpty()) return new BiblionetResponse(BiblionetResponse.RICHIESTA_NON_VALIDA, false);
+        lettore.setPassword(password);
+        String s = controlliPreliminari(bindingResult, vecchia, lettore);
+        if (!s.isEmpty()) return new BiblionetResponse(s, false);
+
+        clubService.aggiornaLettoreDaModel(lettore);
+        return new BiblionetResponse("Dati aggiornati", true);
+    }
+
+    /**
+     * Implementa la funzionalità di modifica dati di un esperto.
+     *
+     * @param esperto         Un esperto da modificare.
+     * @param vecchia         La vecchia password dell'account.
+     * @param nuova           La nuova password dell'account.
+     * @param conferma        La password di conferma password dell'account.
+     * @param emailBiblioteca L'email della biblioteca scelta.
+     * @return login Se la modifica va a buon fine.
+     * modifica_dati_esperto Se la modifica non va a buon fine
+     */
+    @PostMapping(value = "/conferma-modifica-esperto")
+    @ResponseBody
+    @CrossOrigin
+    public BiblionetResponse modificaDatiEsperto(
+            final @RequestHeader(name = "Authorization") String token,
+            final @Valid @RequestParam("Esperto") EspertoDTO esperto,
+            BindingResult bindingResult,
+            final @RequestParam("vecchia_password") String vecchia,
+            final @RequestParam("nuova_password") String nuova,
+            final @RequestParam("conferma_password") String conferma,
+            final @RequestParam("email_biblioteca") String emailBiblioteca) {
+
+
+
+        if (!Utils.isUtenteEsperto(Utils.getSubjectFromToken(token)))
+            return new BiblionetResponse(BiblionetResponse.NON_AUTORIZZATO, false);
+
+        if (!Utils.getSubjectFromToken(token).equals(esperto.getEmail()))
+            return new BiblionetResponse("Non puoi cambiare email", false); //todo non si può modificare la mail, va fatto anche per lettore e biblioteca sto controllo
+
+        //todo tecnicamente non controllo se è un esperto
+        if(clubService.loginUtente(esperto.getEmail(), vecchia) == null) return new BiblionetResponse(BiblionetResponse.NON_AUTORIZZATO, false);
+        String password = (BiblionetConstraints.confrontoPassword(nuova, conferma));
+        if(password.isEmpty()) return new BiblionetResponse(BiblionetResponse.RICHIESTA_NON_VALIDA, false);
+        esperto.setPassword(password);
+        String s = controlliPreliminari(bindingResult, vecchia, esperto);
+        if (!s.isEmpty()) return new BiblionetResponse(s, false);
+
+        clubService.aggiornaEspertoDaModel(esperto, emailBiblioteca); //todo qualche check in più sull'esistenza dell'esperto, anche se se ha il token è autoamticamente registrato
+
+        return new BiblionetResponse("Dati aggiornati", true);
+    }
+
+    /**
+     * Implementa la funzionalità di registrazione di un esperto.
+     */
+    @PostMapping(value = "/esperto")
+    @ResponseBody
+    @CrossOrigin
+    public BiblionetResponse registrazioneEsperto(final @Valid @ModelAttribute EspertoDTO esperto,
+                                                  BindingResult bindingResult,
+                                                  final @RequestParam("conferma_password") String password,
+                                                  final @RequestParam("email_biblioteca") String bibliotecaEmail) {
+
+        String s = controlliPreliminari(bindingResult, password, esperto);
+        if (!s.isEmpty()) {
+            return new BiblionetResponse(s, false);
+        }
+        clubService.creaEspertoDaModel(esperto, bibliotecaEmail);
+        return new BiblionetResponse("Registrazione ok", true);
+    }
+
+    /**
+     * Implementa la funzionalità di registrazione di
+     * un lettore.
+     * Gestisce la chiamata POST
+     * per creare un nuovo lettore.
+     *
+     * @param lettore  Il lettore da registrare
+     * @param password il campo conferma password del form per controllare
+     *                 il corretto inserimento della stessa.
+     * @return La view per effettuare il login
+     */
+    @PostMapping(value = "/lettore")
+    @ResponseBody
+    @CrossOrigin
+    public BiblionetResponse registrazioneLettore(@Valid @ModelAttribute LettoreDTO lettore,
+                                                  BindingResult bindingResult,
+                                                  final @RequestParam("conferma_password")
+                                                  String password
+    ) {
+        String s = controlliPreliminari(bindingResult, password, lettore);
+        if (!s.isEmpty()) return new BiblionetResponse(s, false);
+
+        clubService.creaLettoreDaModel(lettore);
+        return new BiblionetResponse("Registrazione effettuata correttamente", true);
+    }
+
+    private String controlliPreliminari(BindingResult bindingResult, String password, UtenteRegistratoDTO utenteRegistrato) {
+        if (bindingResult.hasErrors()) {
+            return "Errore di validazione";
+        }
+        if (!BiblionetConstraints.passwordRispettaVincoli(utenteRegistrato.getPassword(), password)) {
+            return "Password non adeguata";
+        }
+        return "";
     }
 
     /**
@@ -76,7 +214,7 @@ public class ClubDelLibroController {
      */
     private BiblionetResponse modificaCreaEvento(final EventoDTO eventoDTO, BindingResult bindingResult,
                                                  //@RequestParam final String view,
-                                                 final int idClub, final Optional < Integer > idEvento, final Consumer < Evento > operazione) {
+                                                 final int idClub, final Optional <Integer> idEvento, final Consumer < Evento > operazione) {
 
         if (bindingResult.hasErrors())
             return new BiblionetResponse("I dati inseriti non rispettano il formato atteso", false);
@@ -227,32 +365,10 @@ public class ClubDelLibroController {
         cdl.setGeneri(new HashSet<>(clubDTO.getGeneri()));
 
         this.clubService.creaClubDelLibro(cdl);
-        return new BiblionetResponse("Club del Libro creato", false);
+        return new BiblionetResponse("Club del Libro creato", true);
 
     }
 
-    /**
-     * Implementa la funzionalità che permette di
-     * richiedere il prestito di un libro.
-     *
-     * @param idBiblioteca L'ID della biblioteca che possiede il libro
-     * @param idLibro      L'ID del libro di cui effettuare la prenotazione
-     * @return La view che visualizza la lista dei libri prenotabili
-     */
-    @PostMapping(value = "/conferma-prenotazione")
-    @ResponseBody
-    @CrossOrigin
-    public void confermaPrenotazione(@RequestParam final String idBiblioteca,
-                                                  @RequestParam final String idLibro,
-                                                  @RequestHeader (name="Authorization") final String token) {
-
-        //todo siamo sicuri sia fatto bene?
-        if (!Utils.isUtenteLettore(token)) {
-            return;
-        }
-        UtenteRegistrato l = clubService.findLettoreByEmail(Utils.getSubjectFromToken(token));
-        events.publishEvent(new ConfermaPrenotazioneEvent(l, idBiblioteca, idLibro));
-    }
 
     /**
      * Implementa la funzionalità di visualizzazione dei clubs

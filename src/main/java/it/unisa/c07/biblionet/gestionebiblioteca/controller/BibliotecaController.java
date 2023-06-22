@@ -1,12 +1,15 @@
 package it.unisa.c07.biblionet.gestionebiblioteca.controller;
 
+import it.unisa.c07.biblionet.common.UtenteRegistrato;
+import it.unisa.c07.biblionet.common.UtenteRegistratoDTO;
 import it.unisa.c07.biblionet.events.CreateBiblioteca;
-import it.unisa.c07.biblionet.events.CreateEsperto;
 import it.unisa.c07.biblionet.events.MiddleEsperto;
+import it.unisa.c07.biblionet.gestionebiblioteca.BibliotecaDTO;
 import it.unisa.c07.biblionet.gestionebiblioteca.LibroBibliotecaDTO;
 import it.unisa.c07.biblionet.gestionebiblioteca.PrenotazioneLibriService;
 import it.unisa.c07.biblionet.gestionebiblioteca.repository.LibroBiblioteca;
 import it.unisa.c07.biblionet.gestionebiblioteca.repository.Biblioteca;
+import it.unisa.c07.biblionet.utils.BiblionetConstraints;
 import it.unisa.c07.biblionet.utils.BiblionetResponse;
 import it.unisa.c07.biblionet.utils.Utils;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +17,10 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,16 +48,44 @@ public class BibliotecaController {
     private final PrenotazioneLibriService prenotazioneService;
     private final ApplicationEventPublisher events;
 
-    @Async
-    @EventListener
-    public void on(CreateBiblioteca createBiblioteca) {
-        prenotazioneService.bibliotecaDaModel(createBiblioteca.getBibliotecaDTO());
+    /**
+     * Implementa la funzionalità di modifica dati di una biblioteca.
+     *
+     * @param biblioteca email della biblioteca da modificare.
+     * @param vecchia    La vecchia password dell'account.
+     * @param nuova      La nuova password dell'account.
+     * @param conferma   La password di conferma password dell'account.
+     * @return login Se la modifica va a buon fine.
+     * modifica_dati_biblioteca Se la modifica non va a buon fine
+     */
+    @PostMapping(value = "/conferma-modifica-biblioteca")
+    @ResponseBody
+    @CrossOrigin
+    public BiblionetResponse modificaDatiBiblioteca(
+            final @RequestHeader(name = "Authorization") String token,
+            final @Valid @ModelAttribute("Biblioteca") BibliotecaDTO biblioteca,
+            BindingResult bindingResult,
+            final @RequestParam("vecchia_password") String vecchia,
+            final @RequestParam("nuova_password") String nuova,
+            final @RequestParam("conferma_password") String conferma) {
+
+        if(!Utils.isUtenteBiblioteca(token)) return new BiblionetResponse(BiblionetResponse.NON_AUTORIZZATO, false);
+
+        if (!Utils.getSubjectFromToken(token).equals(biblioteca.getEmail()))
+            return new BiblionetResponse("Non puoi cambiare email", false); //todo non si può modificare la mail, va fatto anche per lettore e biblioteca sto controllo
+
+
+        String password = (BiblionetConstraints.confrontoPassword(nuova, conferma));
+        if(password.isEmpty()) return new BiblionetResponse(BiblionetResponse.RICHIESTA_NON_VALIDA, false);
+            String s = controlliPreliminari(bindingResult, vecchia, biblioteca);
+        if (!s.isEmpty()) return new BiblionetResponse(s, false);
+        biblioteca.setPassword(password);
+
+        UtenteRegistrato b = prenotazioneService.bibliotecaDaModel(biblioteca);
+        if(b==null) return new BiblionetResponse(BiblionetResponse.ERRORE, false);
+        return new BiblionetResponse(BiblionetResponse.OPERAZIONE_OK, true);
     }
-    @Async
-    @EventListener
-    public void on(MiddleEsperto middleEsperto){
-        events.publishEvent(new CreateEsperto(middleEsperto.getEspertoDTO(), prenotazioneService.findBibliotecaByEmail(middleEsperto.getEmailBiblioteca())));
-    }
+
     /**
      * Implementa la funzionalità che permette di
      * visualizzare tutte le biblioteche iscritte.
@@ -63,6 +96,62 @@ public class BibliotecaController {
     @CrossOrigin
     public List<Biblioteca> visualizzaListaBiblioteche() {
         return prenotazioneService.findAllBiblioteche();
+    }
+
+    /**
+     * Implementa la funzionalità di registrazione di una biblioteca.
+     *
+     * @param biblioteca la biblioteca da registrare
+     * @param password   la password di conferma
+     * @return la view di login
+     */
+    @PostMapping(value = "/biblioteca")
+    @ResponseBody
+    @CrossOrigin
+    public BiblionetResponse registrazioneBiblioteca(@Valid @ModelAttribute BibliotecaDTO biblioteca,
+                                                     BindingResult bindingResult,
+                                                     @RequestParam("conferma_password") String password
+    ) {
+        String s = controlliPreliminari(bindingResult, password, biblioteca);
+        if (!s.isEmpty()) {
+            return new BiblionetResponse(s, false);
+        }
+        prenotazioneService.bibliotecaDaModel(biblioteca);
+        return new BiblionetResponse("Registrazione effettuata correttamente", true);
+    }
+
+    /**
+     * Implementa la funzionalità di login come utente.
+     * @param email
+     * @param password
+     * @return rimanda alla pagina di home.
+     */
+    @PostMapping(value = "/login")
+    @CrossOrigin
+    @ResponseBody
+    public BiblionetResponse login(@RequestParam String email,
+                                   @RequestParam String password) {
+
+        UtenteRegistrato utente = prenotazioneService.loginBiblioteca(email, password);
+
+        if (utente == null) {
+            return new BiblionetResponse("Login fallito.", false);
+        } else {
+            return new BiblionetResponse("", true);
+        }
+    }
+
+    private String controlliPreliminari(BindingResult bindingResult, String vecchia, UtenteRegistratoDTO utenteRegistrato) {
+        if (bindingResult.hasErrors()) {
+            return "Errore di validazione";
+        }
+        if (prenotazioneService.loginBiblioteca(utenteRegistrato.getEmail(), vecchia) == null) { //usata solo per vedere se la password vecchia corrisponde, non effettua davvero il login
+            return "Password errata. Non sei autorizzato a modificare la password.";
+        }
+
+
+        return "";
+
     }
 
     /**

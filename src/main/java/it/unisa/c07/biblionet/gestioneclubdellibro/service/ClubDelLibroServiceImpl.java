@@ -5,6 +5,7 @@ import it.unisa.c07.biblionet.gestioneclubdellibro.ClubDelLibroService;
 import it.unisa.c07.biblionet.gestioneclubdellibro.EspertoDTO;
 import it.unisa.c07.biblionet.gestioneclubdellibro.LettoreDTO;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.*;
+import it.unisa.c07.biblionet.utils.BiblionetConstraints;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -184,17 +185,38 @@ public class ClubDelLibroServiceImpl implements ClubDelLibroService {
     }
 
     @Override
-    public UtenteRegistrato creaEspertoDaModel(EspertoDTO form, UtenteRegistrato biblioteca) {
+    public UtenteRegistrato creaEspertoDaModel(EspertoDTO form, String emailBiblioteca) {
+        UtenteRegistrato biblioteca = espertoDAO.findByID(emailBiblioteca);
         if(biblioteca == null) return null;
         return espertoDAO.save(new Esperto(form, biblioteca));
     }
 
     @Override
-    public UtenteRegistrato aggiornaEspertoDaModel(EspertoDTO form, UtenteRegistrato biblioteca) {
-        if(biblioteca == null) biblioteca = findEspertoByEmail(form.getEmail()).getBiblioteca(); //todo non la utilizzo, ma dovrei
-        return espertoDAO.save(new Esperto(form, biblioteca));
+    public UtenteRegistrato aggiornaEspertoDaModel(EspertoDTO form, String biblioteca) {
+        return creaEspertoDaModel(form, biblioteca);
     }
 
+    /**
+     * Implementa la funzionalità di login
+     * per un Utente registrato.
+     *
+     * @param email    dell'utente.
+     * @param password dell'utente.
+     * @return un utente registrato.
+     */
+    @Override
+    public UtenteRegistrato loginUtente(final String email, final String password) {
+        byte[] arr = BiblionetConstraints.trasformaPassword(password);
+        UtenteRegistrato u;
+
+        if ((u = this.findLettoreByEmailAndPassword(email, arr)) != null) {
+            return u;
+        } else {
+            u = this.findEspertoByEmailAndPassword(email, arr);
+            return u;
+        }
+
+    }
 
     /**
      * Implementa la funzionalità di salvataggio delle modifiche

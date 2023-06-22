@@ -81,13 +81,13 @@ public class BiblionetConstraints {
         if(password.length() <= 7) return false;
         return Arrays.equals(passwordUtente, trasformaPassword(password));
     }
-    public static boolean confrontoPassword(String nuova, String conferma){
+    public static String confrontoPassword(String nuova, String conferma){
         if (!nuova.isEmpty() && !conferma.isEmpty()) {
             if (nuova.length() <= 7)
-                return false;
-            return nuova.equals(conferma);
+                return "";
+            if( nuova.equals(conferma)) return nuova;
         }
-        return false;
+        return "";
     }
 
     public static byte[] trasformaPassword(String password){
