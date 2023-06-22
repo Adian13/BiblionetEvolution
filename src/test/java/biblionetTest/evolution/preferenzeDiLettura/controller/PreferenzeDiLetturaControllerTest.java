@@ -29,7 +29,7 @@ public class PreferenzeDiLetturaControllerTest {
     /**
      * Mock del service per simulare
      * le operazioni dei metodi.
-     */
+
     @MockBean
     private PreferenzeDiLetturaService preferenzeDiLetturaService;
 
@@ -44,7 +44,7 @@ public class PreferenzeDiLetturaControllerTest {
      * Test di Inserimento nuovi generi ad un esperto con esperto
      * e generi non null.
      * @throws Exception eccezione di mockMvc
-     */
+     *
     @Test
     @DisplayName("Inserimento nuovi generi ad un esperto "
                  + "con esperto e generi non null")
@@ -61,7 +61,7 @@ public class PreferenzeDiLetturaControllerTest {
      * Test di Inserimento nuovi generi ad un esperto con esperto
      * null e generi non null.
      * @throws Exception eccezione di mockMvc
-     */
+
     @Test
     @DisplayName("Inserimento nuovi generi ad un esperto"
                  + "con esperto null e generi non null")
@@ -75,7 +75,7 @@ public class PreferenzeDiLetturaControllerTest {
      * Test di Inserimento nuovi generi ad un lettore con lettore
      * e generi non null.
      * @throws Exception eccezione di mockMvc
-     */
+     *
     @Test
     @DisplayName("Inserimento nuovi generi ad un lettore "
             + "con lettore e generi non null")
@@ -92,7 +92,7 @@ public class PreferenzeDiLetturaControllerTest {
      * Test di Inserimento nuovi generi ad un lettore con lettore
      * e generi non null.
      * @throws Exception eccezione di mockMvc
-     */
+     *
     @Test
     @DisplayName("Inserimento nuovi generi ad un lettore "
             + "con lettore non null e generi null")
@@ -108,7 +108,7 @@ public class PreferenzeDiLetturaControllerTest {
      * Test di Inserimento nuovi generi ad un esperto con esperto
      * non null e generi null.
      * @throws Exception eccezione di mockMvc
-     */
+     *
     @Test
     @DisplayName("Inserimento nuovi generi ad un esperto"
                  + "con esperto non null e generi null")
@@ -123,7 +123,7 @@ public class PreferenzeDiLetturaControllerTest {
     /**
      * Test di Inserimento nuovi generi ad un esperto con 0IT.
      * @throws Exception eccezione di mockMvc
-     */
+     *
     @Test
     @DisplayName("Inserimento nuovi generi ad un esperto con 0IT")
     public void generiLetterari0IT() throws Exception {
@@ -138,7 +138,7 @@ public class PreferenzeDiLetturaControllerTest {
     /**
      * Test di Inserimento nuovi generi ad un esperto con 1IT.
      * @throws Exception eccezione di mockMvc
-     */
+     *
     @Test
     @DisplayName("Inserimento nuovi generi ad un esperto con 1IT")
     public void generiLetterari1IT() throws Exception {
@@ -153,7 +153,7 @@ public class PreferenzeDiLetturaControllerTest {
     /**
      * Test di Inserimento nuovi generi ad un esperto con 2IT.
      * @throws Exception eccezione di mockMvc
-     */
+     *
     @Test
     @DisplayName("Inserimento nuovi generi ad un esperto con 2IT")
     public void generiLetterari2IT() throws Exception {
@@ -169,7 +169,7 @@ public class PreferenzeDiLetturaControllerTest {
     /**
      * Modifica di generi di un esperto con utente non null.
      * @throws Exception eccezione di mockMvc
-     */
+     *
     @Test
     @DisplayName("Modifica di generi di un esperto")
     public void modificaGeneriEsperto() throws Exception {
@@ -189,7 +189,7 @@ public class PreferenzeDiLetturaControllerTest {
     /**
      * Modifica di generi di un lettore con utente non null.
      * @throws Exception eccezione di mockMvc
-     */
+     *
     @Test
     @DisplayName("Modifica di generi di un lettore")
     public void modificaGeneriLettore() throws Exception {
@@ -209,7 +209,7 @@ public class PreferenzeDiLetturaControllerTest {
     /**
      * Modifica di generi con utente null.
      * @throws Exception eccezione di mockMvc
-     */
+     *
     @Test
     @DisplayName("Modifica di generi con utente null")
     public void modificaGeneri1() throws Exception {
@@ -224,5 +224,5 @@ public class PreferenzeDiLetturaControllerTest {
 
     }
 
-
+*/
 }

@@ -1,9 +1,7 @@
 package it.unisa.c07.biblionet.gestioneutenti.controller;
 
-import it.unisa.c07.biblionet.gestioneclubdellibro.ClubDelLibroService;
-import it.unisa.c07.biblionet.gestioneclubdellibro.EspertoDTO;
+import it.unisa.c07.biblionet.gestioneclubdellibro.*;
 import it.unisa.c07.biblionet.common.UtenteRegistratoDTO;
-import it.unisa.c07.biblionet.gestioneclubdellibro.LettoreDTO;
 import it.unisa.c07.biblionet.gestionebiblioteca.BibliotecaDTO;
 import it.unisa.c07.biblionet.gestionebiblioteca.PrenotazioneLibriService;
 import it.unisa.c07.biblionet.gestioneutenti.AutenticazioneService;
@@ -13,6 +11,7 @@ import it.unisa.c07.biblionet.utils.BiblionetResponse;
 import it.unisa.c07.biblionet.utils.BiblionetConstraints;
 import it.unisa.c07.biblionet.utils.Utils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -30,10 +29,16 @@ public class AreaUtenteController {
     /**
      * Il service per effettuare le operazioni di persistenza.
      */
+    @Autowired
     private final AutenticazioneService autenticazioneService;
+    @Autowired
     private final PrenotazioneLibriService prenotazioneLibriService;
-    private final ClubDelLibroService clubService;
+    @Autowired
     private final RegistrazioneService registrazioneService;
+    @Autowired
+    private final EspertoService espertoService;
+    @Autowired
+    private final LettoreService lettoreService;
 
     /**
      * Implementa la funzionalità di smistare l'utente sulla view di
@@ -56,8 +61,8 @@ public class AreaUtenteController {
     }
 
     private UtenteRegistrato selezionaUtente(String token){
-        if(Utils.isUtenteLettore(token)) return clubService.findLettoreByEmail(Utils.getSubjectFromToken(token));
-        else if (Utils.isUtenteEsperto(token)) return clubService.findEspertoByEmail(Utils.getSubjectFromToken(token));
+        if(Utils.isUtenteLettore(token)) return lettoreService.findByEmail(Utils.getSubjectFromToken(token));
+        else if (Utils.isUtenteEsperto(token)) return espertoService.findByEmail(Utils.getSubjectFromToken(token));
         else if (Utils.isUtenteBiblioteca(token)) return prenotazioneLibriService.findBibliotecaByEmail(Utils.getSubjectFromToken(token));
 
         return null;

@@ -501,6 +501,21 @@ public class PrenotazioneLibriServiceImpl implements PrenotazioneLibriService {
         return bibliotecaDAO.save(utente);
     }
 
+    @Override
+    public Object getAllBiblioteche() {
+        return null;
+    }
+
+    @Override
+    public Object getBibliotecheByNome(String a) {
+        return null;
+    }
+
+    @Override
+    public Object getBibliotecheByCitta(String a) {
+        return null;
+    }
+
 
 }
 

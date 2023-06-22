@@ -7,4 +7,5 @@ public interface LibroDAO extends JpaRepository<Libro, String> {
 
     Libro save(Libro libro);
 
+    Object findByTitoloLike(String a);
 }

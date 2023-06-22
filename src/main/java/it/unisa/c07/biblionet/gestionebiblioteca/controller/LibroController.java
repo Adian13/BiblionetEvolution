@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
 
@@ -52,7 +53,7 @@ public class LibroController {
 
             if (!copertina.isEmpty()) {
                 byte[] datiCopertina = copertina.getBytes();
-                libro.setImmagineLibro(datiCopertina);
+                libro.setImmagineLibro(Arrays.toString(datiCopertina));
             }
 
             Libro nuovoLibro = libroRepository.save(libro);

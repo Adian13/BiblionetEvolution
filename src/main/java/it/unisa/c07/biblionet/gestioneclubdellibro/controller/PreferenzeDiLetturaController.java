@@ -1,13 +1,13 @@
 package it.unisa.c07.biblionet.gestioneclubdellibro.controller;
 
 
-import it.unisa.c07.biblionet.gestioneclubdellibro.ClubDelLibroService;
-import it.unisa.c07.biblionet.gestioneclubdellibro.GenereService;
-import it.unisa.c07.biblionet.gestioneclubdellibro.PreferenzeDiLetturaService;
+import it.unisa.c07.biblionet.gestioneclubdellibro.*;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Genere;
 import it.unisa.c07.biblionet.utils.BiblionetResponse;
 import it.unisa.c07.biblionet.utils.Utils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,9 +26,14 @@ public class PreferenzeDiLetturaController {
     /**
      * Il service per effettuare le operazioni di persistenza.
      */
-    private final PreferenzeDiLetturaService preferenzeDiLetturaService;
-    private final GenereService genereService;
-    private final ClubDelLibroService clubService;
+    @Autowired
+    private  PreferenzeDiLetturaService preferenzeDiLetturaService;
+    @Autowired
+    private GenereService genereService;
+    @Autowired
+    private LettoreService lettoreService;
+    @Autowired
+    private EspertoService espertoService;
 
     /**
      * Implementa la funzionalità di controllare se l'utente in sessione
@@ -87,12 +92,11 @@ public class PreferenzeDiLetturaController {
 
         if (Utils.isUtenteEsperto(token)) {
             preferenzeDiLetturaService
-                    .addGeneriEsperto(toAdd, clubService.findEspertoByEmail(Utils.getSubjectFromToken(token)));
+                    .addGeneri(toAdd, espertoService.findByEmail(Utils.getSubjectFromToken(token)));
             return new BiblionetResponse("Generi modificati", true);
         }
         if (Utils.isUtenteLettore(token)) {
-            preferenzeDiLetturaService
-                    .addGeneriLettore(toAdd, clubService.getLettoreByEmail(Utils.getSubjectFromToken(token)));
+            preferenzeDiLetturaService.addGeneri(toAdd, lettoreService.findByEmail(Utils.getSubjectFromToken(token)));
             return new BiblionetResponse("Generi modificati", true);
         }
 

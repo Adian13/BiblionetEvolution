@@ -72,8 +72,7 @@ public class Libro {
      * Rappresenta l'immagine di copertina del libro.
      */
     @Lob
-    @ToString.Exclude
-    private byte[] immagineLibro;
+    String immagineLibro;
 
 
     /**
@@ -84,7 +83,7 @@ public class Libro {
     private Set<String> generi;
 
 
-  /*  protected Libro(String titolo, String autore, String isbn, LocalDateTime annoDiPubblicazione, String descrizione, String casaEditrice, String immagineLibro, Set<String> generi) {
+    protected Libro(String titolo, String autore, String isbn, LocalDateTime annoDiPubblicazione, String descrizione, String casaEditrice, String immagineLibro, Set<String> generi) {
         this.titolo = titolo;
         this.annoDiPubblicazione = annoDiPubblicazione;
         this.autore = autore;
@@ -93,5 +92,5 @@ public class Libro {
         this.casaEditrice = casaEditrice;
         this.immagineLibro = immagineLibro;
         this.generi = generi;
-    }*/
+    }
 }

@@ -39,7 +39,7 @@ public class ClubDelLibroServiceImpl implements ClubDelLibroService {
     private final LettoreDAO lettoreDAO;
 
     @Override
-    public final List<ClubDelLibro> findClubsByEsperto(UtenteRegistrato u) {
+    public List<ClubDelLibro> findClubsByUtente(UtenteRegistrato u) {
         return u.getClubs();
     }
 

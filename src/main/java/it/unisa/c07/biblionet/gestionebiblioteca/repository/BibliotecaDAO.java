@@ -65,4 +65,10 @@ public interface BibliotecaDAO extends JpaRepository<UtenteRegistrato, String> {
     List<Biblioteca> findAllBiblioteche();
 
     Biblioteca findByEmail(String email);
+
+    short getBibliotecheByCitta(String a);
+
+    short getBibliotecheByNome(String a);
+
+    short getBibliotecaById(String a);
 }

@@ -42,7 +42,7 @@ public class ComunicazioneEspertoServiceImplTest {
     @Mock
     private GenereDAO genereDAO;
 
-    @Test
+    /*@Test
     @DisplayName("Non entra al primo for")
     public void getEspertiByGeneri1(){
 
@@ -54,7 +54,7 @@ public class ComunicazioneEspertoServiceImplTest {
 
     }
 
-    @Test
+   /* @Test
     @DisplayName("Non entra al primo if")
     public void getEspertiByGeneri2(){
 

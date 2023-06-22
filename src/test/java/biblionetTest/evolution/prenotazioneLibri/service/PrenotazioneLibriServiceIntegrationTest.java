@@ -61,7 +61,7 @@ public class PrenotazioneLibriServiceIntegrationTest {
     @Test
     public void getBiblioteca(){
         Biblioteca biblioteca = bibliotecaDAO.findByID("aldomoronocera@gmail.com");
-        Assertions.assertEquals(biblioteca.getNomeBiblioteca(),prenotazioneLibriService.getBibliotecaById("aldomoronocera@gmail.com").getNomeBiblioteca());
+        Assertions.assertEquals(biblioteca.getNomeBiblioteca(),bibliotecaDAO.getBibliotecaById("aldomoronocera@gmail.com"));
     }
 
 

@@ -200,4 +200,9 @@ public interface PrenotazioneLibriService {
 
     Biblioteca aggiornaBiblioteca(Biblioteca utente);
 
+    Object getAllBiblioteche();
+
+    Object getBibliotecheByNome(String a);
+
+    Object getBibliotecheByCitta(String a);
 }

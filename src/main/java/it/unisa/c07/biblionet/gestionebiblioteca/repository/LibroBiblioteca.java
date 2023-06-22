@@ -32,7 +32,7 @@ public class LibroBiblioteca extends Libro {
     @ToString.Exclude
     private List<Possesso> possessi;
 
-   /* public LibroBiblioteca(
+    public LibroBiblioteca(
             String titolo,
             String autore,
             String isbn,
@@ -46,6 +46,6 @@ public class LibroBiblioteca extends Libro {
         super(titolo, autore, isbn, annoDiPubblicazione, descrizione, casaEditrice, immagineLibro, generi);
         this.possessi = possessi;
         this.tickets = tickets;
-    }*/
+    }
 
 }

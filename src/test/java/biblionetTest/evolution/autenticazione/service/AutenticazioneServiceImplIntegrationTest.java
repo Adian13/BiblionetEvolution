@@ -1,5 +1,6 @@
 package biblionetTest.evolution.autenticazione.service;
 
+import it.unisa.c07.biblionet.BiblionetApplication;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.LettoreDAO;
 import it.unisa.c07.biblionet.gestioneutenti.AutenticazioneService;
 import lombok.Getter;

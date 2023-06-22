@@ -18,6 +18,8 @@ public class Copertina {
     @Lob
     private byte[] dati;
 
+    private String key;
+
     public void setId(Long id) {
         this.id = id;
     }

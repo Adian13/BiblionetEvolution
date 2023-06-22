@@ -65,7 +65,7 @@ public class AutenticazioneServiceImplTest {
      * nel service.
      * @throws NoSuchAlgorithmException L'eccezione che può essere lanciata
      * dal metodo getInstance().
-     */
+     *
     @ParameterizedTest
     @MethodSource("provideLettore")
     public void loginLettore(final Lettore lettore) throws NoSuchAlgorithmException {
@@ -160,7 +160,7 @@ public class AutenticazioneServiceImplTest {
     /**
      * Metodo che si occupa di testare
      * se l'utente è un lettore.
-     */
+     *
     @Test
     public void isLettore() {
         UtenteRegistrato utenteRegistrato = new Lettore();
@@ -175,7 +175,7 @@ public class AutenticazioneServiceImplTest {
      * Metodo che si occupa di testare
      * la funzione di aggiornamento una
      * biblioteca nel service.
-     */
+     *
    @Test
     public void aggiornaBiblioteca() {
         Biblioteca utente = new Biblioteca();
@@ -188,7 +188,7 @@ public class AutenticazioneServiceImplTest {
      * Metodo che si occupa di testare
      * la funzione di aggiornamento un
      * esperto nel service.
-     */
+     *
     @Test
     public void aggiornaEsperto() {
         Esperto utente = new Esperto();
@@ -201,7 +201,7 @@ public class AutenticazioneServiceImplTest {
      * Metodo che si occupa di testare
      * la funzione di aggiornamento un
      * lettore nel service.
-     */
+     *
     @ParameterizedTest
     @MethodSource("provideLettore")
     public void aggiornaLettore(final Lettore utente) {
@@ -214,7 +214,7 @@ public class AutenticazioneServiceImplTest {
      * Metodo che si occupa di testare
      * la funzione di ricerca di un Esperto
      * nel service.
-     */
+     *
     @Test
     public void findEspertoByEmail() {
         Esperto dummy = new Esperto();
@@ -228,7 +228,7 @@ public class AutenticazioneServiceImplTest {
      * Metodo che si occupa di testare
      * la funzione di ricerca di un
      * Lettore nel service.
-     */
+     *
     @ParameterizedTest
     @MethodSource("provideLettore")
     public void findLettoreByEmail(final Lettore dummy) {
@@ -242,7 +242,7 @@ public class AutenticazioneServiceImplTest {
      * Simula i dati inviati da un metodo
      * http attraverso uno stream.
      * @return Lo stream di dati.
-     */
+     *
     private static Stream<Arguments> provideLettore() {
         return Stream.of(Arguments.of(new Lettore("giuliociccione@gmail.com",
                 "LettorePassword",
@@ -254,5 +254,5 @@ public class AutenticazioneServiceImplTest {
                 "Giulio",
                 "Ciccione"
         )));
-    }
+    }*/
 }

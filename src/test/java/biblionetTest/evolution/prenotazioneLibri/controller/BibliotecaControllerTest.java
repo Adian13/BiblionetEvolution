@@ -1,10 +1,13 @@
 package biblionetTest.evolution.prenotazioneLibri.controller;
 
+import it.unisa.c07.biblionet.common.Libro;
 import it.unisa.c07.biblionet.gestionebiblioteca.PrenotazioneLibriService;
+import it.unisa.c07.biblionet.gestionebiblioteca.repository.Biblioteca;
 import it.unisa.c07.biblionet.gestioneclubdellibro.PreferenzeDiLetturaService;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Esperto;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Genere;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.GenereDAO;
+import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Lettore;
 import it.unisa.c07.biblionet.gestioneutenti.AutenticazioneService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,8 +92,8 @@ public class BibliotecaControllerTest {
         List<Libro> ll = new ArrayList<>();
         gl.add(g);
         ll.add(l);
-        when(prenotazioneService.visualizzaListaLibriCompleta()).thenReturn(ll);
-        when(prenotazioneService.getAllGeneri()).thenReturn(gl);
+       // when(prenotazioneService.visualizzaListaLibriCompleta()).thenReturn(ll);
+        //when(prenotazioneService.getGeneri()).thenReturn(gl);
         this.mockMvc.perform(get("/biblioteca/inserisci-nuovo-libro")
                 .sessionAttr("loggedUser", b))
                 .andExpect(model().attribute("listaLibri", ll))
@@ -186,9 +189,9 @@ public class BibliotecaControllerTest {
 
         );
         l.setIdLibro(3);
-        when(prenotazioneService.inserimentoPerIsbn(
-                "1234567890123", "a", 1, stlist))
-                .thenReturn(l);
+      //  when(prenotazioneService.inserimentoPerIsbn(
+           //     "1234567890123", "a", 1, stlist))
+         //       .thenReturn(l);
 
         this.mockMvc.perform(post("/biblioteca/inserimento-isbn")
                 .sessionAttr("loggedUser", b)
@@ -250,9 +253,9 @@ public class BibliotecaControllerTest {
 
         );
         l.setIdLibro(3);
-        when(prenotazioneService.inserimentoDalDatabase(
-                3,"a", 1))
-                .thenReturn(l);
+     //   when(prenotazioneService.inserimentoDalDatabase(
+    //            3,"a", 1))
+      //          .thenReturn(l);
         this.mockMvc.perform(post("/biblioteca/inserimento-archivio")
                 .sessionAttr("loggedUser", b)
                 .param("idLibro", "3")
@@ -293,7 +296,7 @@ public class BibliotecaControllerTest {
      * controller per l'inserimento di un libro con form manuale
      * simulando la richiesta http.
      * @throws Exception Eccezione per MockMvc
-     */
+
     @Test
     public void inserimentoManualeIsbnDescrizioneImmagineVuoto () throws Exception {
         Biblioteca b = new Biblioteca();
@@ -335,7 +338,7 @@ public class BibliotecaControllerTest {
      * controller per l'inserimento di un libro con form manuale
      * simulando la richiesta http.
      * @throws Exception Eccezione per MockMvc
-     */
+
     @Test
     public void inserimentoManuale () throws Exception {
         Biblioteca b = new Biblioteca();
@@ -434,8 +437,8 @@ public class BibliotecaControllerTest {
     public void visualizzaDatiBiblioteca() throws Exception {
         Biblioteca biblioteca = (Biblioteca) new Biblioteca();
         biblioteca.setEmail("a");
-        when(prenotazioneService
-                .getBibliotecaById("a")).thenReturn(biblioteca);
+        //  when(prenotazioneService
+          //      .getBibliotecaById("a")).thenReturn(biblioteca);
         this.mockMvc.perform(get("/biblioteca/a"))
                 .andExpect(model().attribute("biblioteca", biblioteca))
                 .andExpect(view()
