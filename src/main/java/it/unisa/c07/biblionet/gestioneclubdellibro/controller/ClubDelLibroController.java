@@ -364,7 +364,9 @@ public class ClubDelLibroController {
 
         cdl.setGeneri(new HashSet<>(clubDTO.getGeneri()));
 
-        this.clubService.creaClubDelLibro(cdl);
+        ClubDelLibro clubDelLibro =  clubService.creaClubDelLibro(cdl);
+        System.err.println(clubDelLibro.getNome());
+        if(clubDelLibro == null) return new BiblionetResponse(BiblionetResponse.ERRORE, false);
         return new BiblionetResponse("Club del Libro creato", true);
 
     }
