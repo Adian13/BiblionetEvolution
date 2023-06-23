@@ -2,8 +2,6 @@ package it.unisa.c07.biblionet.gestionebiblioteca.controller;
 
 import it.unisa.c07.biblionet.common.UtenteRegistrato;
 import it.unisa.c07.biblionet.common.UtenteRegistratoDTO;
-import it.unisa.c07.biblionet.events.CreateBiblioteca;
-import it.unisa.c07.biblionet.events.MiddleEsperto;
 import it.unisa.c07.biblionet.gestionebiblioteca.BibliotecaDTO;
 import it.unisa.c07.biblionet.gestionebiblioteca.LibroBibliotecaDTO;
 import it.unisa.c07.biblionet.gestionebiblioteca.PrenotazioneLibriService;
@@ -14,8 +12,6 @@ import it.unisa.c07.biblionet.utils.BiblionetResponse;
 import it.unisa.c07.biblionet.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -105,41 +101,21 @@ public class BibliotecaController {
      * @param password   la password di conferma
      * @return la view di login
      */
-    @PostMapping(value = "/biblioteca")
+    @PostMapping(value = "/registrazione")
     @ResponseBody
     @CrossOrigin
     public BiblionetResponse registrazioneBiblioteca(@Valid @ModelAttribute BibliotecaDTO biblioteca,
                                                      BindingResult bindingResult,
                                                      @RequestParam("conferma_password") String password
     ) {
-        String s = controlliPreliminari(bindingResult, password, biblioteca);
-        if (!s.isEmpty()) {
-            return new BiblionetResponse(s, false);
+        if (bindingResult.hasErrors()) {
+            return new BiblionetResponse("Errore di validazione", false);
         }
+        if(! BiblionetConstraints.passwordRispettaVincoli(biblioteca.getPassword(), password)) return new BiblionetResponse(BiblionetResponse.ERRORE, false);
         prenotazioneService.bibliotecaDaModel(biblioteca);
         return new BiblionetResponse("Registrazione effettuata correttamente", true);
     }
 
-    /**
-     * Implementa la funzionalità di login come utente.
-     * @param email
-     * @param password
-     * @return rimanda alla pagina di home.
-     */
-    @PostMapping(value = "/login")
-    @CrossOrigin
-    @ResponseBody
-    public BiblionetResponse login(@RequestParam String email,
-                                   @RequestParam String password) {
-
-        UtenteRegistrato utente = prenotazioneService.loginBiblioteca(email, password);
-
-        if (utente == null) {
-            return new BiblionetResponse("Login fallito.", false);
-        } else {
-            return new BiblionetResponse("", true);
-        }
-    }
 
     private String controlliPreliminari(BindingResult bindingResult, String vecchia, UtenteRegistratoDTO utenteRegistrato) {
         if (bindingResult.hasErrors()) {

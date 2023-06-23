@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import it.unisa.c07.biblionet.gestioneclubdellibro.ClubDelLibroService;
 import it.unisa.c07.biblionet.gestioneclubdellibro.GestioneEventiService;
+import it.unisa.c07.biblionet.gestioneclubdellibro.LettoreService;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Lettore;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,7 @@ public class GestioneEventiServiceImpl implements GestioneEventiService {
      */
     private final EventoDAO eventoDAO;
     private final ClubDelLibroService clubDelLibroService;
+    private final LettoreService lettoreService;
     private final LibroEventoDAO libroEventoDAO;
 
 
@@ -113,7 +115,7 @@ public class GestioneEventiServiceImpl implements GestioneEventiService {
     @Override
     public Lettore partecipaEvento(final String idLettore, final int idEvento) {
         Evento evento = eventoDAO.getOne(idEvento);
-        Lettore lettore = clubDelLibroService.findLettoreByEmail(idLettore);
+        Lettore lettore = lettoreService.findLettoreByEmail(idLettore);
         List<Evento> listaEventi = lettore.getEventi();
         if (listaEventi == null) {
             listaEventi = new ArrayList<>();
@@ -125,7 +127,7 @@ public class GestioneEventiServiceImpl implements GestioneEventiService {
         }
         listaEventi.add(evento);
         lettore.setEventi(listaEventi);
-        return clubDelLibroService.aggiornaLettore(lettore);
+        return lettoreService.aggiornaLettore(lettore);
     }
 
     /**
@@ -138,7 +140,7 @@ public class GestioneEventiServiceImpl implements GestioneEventiService {
     @Override
     public Lettore abbandonaEvento(final String idLettore, final int idEvento) {
         Evento evento = eventoDAO.getOne(idEvento);
-        Lettore lettore = clubDelLibroService.findLettoreByEmail(idLettore);
+        Lettore lettore = lettoreService.findLettoreByEmail(idLettore);
         List<Evento> listaEventi = lettore.getEventi();
 
         //Per chiunque leggesse, non fate domande e non toccate. Grazie
@@ -153,7 +155,7 @@ public class GestioneEventiServiceImpl implements GestioneEventiService {
         }
 
         lettore.setEventi(listaEventi);
-        return clubDelLibroService.aggiornaLettore(lettore);
+        return lettoreService.aggiornaLettore(lettore);
     }
 
 }

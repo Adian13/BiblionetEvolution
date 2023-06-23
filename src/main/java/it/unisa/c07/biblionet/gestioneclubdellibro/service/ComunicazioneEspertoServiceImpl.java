@@ -3,6 +3,7 @@ package it.unisa.c07.biblionet.gestioneclubdellibro.service;
 
 import it.unisa.c07.biblionet.gestioneclubdellibro.ClubDelLibroService;
 import it.unisa.c07.biblionet.gestioneclubdellibro.ComunicazioneEspertoService;
+import it.unisa.c07.biblionet.gestioneclubdellibro.EspertoService;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Esperto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ import java.util.List;
 public class ComunicazioneEspertoServiceImpl
                                     implements ComunicazioneEspertoService {
 
-    private final ClubDelLibroService clubService;
+    private final EspertoService espertoService;
 
     /**
      * Implementa la funzionalità che permette
@@ -32,7 +33,7 @@ public class ComunicazioneEspertoServiceImpl
     @Override
     public List<Esperto> visualizzaEspertiPerGenere(
             final String genere) {
-        List<Esperto> list = clubService.findAllEsperti();
+        List<Esperto> list = espertoService.findAllEsperti();
         List<Esperto> list2 = new ArrayList<>();
         for (Esperto e : list) {
             if (e.getGeneri().contains(this.primaLetteraMaiuscola(genere))) {

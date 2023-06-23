@@ -16,9 +16,6 @@ import java.util.function.Predicate;
  */
 public interface ClubDelLibroService {
 
-    List<ClubDelLibro> findClubsEsperto(Esperto esperto);
-
-    List<ClubDelLibro> findClubsLettore(Lettore lettore);
 
     /**
      * Implementa la funzionalità che permette
@@ -63,15 +60,6 @@ public interface ClubDelLibroService {
      */
     ClubDelLibro getClubByID(int id);
 
-    /**
-     * Implementa la funzionalità che permette
-     * ad un lettore di effettuare
-     * l'iscrizione ad un club del libro.
-     * @param club Il club al quale iscriversi
-     * @param lettore Il lettore che si iscrive
-     * @return true se è andato a buon fine, false altrimenti
-     */
-    Boolean partecipaClub(ClubDelLibro club, Lettore lettore);
 
     /**
      * Funzione di utilità che permette di leggere la città
@@ -105,40 +93,6 @@ public interface ClubDelLibroService {
      */
     List<ClubDelLibro> findAllByEsperto(Esperto esperto);
 
-    UtenteRegistrato creaEspertoDaModel(EspertoDTO espertoDTO, String emailBiblioteca);
-
-    UtenteRegistrato aggiornaEspertoDaModel(EspertoDTO espertoDTO, String biblioteca);
-
-    UtenteRegistrato loginUtente(String email, String password);
-
-    Esperto aggiornaEsperto(Esperto utente);
-
-    List<Esperto> findEspertiByGeneri(Set<String> generi);
-
-    Lettore findLettoreByEmail(String email);
-
-    Lettore aggiornaLettore(Lettore utente);
-
-    List<Esperto> findAllEsperti();
-
-    List<Esperto> findEspertiByNome(String nome);
-
-    UtenteRegistrato findEspertoByEmailAndPassword(String email, byte[] password);
-
-    UtenteRegistrato findLettoreByEmailAndPassword(String email, byte[] password);
-
-    Esperto findEspertoByEmail(String email);
-
-
-    Lettore getLettoreByEmail(String email);
-
-    List<Esperto> getEspertiByBiblioteca(String email);
-
-    List<String> getEspertiEmailByBiblioteca(String email);
-
     List<ClubDelLibro> getClubsByEsperto(Esperto esperto);
 
-    UtenteRegistrato creaLettoreDaModel(LettoreDTO lettore);
-
-    UtenteRegistrato aggiornaLettoreDaModel(LettoreDTO form);
 }

@@ -24,7 +24,6 @@ import java.security.NoSuchAlgorithmException;
 @NoArgsConstructor(force = true)
 @EqualsAndHashCode
 @Inheritance(strategy = InheritanceType.JOINED)
-
 public abstract class UtenteRegistrato {
 
     /**

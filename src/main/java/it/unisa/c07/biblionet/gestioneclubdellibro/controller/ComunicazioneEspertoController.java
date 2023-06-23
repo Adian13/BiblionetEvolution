@@ -1,6 +1,8 @@
 package it.unisa.c07.biblionet.gestioneclubdellibro.controller;
 
 import it.unisa.c07.biblionet.gestioneclubdellibro.ClubDelLibroService;
+import it.unisa.c07.biblionet.gestioneclubdellibro.EspertoService;
+import it.unisa.c07.biblionet.gestioneclubdellibro.LettoreService;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Esperto;
 import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Lettore;
 import it.unisa.c07.biblionet.utils.Utils;
@@ -26,7 +28,8 @@ public class ComunicazioneEspertoController {
     /**
      * Il service per effettuare le operazioni di persistenza.
      */
-    private final ClubDelLibroService clubService;
+    private final EspertoService espertoService;
+    private final LettoreService lettoreService;
 
     /**
      * Implementa la funzionalità di mostrare gli esperti in base
@@ -38,8 +41,8 @@ public class ComunicazioneEspertoController {
     @CrossOrigin
     public final List<Esperto> visualizzaEspertiGeneri(@RequestHeader(name = "Authorization") final String token) {
         if(!Utils.isUtenteLettore(token)) return new ArrayList<>();
-        Lettore lettore = clubService.findLettoreByEmail(Utils.getSubjectFromToken(token));
-        return clubService.findEspertiByGeneri(lettore.getGeneri());
+        Lettore lettore = lettoreService.findLettoreByEmail(Utils.getSubjectFromToken(token));
+        return espertoService.findEspertiByGeneri(lettore.getGeneri());
     }
 
     /**
@@ -51,7 +54,7 @@ public class ComunicazioneEspertoController {
     @CrossOrigin
     @ResponseBody
     public final List<Esperto> visualizzaListaEsperti() {
-        return clubService.findAllEsperti();
+        return espertoService.findAllEsperti();
     }
 
     /**
@@ -69,11 +72,11 @@ public class ComunicazioneEspertoController {
             @RequestParam("filtro") final String filtro) {
         switch (filtro) {
             case "nome":
-                return clubService.findEspertiByNome(stringa);
+                return espertoService.findEspertiByNome(stringa);
             case "genere":
-                return clubService.findEspertiByGeneri(new HashSet<>(Collections.singleton(stringa)));
+                return espertoService.findEspertiByGeneri(new HashSet<>(Collections.singleton(stringa)));
             default:
-                return clubService.findAllEsperti();
+                return espertoService.findAllEsperti();
         }
     }
 }
