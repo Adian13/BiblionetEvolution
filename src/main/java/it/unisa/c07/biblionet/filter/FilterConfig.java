@@ -1,4 +1,4 @@
-package it.unisa.c07.biblionet.config;
+package it.unisa.c07.biblionet.filter;
 
 import it.unisa.c07.biblionet.filter.JwtFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
