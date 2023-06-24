@@ -2,7 +2,7 @@ package it.unisa.c07.biblionet.gestioneautenticazione.controller;
 
 import it.unisa.c07.biblionet.gestioneautenticazione.AutenticazioneService;
 import it.unisa.c07.biblionet.config.JwtGeneratorInterface;
-import it.unisa.c07.biblionet.common.UtenteRegistrato;
+import it.unisa.c07.biblionet.gestioneautenticazione.repository.UtenteRegistrato;
 import it.unisa.c07.biblionet.utils.BiblionetResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

@@ -1,4 +1,4 @@
-package it.unisa.c07.biblionet.common;
+package it.unisa.c07.biblionet.gestioneautenticazione.repository;
 
 import it.unisa.c07.biblionet.utils.BiblionetConstraints;
 import lombok.Data;

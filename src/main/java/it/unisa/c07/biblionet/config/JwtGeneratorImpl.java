@@ -1,7 +1,7 @@
 package it.unisa.c07.biblionet.config;
 
 import io.jsonwebtoken.SignatureAlgorithm;
-import it.unisa.c07.biblionet.common.UtenteRegistrato;
+import it.unisa.c07.biblionet.gestioneautenticazione.repository.UtenteRegistrato;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

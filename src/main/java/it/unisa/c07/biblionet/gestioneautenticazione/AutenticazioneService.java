@@ -1,5 +1,5 @@
 package it.unisa.c07.biblionet.gestioneautenticazione;
-import it.unisa.c07.biblionet.common.UtenteRegistrato;
+import it.unisa.c07.biblionet.gestioneautenticazione.repository.UtenteRegistrato;
 
 
 /**

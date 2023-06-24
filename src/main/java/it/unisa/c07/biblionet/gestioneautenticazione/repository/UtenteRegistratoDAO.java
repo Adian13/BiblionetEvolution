@@ -1,7 +1,6 @@
 package it.unisa.c07.biblionet.gestioneautenticazione.repository;
 
 
-import it.unisa.c07.biblionet.common.UtenteRegistrato;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
