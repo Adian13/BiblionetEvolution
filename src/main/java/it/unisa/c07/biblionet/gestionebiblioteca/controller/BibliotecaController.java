@@ -42,7 +42,6 @@ public class BibliotecaController {
      * persistenza.
      */
     private final PrenotazioneLibriService prenotazioneService;
-    private final ApplicationEventPublisher events;
 
     /**
      * Implementa la funzionalità di modifica dati di una biblioteca.

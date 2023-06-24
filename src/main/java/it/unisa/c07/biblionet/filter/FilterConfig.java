@@ -1,4 +1,4 @@
-package it.unisa.c07.biblionet.config;
+package it.unisa.c07.biblionet.filter;
 
 import it.unisa.c07.biblionet.filter.JwtFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -20,8 +20,6 @@ public class FilterConfig {
         filter.addUrlPatterns("/prenotazione-libri/conferma-prenotazione");
         filter.addUrlPatterns("/prenotazione-libri/visualizza-richieste");
         filter.addUrlPatterns("/prenotazione-libri/visualizza-prenotazioni");
-
-
 
         return filter;
     }
