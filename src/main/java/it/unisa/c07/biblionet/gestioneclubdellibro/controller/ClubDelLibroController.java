@@ -222,11 +222,11 @@ public class ClubDelLibroController {
      * @param id    l'ID del Club da modificare
      * @param club  Il club che si vuole creare
      * @return La view che visualizza il form di modifica dati
-     */
-    @GetMapping(value = "/{id}/modifica")
+
+    @PostMapping(value = "/modifica")
     @ResponseBody
     @CrossOrigin
-    public BiblionetResponse visualizzaModificaDatiClub(final @PathVariable int id,
+    public BiblionetResponse visualizzaModificaDatiClub(final @RequestParam int id,
                                                         final @ModelAttribute ClubDTO club,
                                                         @RequestHeader(name = "Authorization") final String token
     ) {
@@ -242,12 +242,10 @@ public class ClubDelLibroController {
         club.setNome(cdl.getNome());
         club.setDescrizione(cdl.getDescrizione());
         club.setGeneri(new ArrayList < > (cdl.getGeneri()));
-    /*
-            model.addAttribute("club", club);
-            model.addAttribute("id", id);
-            model.addAttribute("generi", this.clubService.getTuttiGeneri());*/
-        return new BiblionetResponse("Da regolare col Front-End", false);
+
+        return new BiblionetResponse("Modifica effettuata", true);
     }
+                                                        */
 
     /**
      * Implementa la funzionalità per la modifica dei dati di un Club.
@@ -256,10 +254,10 @@ public class ClubDelLibroController {
      * @param clubDTO Il form dove inserire i nuovi dati
      * @return La schermata del club
      */
-    @PostMapping(value = "/{id}/modifica")
+    @PostMapping(value = "/modifica")
     @ResponseBody
     @CrossOrigin
-    public BiblionetResponse modificaDatiClub(final @PathVariable int id, @RequestHeader(name = "Authorization") final String token, final @Valid @ModelAttribute ClubDTO clubDTO, BindingResult bindingResult) {
+    public BiblionetResponse modificaDatiClub(final @RequestParam int id, @RequestHeader(name = "Authorization") final String token, final @Valid @ModelAttribute ClubDTO clubDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new BiblionetResponse(BiblionetResponse.FORMATO_NON_VALIDO, false);
         }
@@ -288,11 +286,13 @@ public class ClubDelLibroController {
      * @param id l'ID del Club a cui iscriversi
      * @return La view che visualizza la lista dei club
      */
-    @PostMapping(value = "/{id}/iscrizione")
-    public BiblionetResponse partecipaClub(final @PathVariable int id, @RequestHeader(name = "Authorization") final String token) {
+    @PostMapping(value = "/iscrizione")
+    @CrossOrigin
+    @ResponseBody
+    public BiblionetResponse partecipaClub(final @RequestParam int id, @RequestHeader(name = "Authorization") final String token) {
 
         if (!Utils.isUtenteLettore(token)) return new BiblionetResponse("Non sei autorizzato.", false);
-        Lettore lettore = lettoreService.findLettoreByEmail(Utils.getSubjectFromToken(token)); //todo in questi casi andrebbero fatti i check per null
+        Lettore lettore = lettoreService.findLettoreByEmail(Utils.getSubjectFromToken(token));
         ClubDelLibro clubDelLibro = this.clubService.getClubByID(id);
         if (clubDelLibro.getLettori().contains(lettore)) {
             return new BiblionetResponse(BiblionetResponse.ISCRIZIONE_FALLITA, false);
@@ -360,10 +360,10 @@ public class ClubDelLibroController {
      * @param eventoDTO il form dell'evento
      * @return la view della lista degli eventi
      */
-    @PostMapping(value = "/{id}/eventi/crea")
+    @PostMapping(value = "/eventi/crea")
     @CrossOrigin
     @ResponseBody
-    public BiblionetResponse creaEvento(final @PathVariable int id,
+    public BiblionetResponse creaEvento(final @RequestParam int id,
                                         final @Valid @ModelAttribute EventoDTO eventoDTO,
                                         BindingResult bindingResult) {
         return this.modificaCreaEvento(
@@ -441,13 +441,23 @@ public class ClubDelLibroController {
      * la visualizzazione dei dati di un Club del Libro.
      * @param id l'ID del Club di cui visualizzare i dati
      * @return La view che visualizza i dati
-*/
+    */
      @GetMapping(value = "/{id}")
      @CrossOrigin
      @ResponseBody
-     public ClubDelLibro visualizzaDatiClub(final @PathVariable int id) {
-        return clubService.getClubByID(id);
+     public ClubDTO visualizzaDatiClub(final @PathVariable int id) {
+        return new ClubDTO(clubService.getClubByID(id));
      }
+    @GetMapping(value = "/lettori-club")
+    @CrossOrigin
+    @ResponseBody
+    public List<LettoreDTO> visualizzaLettoriClub(final @PathVariable int id) {
+         List<LettoreDTO> lettoriDTO = new ArrayList<>();
+        for(Lettore l: clubService.getClubByID(id).getLettori()){
+                lettoriDTO.add(new LettoreDTO(l));
+        }
+        return lettoriDTO;
+    }
 
     /**
      * Implementa la funzionalità che permette di eliminare

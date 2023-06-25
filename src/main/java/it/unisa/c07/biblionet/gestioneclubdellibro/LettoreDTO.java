@@ -1,6 +1,7 @@
 package it.unisa.c07.biblionet.gestioneclubdellibro;
 
 import it.unisa.c07.biblionet.common.UtenteRegistratoDTO;
+import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Lettore;
 import it.unisa.c07.biblionet.utils.BiblionetConstraints;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -32,5 +33,11 @@ public class LettoreDTO extends UtenteRegistratoDTO {
         this.cognome = cognome;
         this.nome = nome;
         this.username = username;
+    }
+    public LettoreDTO(Lettore l){
+        super(l.getEmail(), l.getPassword(), l.getProvincia(), l.getCitta(), l.getVia(), l.getRecapitoTelefonico());
+        this.cognome = l.getCognome();
+        this.nome = l.getNome();
+        this.username = l.getUsername();
     }
 }

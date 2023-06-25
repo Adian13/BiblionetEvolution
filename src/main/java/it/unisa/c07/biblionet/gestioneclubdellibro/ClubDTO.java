@@ -1,7 +1,8 @@
 package it.unisa.c07.biblionet.gestioneclubdellibro;
 
-import java.util.List;
+import java.util.Set;
 
+import it.unisa.c07.biblionet.gestioneclubdellibro.repository.ClubDelLibro;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
@@ -33,11 +34,18 @@ public class ClubDTO {
      * Lista di generi del club.
      */
     @NonNull
-    private List<String> generi;
+    private Set<String> generi;
 
     /**
      * Copertina del club.
      */
 
     private MultipartFile copertina;
+
+    public ClubDTO(ClubDelLibro clubDelLibro){
+        this.nome = clubDelLibro.getNome();
+        this.descrizione = clubDelLibro.getDescrizione();
+        this.generi = clubDelLibro.getGeneri();
+        this.copertina = null;
+    }
 }

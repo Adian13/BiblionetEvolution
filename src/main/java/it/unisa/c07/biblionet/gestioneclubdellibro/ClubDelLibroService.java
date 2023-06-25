@@ -93,6 +93,5 @@ public interface ClubDelLibroService {
      */
     List<ClubDelLibro> findAllByEsperto(Esperto esperto);
 
-    List<ClubDelLibro> getClubsByEsperto(Esperto esperto);
 
 }
