@@ -3,6 +3,7 @@ package it.unisa.c07.biblionet.gestioneclubdellibro;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Evento;
 import it.unisa.c07.biblionet.utils.BiblionetConstraints;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -56,4 +57,13 @@ public class EventoDTO {
      * Il libro associato all'evento.
      */
     private Integer libro;
+
+    public EventoDTO(Evento evento){
+        this.data = LocalDate.from(evento.getDataOra());
+        this.ora = LocalTime.from(evento.getDataOra());
+        this.nome = evento.getNomeEvento();
+        if(evento.getLibro() != null)
+            this.libro = evento.getLibro().getIdLibro();
+        this.descrizione = evento.getDescrizione();
+    }
 }

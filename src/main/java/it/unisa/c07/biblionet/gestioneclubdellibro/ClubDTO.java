@@ -18,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ClubDTO {
 
+    private int id;
+
     /**
      * Nome del club.
      */
@@ -43,6 +45,7 @@ public class ClubDTO {
     private MultipartFile copertina;
 
     public ClubDTO(ClubDelLibro clubDelLibro){
+        this.id = clubDelLibro.getIdClub();
         this.nome = clubDelLibro.getNome();
         this.descrizione = clubDelLibro.getDescrizione();
         this.generi = clubDelLibro.getGeneri();

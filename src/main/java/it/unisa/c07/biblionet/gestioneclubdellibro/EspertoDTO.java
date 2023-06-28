@@ -1,5 +1,6 @@
 package it.unisa.c07.biblionet.gestioneclubdellibro;
 import it.unisa.c07.biblionet.common.UtenteRegistratoDTO;
+import it.unisa.c07.biblionet.gestioneclubdellibro.repository.Esperto;
 import it.unisa.c07.biblionet.utils.BiblionetConstraints;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -39,5 +40,13 @@ public class EspertoDTO extends UtenteRegistratoDTO {
         this.nome = nome;
         this.username = username;
         this.generi = generi;
+    }
+
+    public EspertoDTO(Esperto esperto) {
+        super(esperto.getEmail(), esperto.getPassword(), esperto.getProvincia(), esperto.getCitta(), esperto.getVia(), esperto.getRecapitoTelefonico());
+        this.cognome = esperto.getCognome();
+        this.nome = esperto.getNome();
+        this.username = esperto.getUsername();
+        this.generi = esperto.getGeneri();
     }
 }

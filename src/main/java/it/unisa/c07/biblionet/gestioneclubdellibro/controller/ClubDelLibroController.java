@@ -301,6 +301,51 @@ public class ClubDelLibroController {
         return new BiblionetResponse(BiblionetResponse.ISCRIZIONE_OK, true);
     }
 
+    @GetMapping(value = "/partecipazione-lettore")
+    @ResponseBody
+    @CrossOrigin
+    public boolean visualizzaPartecipazioneClubsLettore(
+            final @RequestHeader(name = "Authorization") String token, final @RequestParam int idClub
+    ) {
+        if (!Utils.isUtenteLettore(token)) return false;
+        List<ClubDelLibro> clubs =  lettoreService.getLettoreByEmail(Utils.getSubjectFromToken(token)).getClubs();
+        for(ClubDelLibro club: clubs){
+            if(idClub == club.getIdClub()) return true;
+        }
+        return false;
+    }
+
+    @GetMapping(value = "/visualizza-esperti-biblioteca")
+    @ResponseBody
+    @CrossOrigin
+    public List<EspertoDTO> visualizzaEspertiBiblioteca(
+            @RequestParam final String emailBiblioteca
+    ) {
+        List<EspertoDTO> espertiDTO = new ArrayList<>();
+        for(Esperto e: espertoService.getEspertiByBiblioteca(emailBiblioteca)){
+            espertiDTO.add(new EspertoDTO(e));
+        }
+        return espertiDTO;
+    }
+
+    @GetMapping(value = "/visualizza-clubs-biblioteca")
+    @ResponseBody
+    @CrossOrigin
+    public List<ClubDTO> visualizzaClubBiblioteca(
+            @RequestParam final String emailBiblioteca
+    ) {
+        Set<ClubDelLibro> clubs= new HashSet<>();
+        List<Esperto> esperti = espertoService.getEspertiByBiblioteca(emailBiblioteca);
+        for(Esperto esperto: esperti){
+            clubs.addAll(esperto.getClubs());
+        }
+        Set<ClubDTO> clubDTOS = new HashSet<>();
+        for(ClubDelLibro clubDelLibro: clubs){
+            clubDTOS.add(new ClubDTO(clubDelLibro));
+        }
+        return new ArrayList<>(clubDTOS);
+    }
+
     /**
      * Implementa la funzionalità che permette
      * la visualizzazione della modifica dei dati di

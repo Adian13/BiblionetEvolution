@@ -27,9 +27,6 @@ public class ClubDelLibroServiceImpl implements ClubDelLibroService {
     private final ClubDelLibroDAO clubDAO;
 
 
-
-
-
     /**
      * Implementa la funzionalità che permette
      * a un Esperto di creare un Club del Libro.
@@ -125,34 +122,7 @@ public class ClubDelLibroServiceImpl implements ClubDelLibroService {
     }
 
 
-    /**
-     * Implementa la funzionalità di prendere una lista di club
-     * del libro a cui un lettore partecipa.
-     *
-     * @param lettore il lettore preso in esame
-     * @return la lista dei club del libro a cui partecipa
-     */
-    @Override
-    public List<ClubDelLibro> findAllByLettore(final Lettore lettore) {
-        return clubDAO.findAllByLettori(lettore);
-    }
 
-    /**
-     * Implementa la funzionalità di prendere una lista di club
-     * del libro di cui un esperto è proprietario.
-     *
-     * @param esperto l' esperto preso in esame
-     * @return la lista dei club del libro a cui partecipa
-     */
-    @Override
-    public List<ClubDelLibro> findAllByEsperto(final Esperto esperto) {
-        return clubDAO.findAllByEsperto(esperto);
-    }
-
-    @Override
-    public List<ClubDelLibro> getClubsByEsperto(Esperto esperto){
-        return clubDAO.findAllByEsperto(esperto);
-    }
 
 
 }
