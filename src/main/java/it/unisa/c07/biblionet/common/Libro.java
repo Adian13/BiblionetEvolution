@@ -7,8 +7,6 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 
-//todo lo sto usando come un DTO
-
 /**
  * Questa classe rappresenta un libro.
  */
