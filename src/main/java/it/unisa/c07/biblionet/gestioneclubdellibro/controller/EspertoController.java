@@ -27,7 +27,7 @@ public class EspertoController {
 
     /**
      * Implementa la funzionalità di registrazione di un esperto.
-     */
+
     @PostMapping(value = "/registrazione")
     @ResponseBody
     @CrossOrigin
@@ -45,6 +45,7 @@ public class EspertoController {
         if(e == null) return new BiblionetResponse(BiblionetResponse.RICHIESTA_NON_VALIDA, false);
         return new BiblionetResponse("Registrazione ok", true);
     }
+    */
 
     /**
      * Implementa la funzionalità di modifica dati di un esperto.
