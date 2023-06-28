@@ -32,87 +32,6 @@ public class EventoController {
     private final LettoreService lettoreService;
     private final EspertoService espertoService;
 
-    /**
-     * Implementa la funzionalità che permette
-     * la creazione da parte di un Esperto
-     * di un Evento.
-     * @param id l'ID dell'evento
-     * @param evento il form dell'evento
-     * @return La view che visualizza il form di creazione Evento
-     */
-    @GetMapping(value = "/{id}/eventi/crea")
-    @CrossOrigin
-    @ResponseBody
-    public BiblionetResponse visualizzaCreaEvento(final @PathVariable int id,
-                                                  final @Valid @ModelAttribute EventoDTO evento, BindingResult bindingResult) {
-
-        if (bindingResult.hasErrors()) {
-            return new BiblionetResponse(BiblionetResponse.FORMATO_NON_VALIDO, false);
-        }
-        var club = this.clubService.getClubByID(id);
-
-        if (club == null) {
-            return new BiblionetResponse(BiblionetResponse.OGGETTO_NON_TROVATO, false);
-        }
-        /*
-       model.addAttribute("club", club);
-       model.addAttribute("evento", evento);*/
-
-        return new BiblionetResponse(BiblionetResponse.FORMATO_NON_VALIDO, false);
-
-    }
-
-
-    /**
-     * Implementa la funzionalità che permette
-     * la visualizzazione della modifica dei dati di
-     * un evento di un Club del Libro.
-     * @param idClub l'ID del Club
-     * @param idEvento l'ID dell'evento
-     * @param evento il form dell'evento
-     * @return La view che visualizza la lista dei club
-     */
-    @GetMapping(value = "/{idClub}/eventi/{idEvento}/modifica")
-    @CrossOrigin
-    @ResponseBody
-    public BiblionetResponse visualizzaModificaEvento(final @PathVariable int idClub,
-                                                      final @PathVariable int idEvento,
-                                                      final @Valid @ModelAttribute EventoDTO evento,
-                                                      BindingResult bindingResult,
-                                                      @RequestHeader(name = "Authorization") final String token) {
-
-        var eventoBaseOpt = this.eventiService.getEventoById(idEvento);
-        Esperto esperto = (Esperto) espertoService.findEspertiByNome(Utils.getSubjectFromToken(token));
-
-        if (eventoBaseOpt.isEmpty()) {
-            return new BiblionetResponse(BiblionetResponse.OGGETTO_NON_TROVATO, false);
-        }
-
-        if (esperto != null && !eventoBaseOpt.get().getClub().getEsperto().getEmail().equals(esperto.getEmail())) {
-            return new BiblionetResponse(BiblionetResponse.NON_AUTORIZZATO, false);
-        }
-
-        var eventoBase = eventoBaseOpt.get();
-
-        if (eventoBase.getClub().getIdClub() != idClub) {
-            return new BiblionetResponse(BiblionetResponse.RICHIESTA_NON_VALIDA, false);
-        }
-
-        evento.setNome(eventoBase.getNomeEvento());
-        evento.setData(eventoBase.getDataOra().toLocalDate());
-        evento.setOra(eventoBase.getDataOra().toLocalTime());
-        evento.setDescrizione(eventoBase.getDescrizione());
-        if (eventoBase.getLibro() != null) {
-            evento.setLibro(eventoBase.getLibro().getIdLibro());
-        }
-    /*
-         model.addAttribute("evento", evento);
-         model.addAttribute("club", eventoBase.getClub());
-         model.addAttribute("id", eventoBase.getIdEvento());*/
-
-        return new BiblionetResponse(BiblionetResponse.RICHIESTA_NON_VALIDA, false);
-    }
-
 
     /**
      * Implementa la funzionalità che permette di disiscriversi
@@ -180,12 +99,14 @@ public class EventoController {
      * @param eventoDTO il form dell'evento
      * @return la view che visualizza la lista degli eventi
      */
-    @PostMapping(value = "/{idClub}/eventi/{idEvento}/modifica")
+    @PostMapping(value = "/eventi/modifica")
     @CrossOrigin
     @ResponseBody
-    public BiblionetResponse modificaEvento(final @PathVariable int idClub,
-                                            final @PathVariable int idEvento,
+    public BiblionetResponse modificaEvento(final @RequestParam int idClub,
+                                            final @RequestParam int idEvento,
                                             final @Valid @ModelAttribute EventoDTO eventoDTO, BindingResult bindingResult) {
+
+
         return this.modificaCreaEvento(
                 eventoDTO,
                 bindingResult,
@@ -245,11 +166,11 @@ public class EventoController {
                                                  final int idClub, final Optional<Integer> idEvento, final Consumer<Evento> operazione) {
 
         if (bindingResult.hasErrors())
-            return new BiblionetResponse("I dati inseriti non rispettano il formato atteso", false);
+            return new BiblionetResponse(BiblionetResponse.RICHIESTA_NON_VALIDA, false);
         var club = this.clubService.getClubByID(idClub);
 
         if (club == null) {
-            return new BiblionetResponse("", false);
+            return new BiblionetResponse(BiblionetResponse.ERRORE, false);
         }
 
         var evento = new Evento();
