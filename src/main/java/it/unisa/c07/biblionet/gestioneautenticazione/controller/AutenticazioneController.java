@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Implementa il controller per il sottosistema
  * Autenticazione.
- * @author Ciro Maiorino , Giulio Triggiani
+ * @author Ciro Maiorino, Giulio Triggiani, Cosimo Stabile, Ida Iannone
  */
 @Controller
 @RequiredArgsConstructor
@@ -23,18 +23,6 @@ public class AutenticazioneController {
      */
     private final AutenticazioneService autenticazioneService;
     private final JwtGeneratorInterface jwtGenerator;
-    /**
-     * Implementa la funzionalità che permette
-     * di visualizzare la view del login.
-     * @param model il Model
-     * @return la pagina dove è visualizzato
-
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public String visualizzaLogin(final Model model) {
-        model.addAttribute("loggedUser", null);
-        return "autenticazione/login";
-    }
-   */
 
     /**
      * Implementa la funzionalità di login come utente.

@@ -1,4 +1,4 @@
-package modularityTest;
+package TestAutenticazione;
 
 import it.unisa.c07.biblionet.BiblionetApplication;
 import org.springframework.modulith.core.ApplicationModules;

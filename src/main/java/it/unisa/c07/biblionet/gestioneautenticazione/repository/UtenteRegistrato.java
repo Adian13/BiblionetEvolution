@@ -24,7 +24,7 @@ import java.security.NoSuchAlgorithmException;
 @NoArgsConstructor(force = true)
 @EqualsAndHashCode
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class UtenteRegistrato {
+public class UtenteRegistrato {
 
     /**
      * Rappresenta l'ID di un utente registrato.
@@ -89,7 +89,7 @@ public abstract class UtenteRegistrato {
      * @param via la via dove vive l'utente.
      * @param recapitoTelefonico il recapito telefonico dell'utente.
      */
-    protected UtenteRegistrato(final String email, final String password,
+    public UtenteRegistrato(final String email, final String password,
                             final String provincia, final String citta,
                             final String via, final String recapitoTelefonico, final String tipo) {
 
@@ -101,7 +101,7 @@ public abstract class UtenteRegistrato {
         this.tipo = tipo;
         this.password = BiblionetConstraints.trasformaPassword(password);
     }
-    protected UtenteRegistrato(final String email, final byte[] password,
+    public UtenteRegistrato(final String email, final byte[] password,
                                final String provincia, final String citta,
                                final String via, final String recapitoTelefonico, final String tipo) {
 
