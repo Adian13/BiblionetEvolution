@@ -11,6 +11,7 @@ import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Pattern;
 import java.util.List;
@@ -29,7 +30,7 @@ import java.util.List;
 @NoArgsConstructor(force = true)
 public class Biblioteca extends UtenteRegistrato {
 
-
+    //todo inserire un id
     /**
      * Rappresenta il nome della biblioteca.
      */
@@ -51,8 +52,6 @@ public class Biblioteca extends UtenteRegistrato {
     @OneToMany(mappedBy = "possessoID.bibliotecaID")
     @ToString.Exclude
     private List<Possesso> possessi;
-
-
 
     /**
      *

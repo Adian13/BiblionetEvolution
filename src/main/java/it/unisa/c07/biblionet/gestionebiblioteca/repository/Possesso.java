@@ -1,8 +1,6 @@
 package it.unisa.c07.biblionet.gestionebiblioteca.repository;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -22,7 +20,9 @@ import java.io.Serializable;
  */
 @Entity
 @Data
-@NoArgsConstructor
+@Getter
+@Setter
+@RequiredArgsConstructor
 public class Possesso implements Serializable {
 
     /**
@@ -64,4 +64,6 @@ public class Possesso implements Serializable {
         this.possessoID = possessoId;
         this.numeroCopie = numeroCopie;
     }
+    
+    public Possesso(){}
 }

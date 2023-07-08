@@ -11,7 +11,7 @@ import java.util.List;
  * Questa classe rappresenta il DAO di una Biblioteca.
  */
 @Repository
-public interface BibliotecaDAO extends JpaRepository<UtenteRegistrato, String> {
+public interface BibliotecaDAO extends JpaRepository<Biblioteca, String> {
     /**
      * Implementa la funzionalità di ricerca di un utente Biblioteca nel DB.
      * @param email dell'utente da cercare.
@@ -19,6 +19,7 @@ public interface BibliotecaDAO extends JpaRepository<UtenteRegistrato, String> {
      * @return dell'utente trovato.
      */
     Biblioteca findByEmailAndPassword(String email, byte[] password);
+
     @Query("SELECT b FROM Biblioteca b "
             +  "WHERE b.id =?1 and b.password=?2 and b.tipo=?3")
     Biblioteca findBibliotecaByEmailAndPassword(String email, byte[] password, String tipo);
@@ -64,4 +65,11 @@ public interface BibliotecaDAO extends JpaRepository<UtenteRegistrato, String> {
      */
     @Query("SELECT b FROM Biblioteca b")
     List<Biblioteca> findAllBiblioteche();
+    //----------------------------------------------------------------------
+
+    void deleteByEmail(String email);
+
+
+    Biblioteca findByEmail(String email);
+
 }

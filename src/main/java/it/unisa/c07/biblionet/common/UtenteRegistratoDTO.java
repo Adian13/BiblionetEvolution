@@ -13,7 +13,7 @@ import java.security.NoSuchAlgorithmException;
 @SuperBuilder
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
-public abstract class UtenteRegistratoDTO {
+public class UtenteRegistratoDTO {
 
     /**
      * Rappresenta l'ID di un utente registrato.

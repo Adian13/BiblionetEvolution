@@ -1,8 +1,7 @@
 package it.unisa.c07.biblionet.gestionebiblioteca.repository;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import javax.persistence.Basic;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
@@ -23,6 +22,8 @@ import java.io.Serializable;
 @Embeddable
 @Data
 @AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
 public class PossessoId implements Serializable {
 

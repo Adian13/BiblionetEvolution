@@ -6,9 +6,11 @@ import it.unisa.c07.biblionet.gestionebiblioteca.PrenotazioneLibriService;
 import it.unisa.c07.biblionet.gestionebiblioteca.repository.Biblioteca;
 import it.unisa.c07.biblionet.gestionebiblioteca.repository.LibroBiblioteca;
 import it.unisa.c07.biblionet.gestionebiblioteca.repository.TicketPrestito;
+import it.unisa.c07.biblionet.gestionebiblioteca.service.BibliotecaService;
 import it.unisa.c07.biblionet.utils.BiblionetResponse;
 import it.unisa.c07.biblionet.utils.Utils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +23,7 @@ import java.util.List;
  *
  * @author Viviana Pentangelo, Gianmario Voria
  */
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/prenotazione-libri")
 public class PrenotazioneLibriController {
@@ -30,7 +32,10 @@ public class PrenotazioneLibriController {
      * Il service per effettuare le operazioni di
      * persistenza.
      */
-    private final PrenotazioneLibriService prenotazioneService;
+    @Autowired
+    private PrenotazioneLibriService prenotazioneService;
+    @Autowired
+    private BibliotecaService bibliotecaService;
 
     /**
      * Implementa la funzionalità che permette di
@@ -141,7 +146,7 @@ public class PrenotazioneLibriController {
         if (!Utils.isUtenteBiblioteca(token)) {
             return new ArrayList<>();
         }
-        Biblioteca biblioteca = prenotazioneService.findBibliotecaByEmail(Utils.getSubjectFromToken(token));
+        Biblioteca biblioteca = bibliotecaService.findBibliotecaByEmail(Utils.getSubjectFromToken(token));
 
         List<TicketPrestito> lista = prenotazioneService.getTicketsByBiblioteca(biblioteca);
             /*

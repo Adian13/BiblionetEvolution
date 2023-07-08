@@ -31,7 +31,7 @@ public class GoogleBookApiAdapterImpl implements BookApiAdapter {
     /**
      * L'URL dell'api.
      */
-    String googleApiUrl = "https://www.googleapis.com/books/v1/volumes?q=isbn:";
+    public String googleApiUrl = "https://www.googleapis.com/books/v1/volumes?q=isbn:";
     /**
      * Lo status code per controllare la richiesta.
      */

@@ -14,16 +14,10 @@ import java.util.List;
  */
 public interface PrenotazioneLibriService {
 
-
-
-
-    UtenteRegistrato bibliotecaDaModel(BibliotecaDTO form);
-
-    UtenteRegistrato loginBiblioteca(String email, String password);
-
-    UtenteRegistrato findBibliotecaByEmailAndPassword(String email, byte[] password);
+    UtenteRegistrato bibliotecaDaModel(BibliotecaDTO form) ;
 
     UtenteRegistrato findUtenteRegistratoByEmail(String email);
+    UtenteRegistrato loginBiblioteca(String email, String password);
 
     /**
      * Implementa la funzionalità che permette
@@ -193,15 +187,5 @@ public interface PrenotazioneLibriService {
     LibroBiblioteca inserimentoManuale(LibroBiblioteca libro, String idBiblioteca,
                                    int numCopie, List<String> generi);
 
-
-    Biblioteca findBibliotecaByEmail(String email);
-
-    List<Biblioteca> findBibliotecaByNome(String nomeBiblioteca);
-
-    List<Biblioteca> findBibliotecaByCitta(String citta);
-
-    List<Biblioteca> findAllBiblioteche();
-
-    Biblioteca aggiornaBiblioteca(Biblioteca utente);
 
 }

@@ -10,6 +10,7 @@ import javax.validation.constraints.Pattern;
 @Data
 @SuperBuilder
 @RequiredArgsConstructor
+@EqualsAndHashCode
 @NoArgsConstructor(force = true)
 public class BibliotecaDTO extends UtenteRegistratoDTO {
 

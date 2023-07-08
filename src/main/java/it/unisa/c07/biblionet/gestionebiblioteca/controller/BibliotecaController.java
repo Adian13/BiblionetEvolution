@@ -7,11 +7,15 @@ import it.unisa.c07.biblionet.gestionebiblioteca.LibroBibliotecaDTO;
 import it.unisa.c07.biblionet.gestionebiblioteca.PrenotazioneLibriService;
 import it.unisa.c07.biblionet.gestionebiblioteca.repository.LibroBiblioteca;
 import it.unisa.c07.biblionet.gestionebiblioteca.repository.Biblioteca;
+import it.unisa.c07.biblionet.gestionebiblioteca.service.BibliotecaMapper;
+import it.unisa.c07.biblionet.gestionebiblioteca.service.BibliotecaService;
 import it.unisa.c07.biblionet.utils.BiblionetConstraints;
 import it.unisa.c07.biblionet.utils.BiblionetResponse;
 import it.unisa.c07.biblionet.utils.Utils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Implementa il controller per il sottosistema
@@ -35,13 +40,16 @@ import java.util.List;
 @RequestMapping("/biblioteca")
 public class BibliotecaController {
 
-
-
     /**
      * Il service per effettuare le operazioni di
      * persistenza.
      */
-    private final PrenotazioneLibriService prenotazioneService;
+
+    private PrenotazioneLibriService prenotazioneService;
+    @Autowired
+    private BibliotecaService bibliotecaService;
+    @Autowired
+    private BibliotecaMapper bibliotecaMapper;
 
     /**
      * Implementa la funzionalità di modifica dati di una biblioteca.
@@ -89,8 +97,9 @@ public class BibliotecaController {
     @GetMapping(value = "/visualizza-biblioteche")
     @ResponseBody
     @CrossOrigin
-    public List<Biblioteca> visualizzaListaBiblioteche() {
-        return prenotazioneService.findAllBiblioteche();
+    public List<BibliotecaDTO> visualizzaListaBiblioteche() {
+        List<Biblioteca> bibliotecas = bibliotecaService.findAllBiblioteche();
+        return bibliotecas.stream().map(bibliotecaMapper::entityToDTO).collect(Collectors.toList());
     }
 
     /**
@@ -151,7 +160,7 @@ public class BibliotecaController {
         if (isbn == null) {
             return new BiblionetResponse("L'ISBN inserito non è valido", false);
         }
-        Biblioteca b = prenotazioneService.findBibliotecaByEmail(Utils.getSubjectFromToken(token));
+        Biblioteca b = bibliotecaService.findBibliotecaByEmail(Utils.getSubjectFromToken(token));
 
         List<String> glist = Arrays.asList(generi.clone());
         LibroBiblioteca l = prenotazioneService.inserimentoPerIsbn(
@@ -182,7 +191,7 @@ public class BibliotecaController {
         if (!Utils.isUtenteBiblioteca(token)) {
             return new BiblionetResponse("Non sei autorizzato", false);
         }
-        Biblioteca b =  prenotazioneService.findBibliotecaByEmail(Utils.getSubjectFromToken(token));
+        Biblioteca b =  bibliotecaService.findBibliotecaByEmail(Utils.getSubjectFromToken(token));
         prenotazioneService.inserimentoDalDatabase(idLibro, b.getEmail(), numCopie);
         return new BiblionetResponse("Libro inserito con successo", true);
 
@@ -209,7 +218,7 @@ public class BibliotecaController {
         if (!Utils.isUtenteBiblioteca(token)) {
             return new BiblionetResponse("Non sei autorizzato", false);
         }
-        Biblioteca b = prenotazioneService.findBibliotecaByEmail(Utils.getSubjectFromToken(token));
+        Biblioteca b = bibliotecaService.findBibliotecaByEmail(Utils.getSubjectFromToken(token));
         LibroBiblioteca l = new LibroBiblioteca();
         l.setTitolo(libro.getTitolo());
         l.setIsbn(libro.getIsbn());
@@ -242,17 +251,17 @@ public class BibliotecaController {
     @GetMapping(value = "/ricerca")
     @ResponseBody
     @CrossOrigin
-    public List<Biblioteca> visualizzaListaFiltrata(
+    public List<BibliotecaDTO> visualizzaListaFiltrata(
             @RequestParam("stringa") final String stringa,
             @RequestParam("filtro") final String filtro) {
 
         switch (filtro) {
             case "nome":
-                return prenotazioneService.findBibliotecaByNome(stringa);
+                return bibliotecaService.findAll().stream().filter(biblioteca -> biblioteca.getNomeBiblioteca().equalsIgnoreCase(filtro)).map(bibliotecaMapper::entityToDTO).collect(Collectors.toList());
             case "citta":
-                return prenotazioneService.findBibliotecaByCitta(stringa);
+                return bibliotecaService.findAll().stream().filter(biblioteca -> biblioteca.getCitta().equalsIgnoreCase(filtro)).map(bibliotecaMapper::entityToDTO).collect(Collectors.toList());
             default:
-                return prenotazioneService.findAllBiblioteche();
+                return bibliotecaService.findAll().stream().map(bibliotecaMapper::entityToDTO).collect(Collectors.toList());
         }
     }
 
@@ -265,7 +274,37 @@ public class BibliotecaController {
     @GetMapping(value = "/{email}")
     @ResponseBody
     @CrossOrigin
-    public Biblioteca visualizzaDatiBiblioteca(final @PathVariable String email) {
-        return prenotazioneService.findBibliotecaByEmail(email);
+    public ResponseEntity<BibliotecaDTO> visualizzaDatiBiblioteca(final @PathVariable String email) {
+        Biblioteca biblioteca = bibliotecaService.findBibliotecaByEmail(email);
+        if (biblioteca != null) {
+            BibliotecaDTO bibliotecaDTO = bibliotecaMapper.entityToDTO(biblioteca);
+            return ResponseEntity.ok(bibliotecaDTO);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    @PostMapping("/crea_biblioteca")
+    @ResponseBody
+    public ResponseEntity<BibliotecaDTO> creaBiblioteca(@RequestBody BibliotecaDTO bibliotecaDTO){
+        if (null!=bibliotecaDTO.getEmail()) {
+            return ResponseEntity.badRequest().build();
+        }
+        Biblioteca bibliotecaCreate = bibliotecaService.save(bibliotecaDTO);
+        // Restituisce una risposta HTTP 201 (OK) con l'oggetto DTO aggiornato come corpo
+        return ResponseEntity.ok(bibliotecaMapper.entityToDTO(bibliotecaCreate));
+    }
+    @PutMapping("/{email}")
+    @ResponseBody
+    @CrossOrigin
+    public ResponseEntity<BibliotecaDTO> updateBiblioteca(@PathVariable String email,
+                @RequestBody BibliotecaDTO bibliotecaDTO) {
+
+            // Verifica che l'ID nel path corrisponda all'ID nel DTO (se necessario)
+            if (!email.equals(bibliotecaDTO.getEmail())) {
+                return ResponseEntity.badRequest().build();
+            }
+            BibliotecaDTO bibliotecaDTOAggiornata = bibliotecaService.update(bibliotecaDTO);
+            // Restituisce una risposta HTTP 200 (OK) con l'oggetto DTO aggiornato come corpo
+            return ResponseEntity.ok(bibliotecaDTOAggiornata);
     }
 }

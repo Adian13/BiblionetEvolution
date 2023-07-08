@@ -13,6 +13,7 @@ import java.util.Set;
  */
 @Entity
 @Data
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 public class LibroBiblioteca extends Libro {

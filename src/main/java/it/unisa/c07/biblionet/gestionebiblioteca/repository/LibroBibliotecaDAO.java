@@ -1,6 +1,7 @@
 package it.unisa.c07.biblionet.gestionebiblioteca.repository;
 
 import it.unisa.c07.biblionet.common.ILibroIdAndName;
+import it.unisa.c07.biblionet.common.Libro;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -48,4 +49,6 @@ public interface LibroBibliotecaDAO extends JpaRepository<LibroBiblioteca, Integ
     @Query("SELECT l FROM LibroBiblioteca l "
             + "WHERE l.isbn = ?1")
     LibroBiblioteca findByIsbn(String isbn);
+
+    List<Libro> findByName(String titolo);
 }
